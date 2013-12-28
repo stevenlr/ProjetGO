@@ -20,3 +20,4 @@ Conventions
 
 * En français (Pas super mais étant donné les prototypes donnés...)
 * CamelCase
+* `Type_nomDeLaFonction(...);` (ex `Matrice_allouer(...);`)
