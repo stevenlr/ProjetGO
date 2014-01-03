@@ -7,8 +7,7 @@
 #define MATRICE_H_
 
 /**
- *  @struct Matrice
- *  @brief Matrice de caractères
+ *  Matrice de caractères
  */
 typedef struct {
 	int nLignes;	/**< Nombre de lignes. */
