@@ -10,7 +10,7 @@
 
 #include "include/matrice.h"
 
-Matrice* Matrice_allouer(int nLignes, int nColonnes, char caractereParDefaut)
+Matrice* Matrice_creer(int nLignes, int nColonnes, char caractereParDefaut)
 {
 	Matrice* matrice = NULL;
 

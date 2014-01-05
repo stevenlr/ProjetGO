@@ -23,7 +23,7 @@ typedef struct {
  * @param caractereParDefaut Caractère avec lequel remplir toute la matrice.
  * @return Matrice allouée. NULL si la matrice n'a pas pu être allouée.
  */
-Matrice* Matrice_allouer(int nLignes, int nColonnes, char caractereParDefaut);
+Matrice* Matrice_creer(int nLignes, int nColonnes, char caractereParDefaut);
 
 /**
  * Détruit une matrice.
