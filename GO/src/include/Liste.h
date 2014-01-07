@@ -6,48 +6,14 @@
 #ifndef LISTE_H_
 #define LISTE_H_
 
-/**
- * Un élément de la liste double chaînée.
- */
-struct _ElementListe {
-	struct _ElementListe* precedent;	/**< Pointeur vers l'élément suivant dans la liste. */
-	struct _ElementListe* suivant;		/**< Pointeur vers l'élément précédent dans la liste. */
-	void* ptr;							/**< Objet stocké. */
-};
-
-typedef struct _ElementListe ElementListe;
-
-/**
- * Liste doublement chaînée.
- */
-typedef struct {
-	ElementListe* tete;		/**< Pointeur vers le début de la liste. */
-	ElementListe* queue;	/**< Pointeur vers la fin de la liste. */
-	ElementListe* courant;	/**< Pointeur vers l'élément courant. */
-} Liste;
-
-/**
- * Créé un élément de liste.
- * On ne devrait pas avoir à s'en servir en dehors des fonctions de Liste.
- *
- * @return L'élément créé. NULL en cas d'erreur.
- */
-ElementListe* ElementListe_creer();
-
-/**
- * Détruit un élément de liste.
- * On ne devrait pas avoir à s'en servir en dehors des fonctions de Liste.
- *
- * @param element L'élément à détruire.
- */
-void ElementListe_detruire(ElementListe* element);
+typedef struct Liste* Liste;
 
 /**
  * Créé une liste vide.
  *
  * @return La liste ! NULL en cas de problème. (ça devrait pas arriver mais bon...)
  */
-Liste* Liste_creer();
+Liste Liste_creer();
 
 /**
  * Détruit une liste.
@@ -55,21 +21,21 @@ Liste* Liste_creer();
  *
  * @param liste La liste à désallouer.
  */
-void Liste_detruire(Liste* liste);
+void Liste_detruire(Liste liste);
 
 /**
  * Se place en début de liste.
  *
  * @param liste
  */
-void Liste_tete(Liste* liste);
+void Liste_tete(Liste liste);
 
 /**
  * Se place en fin liste.
  *
  * @param liste
  */
-void Liste_queue(Liste* liste);
+void Liste_queue(Liste liste);
 
 /**
  * Vérifie si une liste est vide.
@@ -77,6 +43,6 @@ void Liste_queue(Liste* liste);
  * @param liste
  * @return 1 si la liste est vide, 0 sinon.
  */
-int Liste_estVide(Liste* liste);
+int Liste_estVide(Liste liste);
 
 #endif
