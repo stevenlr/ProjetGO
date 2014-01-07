@@ -45,4 +45,43 @@ void Liste_queue(Liste liste);
  */
 int Liste_estVide(Liste liste);
 
+/**
+ * Retourne l'élément courant de la liste.
+ *
+ * @param liste
+ * @return L'élément courant.
+ */
+void* Liste_courant(Liste liste);
+
+/**
+ * Se déplace à l'élement suivant dans la liste.
+ *
+ * @param liste
+ * @return 0 si il n'y avait pas d'élément suivant, 1 sinon.
+ */
+int Liste_suivant(Liste liste);
+
+/**
+ * Se déplace à l'élément précédent dans la liste.
+ *
+ * @param liste
+ * @return 0 si il n'y avait pas d'élément précédent, 1 sinon.
+ */
+int Liste_precedent(Liste liste);
+
+/**
+ * Insère un élément après l'élément courant, et en fait le courant.
+ *
+ * @param liste
+ * @param ptr Pointeur vers la donnée à stocker.
+ */
+void Liste_insererCourant(Liste liste, void* ptr);
+
+/**
+ * Supprime l'élément courant et rend courant l'élément suivant, ou précédent si on est en fin de liste.
+ *
+ * @param liste
+ */
+void Liste_supprimerCourant(Liste liste);
+
 #endif
