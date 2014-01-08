@@ -1,8 +1,13 @@
+/**
+ * @file Plateau.c
+ * @brief Fonctions concernant le Plateau
+ */
 
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "plateau.h"
+#include "include/Couleur.h"
+#include "include/Plateau.h"
 
 Plateau Plateau_creer(int taille)
 {
@@ -26,9 +31,13 @@ void Plateau_set(Plateau plateau, int i, int j, Couleur couleur)
 
 int Plateau_estIdentique(Plateau plateau, Plateau ancienPlateau)
 {
-  int taille,i,j;
+  int taille,ancienneTaille,i,j;
 
   Matrice_getTaille(plateau,&taille,NULL);
+  Matrice_getTaille(ancienPlateau,&ancienneTaille,NULL);
+
+  if(taille != ancienneTaille)
+	  return 0;
 
   for(i=0;i<taille;i++)
     for(j=0;j<taille;j++)
@@ -38,28 +47,38 @@ int Plateau_estIdentique(Plateau plateau, Plateau ancienPlateau)
   return 1;	  
 }
 
-void Plateau_copie(Plateau from, Plateau to)
+int Plateau_copier(Plateau from, Plateau to)
 {
-  int i,j,taille;
+  int i,j,taille,tailleTo;
 
   Matrice_getTaille(from,&taille,NULL);
+  Matrice_getTaille(to,&tailleTo,NULL);
+
+  if(taille != tailleTo)
+	  return 0;
 
   for(i=0;i<taille;i++)
     for(j=0;j<taille;j++)
       Matrice_set(to, i, j, Matrice_get(from, i, j) );
+
+  return 1;
 }
 
-void Plateau_sauvegarde(Plateau plateau,FILE* fichier)
+void Plateau_sauvegarder(Plateau plateau,FILE* fichier)
 {
   int i,j,taille;
+  Couleur c;
 
   Matrice_getTaille(plateau,&taille,NULL);
 
-  fwrite(taille,sizeof(int),1,fichier);
+  fwrite(&taille,sizeof(int),1,fichier);
 
   for(i=0;i<taille;i++)
     for(j=0;j<taille;j++)
-      fwrite(Matrice_get(plateau,i,j), sizeof(char), 1, fichier);
+    {
+    	c = Matrice_get(plateau,i,j);
+      fwrite(&c, sizeof(char), 1, fichier);
+    }
 }
 
 Plateau Plateau_charger(FILE* fichier)
