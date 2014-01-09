@@ -78,6 +78,20 @@ int Liste_precedent(Liste liste);
 void Liste_insererCourant(Liste liste, void* ptr);
 
 /**
+ * Insère un élément en début de liste, et en fait le courant.
+ * @param liste
+ * @param ptr Pointeur vers la donnée à stocker.
+ */
+void Liste_insererTete(Liste liste, void* ptr);
+
+/**
+ * Insère un élément en fin de liste, et en fait le courant.
+ * @param liste
+ * @param ptr Pointeur vers la donnée à stocker.
+ */
+void Liste_insererQueue(Liste liste, void* ptr);
+
+/**
  * Supprime l'élément courant et rend courant l'élément suivant, ou précédent si on est en fin de liste.
  *
  * @param liste

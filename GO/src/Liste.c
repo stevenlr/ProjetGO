@@ -192,6 +192,33 @@ void Liste_insererCourant(Liste liste, void* ptr)
 	liste->courant = element;
 }
 
+void Liste_insererTete(Liste liste, void* ptr)
+{
+	ElementListe* element;
+
+	element = ElementListe_creer(ptr);
+
+	if(liste->tete == NULL)
+	{
+		liste->tete = element;
+		liste->queue = element;
+		liste->courant = element;
+
+		return;
+	}
+
+	element->suivant = liste->tete;
+	liste->tete->precedent = element;
+	liste->tete = element;
+	liste->courant = element;
+}
+
+void Liste_insererQueue(Liste liste, void* ptr)
+{
+	Liste_queue(liste);
+	Liste_insererCourant(liste, ptr);
+}
+
 void Liste_supprimerCourant(Liste liste)
 {
 	ElementListe* element;
@@ -217,5 +244,4 @@ void Liste_supprimerCourant(Liste liste)
 		liste->courant = element->suivant;
 	else
 		liste->courant = element->precedent;
-	
 }
