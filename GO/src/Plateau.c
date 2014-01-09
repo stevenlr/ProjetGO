@@ -5,100 +5,117 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <assert.h>
 
 #include "include/Couleur.h"
 #include "include/Plateau.h"
 
 Plateau Plateau_creer(int taille)
 {
-  return Matrice_creer(taille,taille,VIDE);
+	return Matrice_creer(taille, taille, VIDE);
 }
 
 void Plateau_detruire(Plateau* plateau)
 {
-  Matrice_detruire(*plateau);
-  *plateau = NULL;
+	assert(plateau && *plateau);
 
+	Matrice_detruire(*plateau);
+	*plateau = NULL;
 }
 
 Couleur Plateau_get(Plateau plateau, int i, int j)
 {
-  return Matrice_get(plateau,i,j);
+	assert(plateau);
+
+	return Matrice_get(plateau, i, j);
 }
 
 void Plateau_set(Plateau plateau, int i, int j, Couleur couleur)
 {
-  Matrice_set(plateau,i,j,couleur);
+	assert(plateau);
+
+	Matrice_set(plateau, i, j, couleur);
 }
 
 int Plateau_estIdentique(Plateau plateau, Plateau ancienPlateau)
 {
-  int taille,ancienneTaille,i,j;
+	int taille, ancienneTaille, i, j;
 
-  Matrice_getTaille(plateau,&taille,NULL);
-  Matrice_getTaille(ancienPlateau,&ancienneTaille,NULL);
+	assert(plateau && ancienPlateau);
 
-  if(taille != ancienneTaille)
-	  return 0;
+	Matrice_getTaille(plateau, &taille, NULL);
+	Matrice_getTaille(ancienPlateau, &ancienneTaille, NULL);
 
-  for(i=0;i<taille;i++)
-    for(j=0;j<taille;j++)
-      if(Matrice_get(plateau,i,j) != Matrice_get(ancienPlateau,i,j))
-	return 0;
+	if(taille != ancienneTaille)
+		return 0;
 
-  return 1;	  
+	for(i = 0; i < taille; i++)
+		for(j = 0; j < taille; j++)
+			if(Matrice_get(plateau, i, j) != Matrice_get(ancienPlateau, i, j))
+				return 0;
+
+	return 1;
 }
 
-int Plateau_copier(Plateau from, Plateau to)
+Plateau Plateau_copier(Plateau from)
 {
-  int i,j,taille,tailleTo;
+	int i, j, taille;
+	Plateau to;
 
-  Matrice_getTaille(from,&taille,NULL);
-  Matrice_getTaille(to,&tailleTo,NULL);
+	assert(from);
 
-  if(taille != tailleTo)
-	  return 0;
+	Matrice_getTaille(from, &taille, NULL);
 
-  for(i=0;i<taille;i++)
-    for(j=0;j<taille;j++)
-      Matrice_set(to, i, j, Matrice_get(from, i, j) );
+	to = Plateau_creer(taille);
 
-  return 1;
+	if(to == NULL)
+		return NULL;
+
+	for(i = 0; i < taille; i++)
+		for(j = 0; j < taille; j++)
+			Matrice_set(to, i, j, Matrice_get(from, i, j));
+
+	return to;
 }
 
-void Plateau_sauvegarder(Plateau plateau,FILE* fichier)
+void Plateau_sauvegarder(Plateau plateau, FILE* fichier)
 {
-  int i,j,taille;
-  Couleur c;
+	int i, j, taille;
+	Couleur c;
 
-  Matrice_getTaille(plateau,&taille,NULL);
+	assert(plateau);
 
-  fwrite(&taille,sizeof(int),1,fichier);
+	Matrice_getTaille(plateau, &taille, NULL);
 
-  for(i=0;i<taille;i++)
-    for(j=0;j<taille;j++)
-    {
-    	c = Matrice_get(plateau,i,j);
-      fwrite(&c, sizeof(char), 1, fichier);
-    }
+	fwrite(&taille, sizeof(int), 1, fichier);
+
+	for(i = 0; i < taille; i++)
+		for(j = 0; j < taille; j++)
+		{
+			c = Matrice_get(plateau, i, j);
+			putc(c, fichier);
+		}
 }
 
 Plateau Plateau_charger(FILE* fichier)
 {
-  int i,j,taille;
-  Plateau plateau;
-  Couleur c;
+	int i, j, taille;
+	Plateau plateau;
+	Couleur c;
 
-  fread(&taille, sizeof(int), 1, fichier);
+	fread(&taille, sizeof(int), 1, fichier);
 
-  plateau = Plateau_creer(taille);
+	plateau = Plateau_creer(taille);
 
-  for(i=0;i<taille;i++)
-    for(j=0;j<taille;j++)
-      {
-	fread(&c, sizeof(char), 1, fichier);
-	Plateau_set(plateau,i,j,c);
-      }
+	if(plateau == NULL)
+		return NULL;
 
-  return plateau;
+	for(i = 0; i < taille; i++)
+		for(j = 0; j < taille; j++)
+		{
+			c = getc(fichier);
+			Plateau_set(plateau, i, j, c);
+		}
+
+	return plateau;
 }

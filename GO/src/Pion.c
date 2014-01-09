@@ -1,5 +1,5 @@
 /**
- * @brief Fonction concernant le Pion
+ * @brief Fonctions concernant le Pion
  * @file Pion.c
  */
 

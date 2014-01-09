@@ -6,14 +6,7 @@
 #ifndef MATRICE_H_
 #define MATRICE_H_
 
-/**
- *  Matrice de caractères
- */
-typedef struct {
-	int nLignes;	/**< Nombre de lignes. */
-	int nColonnes;	/**< Nombre de colonnes. */
-	char* donnees;	/**< Donnees de la matrice. */
-} Matrice;
+typedef struct Matrice* Matrice;
 
 /**
  * Alloue une matrice.
@@ -23,21 +16,21 @@ typedef struct {
  * @param caractereParDefaut Caractère avec lequel remplir toute la matrice.
  * @return Matrice allouée. NULL si la matrice n'a pas pu être allouée.
  */
-Matrice* Matrice_creer(int nLignes, int nColonnes, char caractereParDefaut);
+Matrice Matrice_creer(int nLignes, int nColonnes, char caractereParDefaut);
 
 /**
  * Détruit une matrice.
  *
  * @param matrice Matrice à détruire.
  */
-void Matrice_detruire(Matrice* matrice);
+void Matrice_detruire(Matrice matrice);
 
 /**
  * Affiche une matrice.
  *
  * @param matrice Matrice à afficher.
  */
-void Matrice_afficher(Matrice* matrice);
+void Matrice_afficher(Matrice matrice);
 
 /**
  * Récupère la taille d'une matrice.
@@ -48,7 +41,7 @@ void Matrice_afficher(Matrice* matrice);
  * @param nLignes Nombre de lignes.
  * @param nColonnes Nombre de colonnes.
  */
-void Matrice_getTaille(Matrice* matrice, int* nLignes, int* nColonnes);
+void Matrice_getTaille(Matrice matrice, int* nLignes, int* nColonnes);
 
 /**
  * Récupère la valeur d'un coefficient de la matrice.
@@ -58,7 +51,7 @@ void Matrice_getTaille(Matrice* matrice, int* nLignes, int* nColonnes);
  * @param j Colonne du coefficient.
  * @return Le coefficient.
  */
-char Matrice_get(Matrice* matrice, int i, int j);
+char Matrice_get(Matrice matrice, int i, int j);
 
 /**
  * Assigne une valeur à un coefficient de la matrice.
@@ -68,6 +61,6 @@ char Matrice_get(Matrice* matrice, int i, int j);
  * @param j Colonne du coefficient.
  * @param valeur Valeur à assigner.
  */
-void Matrice_set(Matrice* matrice, int i, int j, char valeur);
+void Matrice_set(Matrice matrice, int i, int j, char valeur);
 
 #endif

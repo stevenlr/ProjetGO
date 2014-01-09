@@ -9,12 +9,15 @@
 typedef Liste Chaine;
 
 /**
- * Créer une chaine
+ * Créé une chaine
+ *
+ * @return Chaine créée.
  */
 Chaine Chaine_creer();
 
 /**
  * Désalloue une chaine et met la valeur NULL
+ *
  * @param Pointeur sur chaine
  */
 void Chaine_detruire(Chaine* chaine);

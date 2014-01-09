@@ -10,14 +10,23 @@
 
 #include "include/matrice.h"
 
-Matrice* Matrice_creer(int nLignes, int nColonnes, char caractereParDefaut)
+/**
+ *  Matrice de caractères
+ */
+struct Matrice {
+	int nLignes;	/**< Nombre de lignes. */
+	int nColonnes;	/**< Nombre de colonnes. */
+	char* donnees;	/**< Donnees de la matrice. */
+};
+
+Matrice Matrice_creer(int nLignes, int nColonnes, char caractereParDefaut)
 {
-	Matrice* matrice = NULL;
+	Matrice matrice = NULL;
 
 	if(nLignes <= 0 || nColonnes <= 0)
 		return NULL;
 
-	matrice = (Matrice*) malloc(sizeof(Matrice));
+	matrice = (Matrice) malloc(sizeof(Matrice));
 	if(matrice == NULL)
 		return NULL;
 
@@ -36,7 +45,7 @@ Matrice* Matrice_creer(int nLignes, int nColonnes, char caractereParDefaut)
 	return matrice;
 }
 
-void Matrice_detruire(Matrice* matrice)
+void Matrice_detruire(Matrice matrice)
 {
 	assert(matrice != NULL);
 	assert(matrice->donnees != NULL);
@@ -45,7 +54,7 @@ void Matrice_detruire(Matrice* matrice)
 	free(matrice);
 }
 
-void Matrice_afficher(Matrice* matrice)
+void Matrice_afficher(Matrice matrice)
 {
 	int i, j;
 
@@ -62,7 +71,7 @@ void Matrice_afficher(Matrice* matrice)
 	}
 }
 
-void Matrice_getTaille(Matrice* matrice, int* nLignes, int* nColonnes)
+void Matrice_getTaille(Matrice matrice, int* nLignes, int* nColonnes)
 {
 	assert(matrice != NULL);
 
@@ -73,7 +82,7 @@ void Matrice_getTaille(Matrice* matrice, int* nLignes, int* nColonnes)
 		*nColonnes = matrice->nColonnes;
 }
 
-char Matrice_get(Matrice* matrice, int i, int j)
+char Matrice_get(Matrice matrice, int i, int j)
 {
 	assert(matrice != NULL);
 	assert(i >= 0 && j >= 0 && i < matrice->nLignes && j < matrice->nColonnes);
@@ -81,7 +90,7 @@ char Matrice_get(Matrice* matrice, int i, int j)
 	return matrice->donnees[j + i * matrice->nColonnes];
 }
 
-void Matrice_set(Matrice* matrice, int i, int j, char valeur)
+void Matrice_set(Matrice matrice, int i, int j, char valeur)
 {
 	assert(matrice != NULL);
 	assert(i >= 0 && j >= 0 && i < matrice->nLignes && j < matrice->nColonnes);
