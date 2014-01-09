@@ -33,16 +33,18 @@ struct Liste {
  *
  * @return L'élément créé. NULL en cas d'erreur.
  */
-ElementListe* ElementListe_creer(void* ptr);
+static ElementListe* ElementListe_creer(void* ptr);
 
 /**
  * Détruit un élément de liste.
  *
  * @param element L'élément à détruire.
  */
-void ElementListe_detruire(ElementListe* element);
+static void ElementListe_detruire(ElementListe* element);
 
-ElementListe* ElementListe_creer(void* ptr)
+// Fonctions privées ==========================================================
+
+static ElementListe* ElementListe_creer(void* ptr)
 {
 	ElementListe* element = NULL;
 
@@ -58,7 +60,7 @@ ElementListe* ElementListe_creer(void* ptr)
 	return element;
 }
 
-void ElementListe_detruire(ElementListe* element)
+static void ElementListe_detruire(ElementListe* element)
 {
 	assert(element != NULL);
 
@@ -68,6 +70,8 @@ void ElementListe_detruire(ElementListe* element)
 
 	free(element);
 }
+
+// Fonctions publiques ========================================================
 
 Liste Liste_creer()
 {
