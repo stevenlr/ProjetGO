@@ -15,12 +15,12 @@ typedef Matrice* Plateau;
 Plateau Plateau_creer(int taille);
 
 /**
- * Détruit un Plateau (désalloue)
+ * Détruit un Plateau (désalloue) et la variable a NULL
  *
- * @param plateau
+ * @param Pointeur sur plateau
  */
 
-void Plateau_detruire(Plateau plateau);
+void Plateau_detruire(Plateau* plateau);
 
 /**
  * Renvoie la Couleur de la case (i,j) du plateau

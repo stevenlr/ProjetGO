@@ -14,9 +14,11 @@ Plateau Plateau_creer(int taille)
   return Matrice_creer(taille,taille,VIDE);
 }
 
-void Plateau_detruire(Plateau plateau)
+void Plateau_detruire(Plateau* plateau)
 {
-  Matrice_detruire(plateau);
+  Matrice_detruire(*plateau);
+  *plateau = NULL;
+
 }
 
 Couleur Plateau_get(Plateau plateau, int i, int j)
