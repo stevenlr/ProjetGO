@@ -85,6 +85,19 @@ void Texture_blit(IdTexture idTexture, SDL_Surface* surface, int x, int y)
 	SDL_BlitSurface(registreTextures[idTexture]->image, NULL, surface, &position);
 }
 
+void Texture_blitCentre(IdTexture idTexture, SDL_Surface* surface, int centreX, int centreY)
+{
+	int x, y;
+
+	assert(idTexture >= 0 && idTexture < NB_TEXTURES);
+	assert(surface);
+
+	x = centreX - registreTextures[idTexture]->tailleX / 2;
+	y = centreY - registreTextures[idTexture]->tailleY / 2;
+
+	Texture_blit(idTexture, surface, x, y);
+}
+
 int Texture_chargerRegistre()
 {
 	int i, status;

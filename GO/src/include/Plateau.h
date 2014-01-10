@@ -4,6 +4,8 @@
 #include <matrice.h>
 
 #include "Couleur.h"
+#include "Position.h"
+#include "Chaine.h"
 
 typedef Matrice Plateau;
 
@@ -26,8 +28,7 @@ void Plateau_detruire(Plateau plateau);
  * Renvoie la Couleur de la case (i,j) du plateau.
  *
  * @param plateau
- * @param i
- * @param j
+ * @param pos
  * @return Couleur
  */
 Couleur Plateau_get(Plateau plateau, Position pos);
@@ -36,11 +37,10 @@ Couleur Plateau_get(Plateau plateau, Position pos);
  * Met à la case (i,j) du plateau la Couleur passée en paramètre.
  *
  * @param plateau
- * @param i
- * @param j
+ * @param pos
  * @param couleur
  */
-void Plateau_set(Plateau plateau, int i, int j, Couleur couleur);
+void Plateau_set(Plateau plateau, Position pos, Couleur couleur);
 
 /**
  * Compare deux plateaux

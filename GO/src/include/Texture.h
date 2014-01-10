@@ -29,6 +29,16 @@ typedef enum {
 void Texture_blit(IdTexture idTexture, SDL_Surface* surface, int x, int y);
 
 /**
+ * Colle une texture sur une surface SDL centré sur le point donné.
+ *
+ * @param idTexture id de la texture à coller.
+ * @param surface Surface sur laquelle coller.
+ * @param x Position x où coller la texture.
+ * @param y Position y où coller la texture.
+ */
+void Texture_blitCentre(IdTexture idTexture, SDL_Surface* surface, int centreX, int centreY);
+
+/**
  * Charge toutes les textures dans le registre.
  *
  * @return 0 en cas d'erreur, 1 sinon.

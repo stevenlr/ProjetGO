@@ -10,12 +10,23 @@
 #include <SDL/SDL_image.h>
 
 #include "include/Texture.h"
+#include "include/Plateau.h"
+
+#define TAILLE_CELL 30
 
 int main(int argc, char* argv[])
 {
 	SDL_Surface* window;
 	SDL_Event event;
 	int continuer = 1;
+	int taillePlateau = 19;
+	int originePlateau;
+	Plateau plateau;
+	Position position;
+	Couleur couleur;
+	SDL_Rect rect;
+	int i, j, couleurAPoser = 0;
+	int cx, cy;
 
 	if(SDL_Init(SDL_INIT_VIDEO) < 0)
 	{
@@ -25,32 +36,78 @@ int main(int argc, char* argv[])
 
 	SDL_WM_SetCaption("Jeu de Go", NULL);
 
-	window = SDL_SetVideoMode(1280, 720, 24, SDL_HWSURFACE);
+	window = SDL_SetVideoMode(1066, 600, 24, SDL_HWSURFACE);
 	if(window == NULL)
 	{
 		fprintf(stderr, "Erreur de creation de la fenetre.\n");
 		return 1;
 	}
-	printf("b");
+
 	if(!Texture_chargerRegistre())
 	{
-		printf("a");
 		Texture_libererRegistre();
 		SDL_Quit();
 		return 1;
 	}
+
+	plateau = Plateau_creer(taillePlateau);
+	originePlateau = (600 - taillePlateau * TAILLE_CELL) / 2;
 
 	while(continuer)
 	{
 		while(SDL_PollEvent(&event))
 		{
 			if(event.type == SDL_QUIT)
+			{
 				continuer = 0;
+			}
+			else if(event.type == SDL_MOUSEBUTTONDOWN)
+			{
+				cx = (event.button.x - originePlateau) / TAILLE_CELL;
+				cy = (event.button.y - originePlateau) / TAILLE_CELL;
+
+				if(cx >= 0 && cx < taillePlateau && cy >= 0 && cy < taillePlateau)
+				{
+					position.x = cx;
+					position.y = cy;
+
+					if(event.button.button == SDL_BUTTON_LEFT && Plateau_get(plateau, position) == VIDE)
+					{
+						couleurAPoser = (couleurAPoser + 1) % 2;
+						couleur = (couleurAPoser == 0) ? BLANC : NOIR;
+						Plateau_set(plateau, position, couleur);
+					}
+					else if(event.button.button == SDL_BUTTON_RIGHT)
+					{
+						Plateau_set(plateau, position, VIDE);
+					}
+				}
+			}
 		}
 
-		Texture_blit(TEXTURE_PLATEAU_13, window, 10, 10);
-		Texture_blit(TEXTURE_PION_BLANC, window, 40, 70);
-		Texture_blit(TEXTURE_PION_NOIR, window, 70, 100);
+		rect.x = 0;
+		rect.y = 0;
+		rect.w = 1066;
+		rect.h = 600;
+
+		SDL_FillRect(window, &rect, 0x000000);
+
+		Texture_blitCentre(TEXTURE_PLATEAU_19, window, 300, 300);
+
+		for(i = 0; i < taillePlateau; i++)
+		{
+			for(j = 0; j < taillePlateau; j++)
+			{
+				position.x = j;
+				position.y = i;
+				couleur = Plateau_get(plateau, position);
+
+				if(couleur == NOIR)
+					Texture_blit(TEXTURE_PION_NOIR, window, j * TAILLE_CELL + originePlateau, i * TAILLE_CELL + originePlateau);
+				else if(couleur == BLANC)
+					Texture_blit(TEXTURE_PION_BLANC, window, j * TAILLE_CELL + originePlateau, i * TAILLE_CELL + originePlateau);
+			}
+		}
 
 		SDL_Flip(window);
 		SDL_Delay(10);

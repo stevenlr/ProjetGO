@@ -61,14 +61,14 @@ Couleur Plateau_get(Plateau plateau, Position pos)
 {
 	assert(plateau);
 
-	return Matrice_get(plateau, pos.x, pos.y);
+	return Matrice_get(plateau, pos.y, pos.x);
 }
 
-void Plateau_set(Plateau plateau, int i, int j, Couleur couleur)
+void Plateau_set(Plateau plateau, Position pos, Couleur couleur)
 {
 	assert(plateau);
 
-	Matrice_set(plateau, i, j, couleur);
+	Matrice_set(plateau, pos.y, pos.x, couleur);
 }
 
 int Plateau_estIdentique(Plateau plateau, Plateau ancienPlateau)
@@ -136,6 +136,7 @@ Plateau Plateau_charger(FILE* fichier)
 	int i, j, taille;
 	Plateau plateau;
 	Couleur c;
+	Position pos;
 
 	fread(&taille, sizeof(int), 1, fichier);
 
@@ -148,7 +149,9 @@ Plateau Plateau_charger(FILE* fichier)
 		for(j = 0; j < taille; j++)
 		{
 			c = getc(fichier);
-			Plateau_set(plateau, i, j, c);
+			pos.x = j;
+			pos.y = i;
+			Plateau_set(plateau, pos, c);
 		}
 
 	return plateau;
