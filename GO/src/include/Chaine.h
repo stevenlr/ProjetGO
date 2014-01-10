@@ -9,7 +9,7 @@
 typedef Liste Chaine;
 
 /**
- * Créé une chaine
+ * Crée une chaine
  *
  * @return Chaine créée.
  */

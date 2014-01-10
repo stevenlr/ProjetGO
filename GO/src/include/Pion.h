@@ -15,7 +15,8 @@ typedef struct {
 } Pion;
 
 /**
- * Vérifie si deux Pions sont identiques
+ * Vérifie si deux Pions sont identiques.
+ *
  * @param pion1
  * @param pion2
  * @return 1 si identique, sinon 0

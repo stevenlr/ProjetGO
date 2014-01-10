@@ -9,7 +9,7 @@
 typedef struct Liste* Liste;
 
 /**
- * Créé une liste vide.
+ * Crée une liste vide.
  *
  * @return La liste ! NULL en cas de problème. (ça devrait pas arriver mais bon...)
  */

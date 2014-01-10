@@ -29,7 +29,7 @@ struct Liste {
 };
 
 /**
- * Créé un élément de liste.
+ * Crée un élément de liste.
  *
  * @return L'élément créé. NULL en cas d'erreur.
  */

@@ -8,7 +8,7 @@
 typedef Matrice Plateau;
 
 /**
- * Créé un Plateau.
+ * Crée un Plateau.
  *
  * @param taille Taille du plateau à créer.
  * @return Plateau
