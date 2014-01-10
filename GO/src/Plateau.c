@@ -7,8 +7,11 @@
 #include <stdlib.h>
 #include <assert.h>
 
+#include "include/Position.h"
 #include "include/Couleur.h"
+#include "include/Chaine.h"
 #include "include/Plateau.h"
+#include "include/Pile.h"
 
 Plateau Plateau_creer(int taille)
 {
@@ -23,11 +26,11 @@ void Plateau_detruire(Plateau* plateau)
 	*plateau = NULL;
 }
 
-Couleur Plateau_get(Plateau plateau, int i, int j)
+Couleur Plateau_get(Plateau plateau, Position pos)
 {
 	assert(plateau);
 
-	return Matrice_get(plateau, i, j);
+	return Matrice_get(plateau, pos.x, pos.y);
 }
 
 void Plateau_set(Plateau plateau, int i, int j, Couleur couleur)
@@ -118,4 +121,85 @@ Plateau Plateau_charger(FILE* fichier)
 		}
 
 	return plateau;
+}
+
+Chaine Plateau_determinerChaine(Plateau plateau, Position pos)
+{
+	Chaine chaine = Chaine_creer();
+	Pile pile = Pile_creer();
+	int taille;
+	Pion* pionChaine;
+	Pion* pion;
+
+	pionChaine = Pion_creer(pos, Plateau_get(plateau, pos) );
+	Matrice_getTaille(plateau, NULL, &taille);
+
+	if(pionChaine->couleur == VIDE)
+		return NULL;
+
+	Chaine_inserer(chaine, pionChaine);
+	Pile_empiler(pile, pionChaine);
+
+	while( (pionChaine = Pile_depiler(pile)) != NULL)
+	{
+		pos = pionChaine->position;
+
+		// Cas 1, en haut
+		pos.y -= 1;
+		if(pos.y >= 0)
+		{
+			pion = Pion_creer(pos, Plateau_get(plateau, pos) );
+
+			if(pion->couleur == pionChaine->couleur && ! (Chaine_appartenir(chaine, *pion)) )
+			{
+				Chaine_inserer(chaine, pion);
+				Pile_empiler(pile, pion);
+			}
+		}
+
+		// Cas 2, à droite
+		pos.y += 1;
+		pos.x += 1;
+		if(pos.x < taille)
+		{
+			pion = Pion_creer(pos, Plateau_get(plateau, pos) );
+
+			if(pion->couleur == pionChaine->couleur && ! (Chaine_appartenir(chaine, *pion)) )
+			{
+				Chaine_inserer(chaine, pion);
+				Pile_empiler(pile, pion);
+			}
+		}
+
+		// Cas 3, en bas
+		pos.y += 1;
+		pos.x -= 1;
+		if(pos.y < taille)
+		{
+			pion = Pion_creer(pos, Plateau_get(plateau, pos) );
+
+			if(pion->couleur == pionChaine->couleur && ! (Chaine_appartenir(chaine, *pion)) )
+			{
+				Chaine_inserer(chaine, pion);
+				Pile_empiler(pile, pion);
+			}
+		}
+
+		// Cas 4, à gauche
+		pos.y -= 1;
+		pos.x -= 1;
+		if(pos.x >= 0)
+		{
+			pion = Pion_creer(pos, Plateau_get(plateau, pos) );
+
+			if(pion->couleur == pionChaine->couleur && ! (Chaine_appartenir(chaine, *pion)) )
+			{
+				Chaine_inserer(chaine, pion);
+				Pile_empiler(pile, pion);
+			}
+		}
+
+	}
+
+	return chaine;
 }

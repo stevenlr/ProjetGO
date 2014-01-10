@@ -23,4 +23,12 @@ typedef struct {
  */
 int Pion_estIdentique(Pion pion1, Pion pion2);
 
+/**
+ * Creer un pion
+ *
+ * @param position
+ * @param couleur
+ * @return Pointeur sur le Pion créé
+ */
+Pion* Pion_creer(Position position, Couleur couleur);
 #endif

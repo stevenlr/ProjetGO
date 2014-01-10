@@ -45,7 +45,7 @@ void Chaine_inserer(Chaine chaine, Pion* pion)
 	Liste_insererCourant(chaine, pion);
 }
 
-int Chaine_appartient(Chaine chaine, Pion pion)
+int Chaine_appartenir(Chaine chaine, Pion pion)
 {
 	assert(chaine);
 

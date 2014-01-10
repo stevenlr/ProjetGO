@@ -6,6 +6,9 @@
 #ifndef CHAINE_H_
 #define CHAINE_H_
 
+#include "Liste.h"
+#include "Pion.h"
+
 typedef Liste Chaine;
 
 /**
@@ -54,6 +57,6 @@ void Chaine_inserer(Chaine chaine, Pion* pion);
  * @param pion
  * @return 1 si le pion est dans la chaine, sinon 0
  */
-int Chaine_appartient(Chaine chaine, Pion pion);
+int Chaine_appartenir(Chaine chaine, Pion pion);
 
 #endif

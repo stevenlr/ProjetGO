@@ -30,7 +30,7 @@ void Plateau_detruire(Plateau* plateau);
  * @param j
  * @return Couleur
  */
-Couleur Plateau_get(Plateau plateau, int i, int j);
+Couleur Plateau_get(Plateau plateau, Position pos);
 
 /**
  * Met à la case (i,j) du plateau la Couleur passée en paramètre.
@@ -74,5 +74,14 @@ void Plateau_sauvegarder(Plateau plateau, FILE* fichier);
  * @return Plateau Le plateau chargé. NULL en cas d'erreur.
  */
 Plateau Plateau_charger(FILE* fichier);
+
+/**
+ * Produit la chaine à laquelle appartient le pion à la position pos sur le plateau.
+ *
+ * @param plateau
+ * @param pos Position du pion qui appartient à la chaine à déterminer
+ * @return Chaine qui appartient au pion de la position pos. Retourne NULL si la case est VIDE.
+ */
+Chaine Plateau_determinerChaine(Plateau plateau, Position pos);
 
 #endif
