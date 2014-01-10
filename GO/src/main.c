@@ -113,6 +113,7 @@ int main(int argc, char* argv[])
 		SDL_Delay(10);
 	}
 
+	Plateau_detruire(plateau);
 	Texture_libererRegistre();
 	SDL_Quit();
 
