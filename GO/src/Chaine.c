@@ -57,7 +57,7 @@ int Chaine_appartient(Chaine chaine, Pion pion)
 
 	do
 	{
-		 pionCourant = Liste_courant(chaine);
+		pionCourant = Liste_courant(chaine);
 
 		if(Pion_estIdentique(pionCourant, pion))
 			return 1;
