@@ -46,6 +46,8 @@ void Chaine_inserer(Chaine chaine, Pion pion)
 
 int Chaine_appartient(Chaine chaine, Pion pion)
 {
+	Pion pionCourant;
+
 	assert(chaine);
 
 	if(Liste_estVide(chaine))
@@ -55,7 +57,7 @@ int Chaine_appartient(Chaine chaine, Pion pion)
 
 	do
 	{
-		Pion pionCourant = Liste_courant(chaine);
+		 pionCourant = Liste_courant(chaine);
 
 		if(Pion_estIdentique(pionCourant, pion))
 			return 1;
