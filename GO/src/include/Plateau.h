@@ -20,7 +20,7 @@ Plateau Plateau_creer(int taille);
  *
  * @param plateau Pointeur sur plateau.
  */
-void Plateau_detruire(Plateau* plateau);
+void Plateau_detruire(Plateau plateau);
 
 /**
  * Renvoie la Couleur de la case (i,j) du plateau.
@@ -82,6 +82,6 @@ Plateau Plateau_charger(FILE* fichier);
  * @param pos Position du pion qui appartient à la chaine à déterminer
  * @return Chaine qui appartient au pion de la position pos. Retourne NULL si la case est VIDE.
  */
-Chaine Plateau_determinerChaine(Plateau plateau, Position pos);
+Chaine Plateau_determinerChaine(Plateau plateau, Position origine);
 
 #endif

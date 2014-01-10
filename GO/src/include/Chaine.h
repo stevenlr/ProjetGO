@@ -23,7 +23,7 @@ Chaine Chaine_creer();
  *
  * @param Pointeur sur chaine
  */
-void Chaine_detruire(Chaine* chaine);
+void Chaine_detruire(Chaine chaine);
 
 /**
  * Met la chaine à sa tête
@@ -42,14 +42,14 @@ void Chaine_suivant(Chaine chaine);
  * @param chaine
  * @return Pointeur sur pion
  */
-Pion* Chaine_courant(Chaine chaine);
+Pion Chaine_courant(Chaine chaine);
 
 /**
  * Insere un Pointeur sur un Pion dans la chaine
  * @param chaine
  * @param Pointeur sur pion
  */
-void Chaine_inserer(Chaine chaine, Pion* pion);
+void Chaine_inserer(Chaine chaine, Pion pion);
 
 /**
  * Verifie si un pion appartient à la chaine
@@ -57,6 +57,6 @@ void Chaine_inserer(Chaine chaine, Pion* pion);
  * @param pion
  * @return 1 si le pion est dans la chaine, sinon 0
  */
-int Chaine_appartenir(Chaine chaine, Pion pion);
+int Chaine_appartient(Chaine chaine, Pion pion);
 
 #endif

@@ -17,12 +17,11 @@ Chaine Chaine_creer()
 	return Liste_creer();
 }
 
-void Chaine_detruire(Chaine* chaine)
+void Chaine_detruire(Chaine chaine)
 {
-	assert(chaine && *chaine);
+	assert(chaine);
 
-	Liste_detruire(*chaine);
-	*chaine = NULL;
+	Liste_detruire(chaine);
 }
 
 void Chaine_tete(Chaine chaine)
@@ -35,17 +34,17 @@ void Chaine_suivant(Chaine chaine)
 	Liste_suivant(chaine);
 }
 
-Pion* Chaine_courant(Chaine chaine)
+Pion Chaine_courant(Chaine chaine)
 {
 	return Liste_courant(chaine);
 }
 
-void Chaine_inserer(Chaine chaine, Pion* pion)
+void Chaine_inserer(Chaine chaine, Pion pion)
 {
 	Liste_insererCourant(chaine, pion);
 }
 
-int Chaine_appartenir(Chaine chaine, Pion pion)
+int Chaine_appartient(Chaine chaine, Pion pion)
 {
 	assert(chaine);
 
@@ -56,9 +55,9 @@ int Chaine_appartenir(Chaine chaine, Pion pion)
 
 	do
 	{
-		Pion* pionCourant = Liste_courant(chaine);
+		Pion pionCourant = Liste_courant(chaine);
 
-		if(Pion_estIdentique(*pionCourant, pion))
+		if(Pion_estIdentique(pionCourant, pion))
 			return 1;
 
 	} while(Liste_suivant(chaine));
