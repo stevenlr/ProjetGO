@@ -7,6 +7,9 @@
 #include <stdio.h>
 
 #include <SDL/SDL.h>
+#include <SDL/SDL_image.h>
+
+#include "include/Texture.h"
 
 int main(int argc, char* argv[])
 {
@@ -28,6 +31,14 @@ int main(int argc, char* argv[])
 		fprintf(stderr, "Erreur de creation de la fenetre.\n");
 		return 1;
 	}
+	printf("b");
+	if(!Texture_chargerRegistre())
+	{
+		printf("a");
+		Texture_libererRegistre();
+		SDL_Quit();
+		return 1;
+	}
 
 	while(continuer)
 	{
@@ -37,9 +48,15 @@ int main(int argc, char* argv[])
 				continuer = 0;
 		}
 
+		Texture_blit(TEXTURE_PLATEAU_13, window, 10, 10);
+		Texture_blit(TEXTURE_PION_BLANC, window, 40, 70);
+		Texture_blit(TEXTURE_PION_NOIR, window, 70, 100);
+
+		SDL_Flip(window);
 		SDL_Delay(10);
 	}
 
+	Texture_libererRegistre();
 	SDL_Quit();
 
 	return 0;
