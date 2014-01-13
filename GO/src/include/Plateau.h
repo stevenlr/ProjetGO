@@ -1,6 +1,7 @@
 #ifndef PLATEAU_H_
 #define PLATEAU_H_
 
+#include <stdio.h>
 #include <matrice.h>
 
 #include "Couleur.h"
@@ -8,6 +9,17 @@
 #include "Chaine.h"
 
 typedef Matrice Plateau;
+
+/**
+ * Creer un pion si Appartient à la Chaine
+ *
+ * @param plateau
+ * @param position
+ * @param chaine
+ * @param couleur
+ * @return pion
+ */
+Pion Plateau_creerPionSiAppartientChaine(Plateau plateau, Position position, Chaine chaine, Couleur couleur);
 
 /**
  * Crée un Plateau.

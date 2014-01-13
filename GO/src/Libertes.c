@@ -19,7 +19,7 @@ Libertes determineLiberte(Plateau plateau,Chaine chaine)
 	if((libertes = Chaine_creer()) == NULL)
 		return NULL;
 
-	taille = Matrice_getTaille(plateau, NULL, &taille);
+	Matrice_getTaille(plateau, NULL, &taille);
 
 	do
 	{

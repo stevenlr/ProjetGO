@@ -7,6 +7,7 @@
 #define LIBERTES_H_
 
 #include "Chaine.h"
+#include "Plateau.h"
 
 typedef Chaine Libertes;
 

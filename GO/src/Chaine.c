@@ -69,6 +69,6 @@ int Chaine_appartient(Chaine chaine, Pion pion)
 
 int Chaine_estVide(Chaine chaine)
 {
-	return Liste_estVide();
+	return Liste_estVide(chaine);
 }
 
