@@ -12,7 +12,7 @@
 typedef Liste Chaine;
 
 /**
- * Verifie si un pion appartient � la chaine
+ * Verifie si un pion appartient à la chaine
  * @param chaine
  * @param pion
  * @return 1 si le pion est dans la chaine, sinon 0
