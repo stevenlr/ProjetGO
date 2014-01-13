@@ -130,5 +130,7 @@ void Chaine_inserer(Chaine chaine, Position position)
 
 void Chaine_setCouleur(Chaine chaine, Couleur couleur)
 {
+	assert(chaine);
+
 	chaine->couleur = couleur;
 }
