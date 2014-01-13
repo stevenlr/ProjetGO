@@ -8,6 +8,7 @@
 
 #include "Plateau.h"
 #include "Liste.h"
+#include "Chaine.h"
 
 /**
  * Pour des soucis de simplicité, les libertés seront stockées comme des listes

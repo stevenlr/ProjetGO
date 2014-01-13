@@ -34,4 +34,3 @@ int Chaine_appartient(Chaine chaine, Pion pion)
 
 	return 0;
 }
-
