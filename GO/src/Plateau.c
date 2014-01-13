@@ -28,13 +28,13 @@
  * @param couleur Couleur de la chaîne.
  * @return Le pion, si on en a besoin. NULL sinon.
  */
-Pion Plateau_creerPionSiAppartientChaine(Plateau plateau, Position position, Chaine chaine, Couleur couleur)
+static Pion Plateau_creerPionSiAppartientChaine(Plateau plateau, Position position, Chaine chaine, Couleur couleur)
 {
 	Pion pion = Pion_creer(position, Plateau_get(plateau, position));
 
 	if(Pion_getCouleur(pion) == couleur && !(Chaine_appartient(chaine, pion)))
 	{
-		Chaine_inserer(chaine, pion);
+		Liste_insererQueue(chaine, pion);
 		return pion;
 	}
 
@@ -169,9 +169,8 @@ Chaine Plateau_determinerChaine(Plateau plateau, Position origine)
 	if((pile = Pile_creer()) == NULL)
 		return NULL;
 
-	if((chaine = Chaine_creer()) == NULL)
+	if((chaine = Liste_creer()) == NULL)
 		return NULL;
-
 
 	pionChaine = Pion_creer(origine, Plateau_get(plateau, origine));
 	Matrice_getTaille(plateau, NULL, &taille);
@@ -179,7 +178,7 @@ Chaine Plateau_determinerChaine(Plateau plateau, Position origine)
 	if(Pion_getCouleur(pionChaine) == VIDE)
 		return NULL;
 
-	Chaine_inserer(chaine, pionChaine);
+	Liste_insererQueue(chaine, pionChaine);
 	Pile_empiler(pile, pionChaine);
 
 	couleur = Pion_getCouleur(pionChaine);
@@ -240,18 +239,15 @@ void Plateau_realiserCapture(Plateau plateau, Chaine chaine)
 {
 	Pion pion;
 
-	if(Chaine_estVide(chaine))
+	if(Liste_estVide(chaine))
 		return;
 
-	Chaine_tete(chaine);
+	Liste_tete(chaine);
 
 	do
 	{
-		pion = Chaine_courant(chaine);
+		pion = Liste_courant(chaine);
 		Plateau_set(plateau, Pion_getPosition(pion), VIDE);
-	}while(Chaine_suivant(chaine));
-
-	Chaine_detruire(chaine);
+	} while(Liste_suivant(chaine));
 }
-
 

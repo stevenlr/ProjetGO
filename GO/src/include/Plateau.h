@@ -11,17 +11,6 @@
 typedef Matrice Plateau;
 
 /**
- * Creer un pion si Appartient à la Chaine
- *
- * @param plateau
- * @param position
- * @param chaine
- * @param couleur
- * @return pion
- */
-Pion Plateau_creerPionSiAppartientChaine(Plateau plateau, Position position, Chaine chaine, Couleur couleur);
-
-/**
  * Crée un Plateau.
  *
  * @param taille Taille du plateau à créer.
