@@ -40,12 +40,15 @@ Territoire determineTerritoire(Plateau plateau, Position origine)
 		y--;
 		if(y >= 0)
 		{
-			if(Plateau_get(plateau, position) == VIDE && !Chaine_appartient(territoire, position))
+			positionNouvelle = Position_creer(x, y);
+
+			if(Plateau_get(plateau, positionNouvelle) == VIDE && !Chaine_appartient(territoire, positionNouvelle))
 			{
-				positionNouvelle = Position_creer(x, y);
 				Chaine_inserer(territoire, positionNouvelle);
 				Pile_empiler(pile, positionNouvelle);
 			}
+			else
+				free(positionNouvelle);
 		}
 
 		// Cas 2, à droite
@@ -53,12 +56,15 @@ Territoire determineTerritoire(Plateau plateau, Position origine)
 		x++;
 		if(x < taille)
 		{
-			if(Plateau_get(plateau, position) == VIDE && !Chaine_appartient(territoire, position))
+			positionNouvelle = Position_creer(x, y);
+
+			if(Plateau_get(plateau, positionNouvelle) == VIDE && !Chaine_appartient(territoire, positionNouvelle))
 			{
-				positionNouvelle = Position_creer(x, y);
 				Chaine_inserer(territoire, positionNouvelle);
 				Pile_empiler(pile, positionNouvelle);
 			}
+			else
+				free(positionNouvelle);
 		}
 
 		// Cas 3, en bas
@@ -66,12 +72,15 @@ Territoire determineTerritoire(Plateau plateau, Position origine)
 		x--;
 		if(y < taille)
 		{
-			if(Plateau_get(plateau, position) == VIDE && !Chaine_appartient(territoire, position))
+			positionNouvelle = Position_creer(x, y);
+
+			if(Plateau_get(plateau, positionNouvelle) == VIDE && !Chaine_appartient(territoire, positionNouvelle))
 			{
-				positionNouvelle = Position_creer(x, y);
 				Chaine_inserer(territoire, positionNouvelle);
 				Pile_empiler(pile, positionNouvelle);
 			}
+			else
+				free(positionNouvelle);
 		}
 
 		// Cas 4, à gauche
@@ -79,12 +88,15 @@ Territoire determineTerritoire(Plateau plateau, Position origine)
 		x--;
 		if(x >= 0)
 		{
-			if(Plateau_get(plateau, position) == VIDE && !Chaine_appartient(territoire, position))
+			positionNouvelle = Position_creer(x, y);
+
+			if(Plateau_get(plateau, positionNouvelle) == VIDE && !Chaine_appartient(territoire, positionNouvelle))
 			{
-				positionNouvelle = Position_creer(x, y);
 				Chaine_inserer(territoire, positionNouvelle);
 				Pile_empiler(pile, positionNouvelle);
 			}
+			else
+				free(positionNouvelle);
 		}
 
 	}
