@@ -9,13 +9,12 @@
 #include "include/Pion.h"
 #include "include/Couleur.h"
 
-Territoire determineTerritoire(Plateau plateau,Position origine)
+Territoire determineTerritoire(Plateau plateau, Position origine)
 {
 	Territoire territoire;
 	Pile pile;
-	Pion pion, pionTerritoire;
-	Position position;
-	int taille;
+	Position position, positionNouvelle;
+	int taille,x,y;
 
 	if((pile = Pile_creer()) == NULL)
 		return NULL;
@@ -23,61 +22,70 @@ Territoire determineTerritoire(Plateau plateau,Position origine)
 	if((territoire = Chaine_creer()) == NULL)
 		return NULL;
 
+	position = Position_copier(origine);
 
-	pionTerritoire = Pion_creer(origine, Plateau_get(plateau, origine));
 	Matrice_getTaille(plateau, NULL, &taille);
 
-	if(Pion_getCouleur(pionTerritoire) != VIDE) //Difference par rapport à Plateau_determinerChaine
+	if(Plateau_get(plateau, origine) != VIDE)
 		return NULL;
 
-	Chaine_inserer(territoire, pionTerritoire);
-	Pile_empiler(pile, pionTerritoire);
+	Chaine_inserer(territoire, position);
+	Pile_empiler(pile, position);
 
-	while((pionTerritoire = Pile_depiler(pile)) != NULL)
+	while((position = Pile_depiler(pile)) != NULL)
 	{
-		position = Pion_getPosition(pionTerritoire);
+		x = position_getX(position);
+		y = position_getY(position);
 
 		// Cas 1, en haut
-		position.y -= 1;
-		if(position.y >= 0)
+		y--;
+		if(y >= 0)
 		{
-			pion = Plateau_creerPionSiAppartientChaine(plateau, position, territoire, VIDE);
-
-			if(pion != NULL) // Si on l'a inséré à la chaîne, on devra le traiter plus tard.
-				Pile_empiler(pile, pion);
+			if(Plateau_getCouleur(plateau, position) == VIDE && !Chaine_appartient(territoire,position))
+				{
+				positionNouvelle = Position_creer(x,y);
+				Chaine_inserer(territoire, positionNouvelle);
+				Pile_empiler(pile, positionNouvelle);
+				}
 		}
 
 		// Cas 2, à droite
-		position.y += 1;
-		position.x += 1;
-		if(position.x < taille)
+		y++;
+		x++;
+		if(x < taille)
 		{
-			pion = Plateau_creerPionSiAppartientChaine(plateau, position, territoire, VIDE);
-
-			if(pion != NULL)
-				Pile_empiler(pile, pion);
+			if(Plateau_getCouleur(plateau, position) == VIDE && !Chaine_appartient(territoire,position))
+				{
+				positionNouvelle = Position_creer(x,y);
+				Chaine_inserer(territoire, positionNouvelle);
+				Pile_empiler(pile, positionNouvelle);
+				}
 		}
 
 		// Cas 3, en bas
-		position.y += 1;
-		position.x -= 1;
-		if(position.y < taille)
+		y++;
+		x--;
+		if(y < taille)
 		{
-			pion = Plateau_creerPionSiAppartientChaine(plateau, position, territoire, VIDE);
-
-			if(pion != NULL)
-				Pile_empiler(pile, pion);
+			if(Plateau_getCouleur(plateau, position) == VIDE && !Chaine_appartient(territoire,position))
+				{
+				positionNouvelle = Position_creer(x,y);
+				Chaine_inserer(territoire, positionNouvelle);
+				Pile_empiler(pile, positionNouvelle);
+				}
 		}
 
 		// Cas 4, à gauche
-		position.y -= 1;
-		position.x -= 1;
-		if(position.x >= 0)
+		y--;
+		x--;
+		if(x >= 0)
 		{
-			pion = Plateau_creerPionSiAppartientChaine(plateau, position, territoire, VIDE);
-
-			if(pion != NULL)
-				Pile_empiler(pile, pion);
+			if(Plateau_getCouleur(plateau, position) == VIDE && !Chaine_appartient(territoire,position))
+				{
+				positionNouvelle = Position_creer(x,y);
+				Chaine_inserer(territoire, positionNouvelle);
+				Pile_empiler(pile, positionNouvelle);
+				}
 		}
 
 	}
