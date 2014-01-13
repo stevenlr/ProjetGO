@@ -32,6 +32,13 @@ Position Position_creer(int x, int y)
 	return position;
 }
 
+Position Position_copier(Position position)
+{
+	assert(position);
+
+	return Position_creer(position->x, position->y);
+}
+
 void Position_detruire(Position position)
 {
 	assert(position);
@@ -39,18 +46,32 @@ void Position_detruire(Position position)
 	free(position);
 }
 
-Couleur Position_getX(Position position)
+int Position_getX(Position position)
 {
 	assert(position);
 
 	return position->x;
 }
 
-Position Position_getY(Position position)
+int Position_getY(Position position)
 {
 	assert(position);
 
 	return position->y;
+}
+
+void Position_setX(Position position, int x)
+{
+	assert(position);
+
+	position->x = x;
+}
+
+void Position_setY(Position position, int y)
+{
+	assert(position);
+
+	position->y = y;
 }
 
 int Position_estIdentique(Position position1, Position position2)

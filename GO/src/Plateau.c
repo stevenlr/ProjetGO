@@ -12,38 +12,7 @@
 #include "include/Chaine.h"
 #include "include/Plateau.h"
 #include "include/Pile.h"
-#include "include/Pion.h"
 
-// Fonctions privées ==========================================================
-
-/**
- * Ce nom c'est de la merde, mais on s'en tape parce que c'est une fonction privée.
- * Insère un pion dans la chaîne si :
- *  - Il est de la même couleur;
- *  - Il n'est pas déjà dans la chaîne.
- *
- * @param plateau
- * @param position
- * @param chaine
- * @param couleur Couleur de la chaîne.
- * @return Le pion, si on en a besoin. NULL sinon.
- */
-static Pion Plateau_creerPionSiAppartientChaine(Plateau plateau, Position position, Chaine chaine, Couleur couleur)
-{
-	Pion pion = Pion_creer(position, Plateau_get(plateau, position));
-
-	if(Pion_getCouleur(pion) == couleur && !(Chaine_appartient(chaine, pion)))
-	{
-		Liste_insererQueue(chaine, pion);
-		return pion;
-	}
-
-	Pion_detruire(pion);
-
-	return NULL;
-}
-
-// Fonctions publiques ========================================================
 
 Plateau Plateau_creer(int taille)
 {
@@ -61,14 +30,14 @@ Couleur Plateau_get(Plateau plateau, Position pos)
 {
 	assert(plateau);
 
-	return Matrice_get(plateau, pos.y, pos.x);
+	return Matrice_get(plateau, Position_getY(pos), Position_getX(pos));
 }
 
 void Plateau_set(Plateau plateau, Position pos, Couleur couleur)
 {
 	assert(plateau);
 
-	Matrice_set(plateau, pos.y, pos.x, couleur);
+	Matrice_set(plateau, Position_getY(pos), Position_getX(pos), couleur);
 }
 
 int Plateau_estIdentique(Plateau plateau, Plateau ancienPlateau)
@@ -136,7 +105,6 @@ Plateau Plateau_charger(FILE* fichier)
 	int i, j, taille;
 	Plateau plateau;
 	Couleur c;
-	Position pos;
 
 	fread(&taille, sizeof(int), 1, fichier);
 
@@ -149,9 +117,7 @@ Plateau Plateau_charger(FILE* fichier)
 		for(j = 0; j < taille; j++)
 		{
 			c = getc(fichier);
-			pos.x = j;
-			pos.y = i;
-			Plateau_set(plateau, pos, c);
+			Matrice_set(plateau, i, j, c);
 		}
 
 	return plateau;
@@ -161,75 +127,78 @@ Chaine Plateau_determinerChaine(Plateau plateau, Position origine)
 {
 	Chaine chaine;
 	Pile pile;
-	Pion pion, pionChaine;
 	Position position;
 	Couleur couleur;
-	int taille;
+	int taille, x, y;
 
 	if((pile = Pile_creer()) == NULL)
 		return NULL;
 
-	if((chaine = Liste_creer()) == NULL)
+	if((chaine = Chaine_creer()) == NULL)
 		return NULL;
 
-	pionChaine = Pion_creer(origine, Plateau_get(plateau, origine));
+	couleur = Plateau_get(plateau, origine);
 	Matrice_getTaille(plateau, NULL, &taille);
 
-	if(Pion_getCouleur(pionChaine) == VIDE)
+	if(couleur == VIDE)
 		return NULL;
 
-	Liste_insererQueue(chaine, pionChaine);
-	Pile_empiler(pile, pionChaine);
+	Chaine_inserer(chaine, Position_copier(origine));
+	Pile_empiler(pile, Position_copier(origine));
 
-	couleur = Pion_getCouleur(pionChaine);
-
-	while((pionChaine = Pile_depiler(pile)) != NULL)
+	while((position = Pile_depiler(pile)) != NULL)
 	{
-		position = Pion_getPosition(pionChaine);
+		x = Position_getX(position);
+		y = Position_getY(position);
 
 		// Cas 1, en haut
-		position.y -= 1;
-		if(position.y >= 0)
+		Position_setY(position, --y);
+		if(y >= 0)
 		{
-			pion = Plateau_creerPionSiAppartientChaine(plateau, position, chaine, couleur);
-
-			if(pion != NULL) // Si on l'a inséré à la chaîne, on devra le traiter plus tard.
-				Pile_empiler(pile, pion);
+			if(Plateau_get(plateau, position) == couleur && !(Chaine_appartient(chaine, position)))
+			{
+				Chaine_inserer(chaine, Position_copier(position));
+				Pile_empiler(Position_copier(position));
+			}
 		}
 
 		// Cas 2, à droite
-		position.y += 1;
-		position.x += 1;
-		if(position.x < taille)
+		Position_setX(position, ++x);
+		Position_setY(position, ++y);
+		if(x < taille)
 		{
-			pion = Plateau_creerPionSiAppartientChaine(plateau, position, chaine, couleur);
-
-			if(pion != NULL)
-				Pile_empiler(pile, pion);
+			if(Plateau_get(plateau, position) == couleur && !(Chaine_appartient(chaine, position)))
+			{
+				Chaine_inserer(chaine, Position_copier(position));
+				Pile_empiler(Position_copier(position));
+			}
 		}
 
 		// Cas 3, en bas
-		position.y += 1;
-		position.x -= 1;
-		if(position.y < taille)
+		Position_setX(position, --x);
+		Position_setY(position, ++y);
+		if(y < taille)
 		{
-			pion = Plateau_creerPionSiAppartientChaine(plateau, position, chaine, couleur);
-
-			if(pion != NULL)
-				Pile_empiler(pile, pion);
+			if(Plateau_get(plateau, position) == couleur && !(Chaine_appartient(chaine, position)))
+			{
+				Chaine_inserer(chaine, Position_copier(position));
+				Pile_empiler(Position_copier(position));
+			}
 		}
 
 		// Cas 4, à gauche
-		position.y -= 1;
-		position.x -= 1;
-		if(position.x >= 0)
+		Position_setX(position, --x);
+		Position_setY(position, --y);
+		if(x >= 0)
 		{
-			pion = Plateau_creerPionSiAppartientChaine(plateau, position, chaine, couleur);
-
-			if(pion != NULL)
-				Pile_empiler(pile, pion);
+			if(Plateau_get(plateau, position) == couleur && !(Chaine_appartient(chaine, position)))
+			{
+				Chaine_inserer(chaine, Position_copier(position));
+				Pile_empiler(Position_copier(position));
+			}
 		}
 
+		Position_detruire(position);
 	}
 
 	return chaine;
@@ -237,17 +206,17 @@ Chaine Plateau_determinerChaine(Plateau plateau, Position origine)
 
 void Plateau_realiserCapture(Plateau plateau, Chaine chaine)
 {
-	Pion pion;
+	Position position;
 
-	if(Liste_estVide(chaine))
+	if(Chaine_estVide(chaine))
 		return;
 
-	Liste_tete(chaine);
+	Chaine_tete(chaine);
 
 	do
 	{
-		pion = Liste_courant(chaine);
-		Plateau_set(plateau, Pion_getPosition(pion), VIDE);
-	} while(Liste_suivant(chaine));
+		position = Chaine_courant(chaine);
+		Plateau_set(plateau, position, VIDE);
+	} while(Chaine_suivant(chaine));
 }
 

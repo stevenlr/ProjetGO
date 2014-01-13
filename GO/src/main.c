@@ -50,6 +50,7 @@ int main(int argc, char* argv[])
 		return 1;
 	}
 
+	position = Position_creer(0, 0);
 	plateau = Plateau_creer(taillePlateau);
 	originePlateau = (600 - taillePlateau * TAILLE_CELL) / 2;
 
@@ -68,8 +69,8 @@ int main(int argc, char* argv[])
 
 				if(cx >= 0 && cx < taillePlateau && cy >= 0 && cy < taillePlateau)
 				{
-					position.x = cx;
-					position.y = cy;
+					Position_setX(position, cx);
+					Position_setY(position, cy);
 
 					if(event.button.button == SDL_BUTTON_LEFT && Plateau_get(plateau, position) == VIDE)
 					{
@@ -98,8 +99,9 @@ int main(int argc, char* argv[])
 		{
 			for(j = 0; j < taillePlateau; j++)
 			{
-				position.x = j;
-				position.y = i;
+				Position_setX(position, j);
+				Position_setY(position, i);
+
 				couleur = Plateau_get(plateau, position);
 
 				if(couleur == NOIR)
@@ -113,6 +115,7 @@ int main(int argc, char* argv[])
 		SDL_Delay(10);
 	}
 
+	Position_detruire(position);
 	Plateau_detruire(plateau);
 	Texture_libererRegistre();
 	SDL_Quit();

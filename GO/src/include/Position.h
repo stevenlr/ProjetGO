@@ -20,6 +20,14 @@ typedef struct Position* Position;
 Position Position_creer(int x, int y);
 
 /**
+ * Copie une position.
+ *
+ * @param position
+ * @return Position copiée.
+ */
+Position Position_copier(Position position);
+
+/**
  * Détruit un position.
  *
  * @param position
@@ -32,7 +40,7 @@ void Position_detruire(Position position);
  * @param position
  * @return Position du position.
  */
-Position Position_getX(Position position);
+int Position_getX(Position position);
 
 /**
  * Retourne la couleur du position.
@@ -40,7 +48,23 @@ Position Position_getX(Position position);
  * @param position
  * @return Couleur du position.
  */
-Couleur Position_getY(Position position);
+int Position_getY(Position position);
+
+/**
+ * Assigne la valeur x.
+ *
+ * @param position
+ * @param x
+ */
+void Position_setX(Position position, int x);
+
+/**
+ * Assigne la valeur y.
+ *
+ * @param position
+ * @param y
+ */
+void Position_setY(Position position, int y);
 
 /**
  * Vérifie si deux Positions sont identiques.

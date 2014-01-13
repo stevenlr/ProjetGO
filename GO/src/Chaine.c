@@ -9,28 +9,114 @@
 #include <assert.h>
 
 #include "include/Liste.h"
-#include "include/Pion.h"
+#include "include/Couleur.h"
 #include "include/Chaine.h"
 
-int Chaine_appartient(Chaine chaine, Pion pion)
+/**
+ * Chaine.
+ */
+struct Chaine {
+	Liste liste;		/**< Liste de position. */
+	Couleur couleur;	/**< Couleur de la chaine. */
+};
+
+Chaine Chaine_creer()
 {
-	Pion pionCourant;
+	Chaine chaine;
+
+	chaine = (Chaine) malloc(sizeof(Chaine));
+	if(chaine == NULL)
+		return NULL;
+
+	if((chaine->liste = Liste_creer()) == NULL)
+	{
+		free(chaine);
+		return NULL;
+	}
+
+	chaine->couleur = VIDE;
+
+	return chaine;
+}
+
+void Chaine_detruire(Chaine chaine)
+{
+	assert(chaine);
+
+	Liste_detruire(chaine->liste);
+	free(chaine);
+}
+
+void Chaine_vider(Chaine chaine)
+{
+	Position pos;
 
 	assert(chaine);
 
-	if(Liste_estVide(chaine))
+	assert(chaine);
+
+	if(Chaine_estVide(chaine))
 		return 0;
 
-	Liste_tete(chaine);
+	Chaine_tete(chaine);
 
 	do
 	{
-		pionCourant = Liste_courant(chaine);
+		pos = Chaine_courant(chaine);
+		assert(pos);
+		free(pos);
 
-		if(Pion_estIdentique(pionCourant, pion))
+		Liste_supprimerCourant(chaine->liste);
+	} while(!Chaine_estVide(chaine));
+}
+
+int Chaine_appartient(Chaine chaine, Position position)
+{
+	Position positionCourant;
+
+	assert(chaine);
+
+	if(Chaine_estVide(chaine))
+		return 0;
+
+	Chaine_tete(chaine);
+
+	do
+	{
+		positionCourant = Chaine_courant(chaine);
+
+		if(Position_estIdentique(positionCourant, position))
 			return 1;
 
-	} while(Liste_suivant(chaine));
+	} while(Chaine_suivant(chaine));
 
 	return 0;
+}
+
+int Chaine_estVide(Chaine chaine)
+{
+	assert(chaine);
+
+	return Liste_estVide(chaine->liste);
+}
+
+Position Chaine_courant(Chaine chaine)
+{
+	assert(chaine);
+
+	return Liste_courant(chaine->liste);
+}
+
+int Chaine_suivant(Chaine chaine)
+{
+	assert(chaine);
+
+	return Liste_suivant(chaine->liste);
+}
+
+void Chaine_tete(Chaine chaine)
+{
+	assert(chaine);
+
+	Liste_tete(chaine->liste);
 }
