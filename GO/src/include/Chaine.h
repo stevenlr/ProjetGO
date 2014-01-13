@@ -34,8 +34,9 @@ void Chaine_tete(Chaine chaine);
 /**
  * Passe à l'élément suivant de la chaine
  * @param chaine
+ * @return 0 si pas de suivant, sinon 1;
  */
-void Chaine_suivant(Chaine chaine);
+int Chaine_suivant(Chaine chaine);
 
 /**
  * Renvoie un pointeur sur le pion courant de la chaine
@@ -58,5 +59,13 @@ void Chaine_inserer(Chaine chaine, Pion pion);
  * @return 1 si le pion est dans la chaine, sinon 0
  */
 int Chaine_appartient(Chaine chaine, Pion pion);
+
+/**
+ * Verifie si la chaine est vide
+ *
+ * @param chaine
+ * @return 1 si vide, 0 sinon.
+ */
+int Chaine_estVide(Chaine chaine);
 
 #endif

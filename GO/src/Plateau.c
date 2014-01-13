@@ -28,7 +28,7 @@
  * @param couleur Couleur de la chaîne.
  * @return Le pion, si on en a besoin. NULL sinon.
  */
-static Pion Plateau_creerPionSiAppartientChaine(Plateau plateau, Position position, Chaine chaine, Couleur couleur)
+Pion Plateau_creerPionSiAppartientChaine(Plateau plateau, Position position, Chaine chaine, Couleur couleur)
 {
 	Pion pion = Pion_creer(position, Plateau_get(plateau, position));
 
@@ -235,3 +235,23 @@ Chaine Plateau_determinerChaine(Plateau plateau, Position origine)
 
 	return chaine;
 }
+
+void Plateau_realiserCapture(Plateau plateau, Chaine chaine)
+{
+	Pion pion;
+
+	if(Chaine_estVide(chaine))
+		return;
+
+	Chaine_tete(chaine);
+
+	do
+	{
+		pion = Chaine_courant(chaine);
+		Plateau_set(plateau, Pion_getPosition(pion), VIDE);
+	}while(Chaine_suivant(chaine));
+
+	Chaine_detruire(chaine);
+}
+
+

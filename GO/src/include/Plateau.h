@@ -84,4 +84,11 @@ Plateau Plateau_charger(FILE* fichier);
  */
 Chaine Plateau_determinerChaine(Plateau plateau, Position origine);
 
+/**
+ * Realise la capture des pions de la chaine en les enlevant du plateau.
+ *
+ * @param plateau
+ * @param chaine
+ */
+void Plateau_realiserCapture(Plateau plateau, Chaine chaine);
 #endif

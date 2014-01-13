@@ -29,9 +29,9 @@ void Chaine_tete(Chaine chaine)
 	Liste_tete(chaine);
 }
 
-void Chaine_suivant(Chaine chaine)
+int Chaine_suivant(Chaine chaine)
 {
-	Liste_suivant(chaine);
+	return Liste_suivant(chaine);
 }
 
 Pion Chaine_courant(Chaine chaine)
@@ -65,5 +65,10 @@ int Chaine_appartient(Chaine chaine, Pion pion)
 	} while(Liste_suivant(chaine));
 
 	return 0;
+}
+
+int Chaine_estVide(Chaine chaine)
+{
+	return Liste_estVide();
 }
 
