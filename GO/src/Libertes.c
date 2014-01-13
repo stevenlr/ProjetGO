@@ -52,6 +52,7 @@ Libertes determineLiberte(Plateau plateau,Chaine chaine)
 		{
 			pion = Plateau_creerPionSiAppartientChaine(plateau, position, libertes, VIDE);
 		}
+
 	}while(Chaine_suivant(libertes));
 
 	return libertes;
