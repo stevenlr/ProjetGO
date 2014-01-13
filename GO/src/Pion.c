@@ -57,6 +57,5 @@ Position Pion_getPosition(Pion pion)
 int Pion_estIdentique(Pion pion1, Pion pion2)
 {
 	return pion1->couleur == pion2->couleur
-			&& pion1->position.x == pion2->position.x
-			&& pion1->position.y == pion2->position.y;
+			&& Position_estIdentique(Pion_getPosition(pion1), Pion_getPosition(pion2));
 }

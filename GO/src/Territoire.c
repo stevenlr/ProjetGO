@@ -34,14 +34,14 @@ Territoire determineTerritoire(Plateau plateau, Position origine)
 
 	while((position = Pile_depiler(pile)) != NULL)
 	{
-		x = position_getX(position);
-		y = position_getY(position);
+		x = Position_getX(position);
+		y = Position_getY(position);
 
 		// Cas 1, en haut
 		y--;
 		if(y >= 0)
 		{
-			if(Plateau_getCouleur(plateau, position) == VIDE && !Chaine_appartient(territoire,position))
+			if(Plateau_get(plateau, position) == VIDE && !Chaine_appartient(territoire, position))
 				{
 				positionNouvelle = Position_creer(x,y);
 				Chaine_inserer(territoire, positionNouvelle);
@@ -54,7 +54,7 @@ Territoire determineTerritoire(Plateau plateau, Position origine)
 		x++;
 		if(x < taille)
 		{
-			if(Plateau_getCouleur(plateau, position) == VIDE && !Chaine_appartient(territoire,position))
+			if(Plateau_get(plateau, position) == VIDE && !Chaine_appartient(territoire, position))
 				{
 				positionNouvelle = Position_creer(x,y);
 				Chaine_inserer(territoire, positionNouvelle);
@@ -67,7 +67,7 @@ Territoire determineTerritoire(Plateau plateau, Position origine)
 		x--;
 		if(y < taille)
 		{
-			if(Plateau_getCouleur(plateau, position) == VIDE && !Chaine_appartient(territoire,position))
+			if(Plateau_get(plateau, position) == VIDE && !Chaine_appartient(territoire, position))
 				{
 				positionNouvelle = Position_creer(x,y);
 				Chaine_inserer(territoire, positionNouvelle);
@@ -80,7 +80,7 @@ Territoire determineTerritoire(Plateau plateau, Position origine)
 		x--;
 		if(x >= 0)
 		{
-			if(Plateau_getCouleur(plateau, position) == VIDE && !Chaine_appartient(territoire,position))
+			if(Plateau_get(plateau, position) == VIDE && !Chaine_appartient(territoire, position))
 				{
 				positionNouvelle = Position_creer(x,y);
 				Chaine_inserer(territoire, positionNouvelle);

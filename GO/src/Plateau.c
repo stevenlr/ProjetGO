@@ -158,7 +158,7 @@ Chaine Plateau_determinerChaine(Plateau plateau, Position origine)
 			if(Plateau_get(plateau, position) == couleur && !(Chaine_appartient(chaine, position)))
 			{
 				Chaine_inserer(chaine, Position_copier(position));
-				Pile_empiler(Position_copier(position));
+				Pile_empiler(pile, Position_copier(position));
 			}
 		}
 
@@ -170,7 +170,7 @@ Chaine Plateau_determinerChaine(Plateau plateau, Position origine)
 			if(Plateau_get(plateau, position) == couleur && !(Chaine_appartient(chaine, position)))
 			{
 				Chaine_inserer(chaine, Position_copier(position));
-				Pile_empiler(Position_copier(position));
+				Pile_empiler(pile, Position_copier(position));
 			}
 		}
 
@@ -182,7 +182,7 @@ Chaine Plateau_determinerChaine(Plateau plateau, Position origine)
 			if(Plateau_get(plateau, position) == couleur && !(Chaine_appartient(chaine, position)))
 			{
 				Chaine_inserer(chaine, Position_copier(position));
-				Pile_empiler(Position_copier(position));
+				Pile_empiler(pile, Position_copier(position));
 			}
 		}
 
@@ -194,7 +194,7 @@ Chaine Plateau_determinerChaine(Plateau plateau, Position origine)
 			if(Plateau_get(plateau, position) == couleur && !(Chaine_appartient(chaine, position)))
 			{
 				Chaine_inserer(chaine, Position_copier(position));
-				Pile_empiler(Position_copier(position));
+				Pile_empiler(pile, Position_copier(position));
 			}
 		}
 

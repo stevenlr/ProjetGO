@@ -38,7 +38,7 @@ void Chaine_vider(Chaine chaine);
  * @param pion
  * @return 1 si le pion est dans la chaine, sinon 0
  */
-int Chaine_appartient(Chaine chaine, Pion pion);
+int Chaine_appartient(Chaine chaine, Position position);
 
 /**
  * Vérifie si une chaine est vide.

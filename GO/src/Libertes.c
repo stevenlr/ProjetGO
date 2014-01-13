@@ -27,11 +27,11 @@ Libertes Libertes_determinerLibertes(Plateau plateau, Chaine chaine)
 	do
 	{
 		position = Position_copier(Liste_courant(chaine));
-		x = Position_getX(x);
-		y = Position_getY(y);
+		x = Position_getX(position);
+		y = Position_getY(position);
 
 		// Haut
-		Position_setY(y--);
+		Position_setY(position, y--);
 		if(y >= 0)
 		{
 			if(Plateau_get(plateau, position) == VIDE && !(Libertes_appartient(libertes, position)))
@@ -39,8 +39,8 @@ Libertes Libertes_determinerLibertes(Plateau plateau, Chaine chaine)
 		}
 
 		// Gauche
-		Position_setY(y++);
-		Position_setX(x--);
+		Position_setY(position, y++);
+		Position_setX(position, x--);
 		if(x >= 0)
 		{
 			if(Plateau_get(plateau, position) == VIDE && !(Libertes_appartient(libertes, position)))
@@ -48,8 +48,8 @@ Libertes Libertes_determinerLibertes(Plateau plateau, Chaine chaine)
 		}
 
 		// Bas
-		Position_setY(y++);
-		Position_setX(x++);
+		Position_setY(position, y++);
+		Position_setX(position, x++);
 		if(y < taille)
 		{
 			if(Plateau_get(plateau, position) == VIDE && !(Libertes_appartient(libertes, position)))
@@ -57,8 +57,8 @@ Libertes Libertes_determinerLibertes(Plateau plateau, Chaine chaine)
 		}
 
 		// Droite
-		Position_setY(y--);
-		Position_setX(x++);
+		Position_setY(position, y--);
+		Position_setX(position, x++);
 		if(x < taille)
 		{
 			if(Plateau_get(plateau, position) == VIDE && !(Libertes_appartient(libertes, position)))
@@ -66,7 +66,7 @@ Libertes Libertes_determinerLibertes(Plateau plateau, Chaine chaine)
 		}
 
 		Position_detruire(position);
-	} while(Liste_suivant(chaine));
+	} while(Chaine_suivant(chaine));
 
 	return libertes;
 }

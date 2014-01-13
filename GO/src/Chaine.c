@@ -56,7 +56,7 @@ void Chaine_vider(Chaine chaine)
 	assert(chaine);
 
 	if(Chaine_estVide(chaine))
-		return 0;
+		return;
 
 	Chaine_tete(chaine);
 
