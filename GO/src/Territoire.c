@@ -1,4 +1,3 @@
-
 #include <stdlib.h>
 
 #include "include/Territoire.h"
@@ -14,7 +13,7 @@ Territoire determineTerritoire(Plateau plateau, Position origine)
 	Territoire territoire;
 	Pile pile;
 	Position position, positionNouvelle;
-	int taille,x,y;
+	int taille, x, y;
 
 	if((pile = Pile_creer()) == NULL)
 		return NULL;
@@ -42,11 +41,11 @@ Territoire determineTerritoire(Plateau plateau, Position origine)
 		if(y >= 0)
 		{
 			if(Plateau_get(plateau, position) == VIDE && !Chaine_appartient(territoire, position))
-				{
-				positionNouvelle = Position_creer(x,y);
+			{
+				positionNouvelle = Position_creer(x, y);
 				Chaine_inserer(territoire, positionNouvelle);
 				Pile_empiler(pile, positionNouvelle);
-				}
+			}
 		}
 
 		// Cas 2, à droite
@@ -55,11 +54,11 @@ Territoire determineTerritoire(Plateau plateau, Position origine)
 		if(x < taille)
 		{
 			if(Plateau_get(plateau, position) == VIDE && !Chaine_appartient(territoire, position))
-				{
-				positionNouvelle = Position_creer(x,y);
+			{
+				positionNouvelle = Position_creer(x, y);
 				Chaine_inserer(territoire, positionNouvelle);
 				Pile_empiler(pile, positionNouvelle);
-				}
+			}
 		}
 
 		// Cas 3, en bas
@@ -68,11 +67,11 @@ Territoire determineTerritoire(Plateau plateau, Position origine)
 		if(y < taille)
 		{
 			if(Plateau_get(plateau, position) == VIDE && !Chaine_appartient(territoire, position))
-				{
-				positionNouvelle = Position_creer(x,y);
+			{
+				positionNouvelle = Position_creer(x, y);
 				Chaine_inserer(territoire, positionNouvelle);
 				Pile_empiler(pile, positionNouvelle);
-				}
+			}
 		}
 
 		// Cas 4, à gauche
@@ -81,11 +80,11 @@ Territoire determineTerritoire(Plateau plateau, Position origine)
 		if(x >= 0)
 		{
 			if(Plateau_get(plateau, position) == VIDE && !Chaine_appartient(territoire, position))
-				{
-				positionNouvelle = Position_creer(x,y);
+			{
+				positionNouvelle = Position_creer(x, y);
 				Chaine_inserer(territoire, positionNouvelle);
 				Pile_empiler(pile, positionNouvelle);
-				}
+			}
 		}
 
 	}
