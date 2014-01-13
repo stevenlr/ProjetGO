@@ -69,4 +69,12 @@ int Chaine_suivant(Chaine chaine);
  */
 void Chaine_tete(Chaine chaine);
 
+/**
+ * Insère une position dans une chaine.
+ *
+ * @param chaine
+ * @param position
+ */
+void Chaine_inserer(Chaine chaine, Position position);
+
 #endif

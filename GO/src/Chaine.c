@@ -120,3 +120,10 @@ void Chaine_tete(Chaine chaine)
 
 	Liste_tete(chaine->liste);
 }
+
+void Chaine_inserer(Chaine chaine, Position position)
+{
+	assert(chaine);
+
+	Liste_insererQueue(chaine->liste, position);
+}
