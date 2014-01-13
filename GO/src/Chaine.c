@@ -127,3 +127,8 @@ void Chaine_inserer(Chaine chaine, Position position)
 
 	Liste_insererQueue(chaine->liste, position);
 }
+
+void Chaine_setCouleur(Chaine chaine, Couleur couleur)
+{
+	chaine->couleur = couleur;
+}
