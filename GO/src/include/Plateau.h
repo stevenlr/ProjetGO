@@ -1,6 +1,7 @@
 #ifndef PLATEAU_H_
 #define PLATEAU_H_
 
+#include <stdio.h>
 #include <matrice.h>
 
 #include "Couleur.h"
