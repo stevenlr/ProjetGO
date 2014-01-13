@@ -12,38 +12,6 @@
 #include "include/Pion.h"
 #include "include/Chaine.h"
 
-Chaine Chaine_creer()
-{
-	return Liste_creer();
-}
-
-void Chaine_detruire(Chaine chaine)
-{
-	assert(chaine);
-
-	Liste_detruire(chaine);
-}
-
-void Chaine_tete(Chaine chaine)
-{
-	Liste_tete(chaine);
-}
-
-int Chaine_suivant(Chaine chaine)
-{
-	return Liste_suivant(chaine);
-}
-
-Pion Chaine_courant(Chaine chaine)
-{
-	return Liste_courant(chaine);
-}
-
-void Chaine_inserer(Chaine chaine, Pion pion)
-{
-	Liste_insererCourant(chaine, pion);
-}
-
 int Chaine_appartient(Chaine chaine, Pion pion)
 {
 	Pion pionCourant;
@@ -66,9 +34,3 @@ int Chaine_appartient(Chaine chaine, Pion pion)
 
 	return 0;
 }
-
-int Chaine_estVide(Chaine chaine)
-{
-	return Liste_estVide(chaine);
-}
-
