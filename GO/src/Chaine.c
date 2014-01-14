@@ -134,3 +134,10 @@ void Chaine_setCouleur(Chaine chaine, Couleur couleur)
 
 	chaine->couleur = couleur;
 }
+
+Couleur Chaine_getCouleur(Chaine chaine)
+{
+	assert(chaine);
+
+	return chaine->couleur;
+}

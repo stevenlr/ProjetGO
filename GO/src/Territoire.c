@@ -8,12 +8,32 @@
 #include "include/Pion.h"
 #include "include/Couleur.h"
 
+/*=FONCTION PRIVEE=======================================================*/
+
+static void Territoire_determinerCouleur(Couleur couleur, Territoire territoire, int estNeutre)
+{
+	if(!estNeutre && couleur != VIDE)
+	{
+		if(Chaine_getCouleur(territoire) == VIDE)
+		{
+			Chaine_setCouleur(territoire, couleur);
+		}
+		else
+		{
+			Chaine_setCouleur(territoire, VIDE);
+			estNeutre++;
+		}
+	}
+}
+
+/*=FONCTIONS PUBLIQUES===================================================*/
+
 Territoire determineTerritoire(Plateau plateau, Position origine)
 {
 	Territoire territoire;
 	Pile pile;
 	Position position, positionNouvelle;
-	int taille, x, y;
+	int taille, x, y, estNeutre = 0;
 
 	if((pile = Pile_creer()) == NULL)
 		return NULL;
@@ -49,6 +69,8 @@ Territoire determineTerritoire(Plateau plateau, Position origine)
 			}
 			else
 				free(positionNouvelle);
+
+			Territoire_determinerCouleur(Plateau_get(plateau, positionNouvelle), territoire, estNeutre);
 		}
 
 		// Cas 2, à droite
@@ -65,6 +87,8 @@ Territoire determineTerritoire(Plateau plateau, Position origine)
 			}
 			else
 				free(positionNouvelle);
+
+			Territoire_determinerCouleur(Plateau_get(plateau, positionNouvelle), territoire, estNeutre);
 		}
 
 		// Cas 3, en bas
@@ -81,6 +105,8 @@ Territoire determineTerritoire(Plateau plateau, Position origine)
 			}
 			else
 				free(positionNouvelle);
+
+			Territoire_determinerCouleur(Plateau_get(plateau, positionNouvelle), territoire, estNeutre);
 		}
 
 		// Cas 4, à gauche
@@ -97,6 +123,8 @@ Territoire determineTerritoire(Plateau plateau, Position origine)
 			}
 			else
 				free(positionNouvelle);
+
+			Territoire_determinerCouleur(Plateau_get(plateau, positionNouvelle), territoire, estNeutre);
 		}
 
 	}
