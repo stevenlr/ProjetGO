@@ -45,7 +45,7 @@ void tourDeJeu(Plateau plateau, Couleur couleur, Position position)
 
 			Chaine_vider(chaine);
 			Chaine_detruire(chaine);
-		} while(Liste_suivant(chaines));
+		} while(!Liste_estVide(chaines));
 	}
 
 	Liste_detruire(chaines);

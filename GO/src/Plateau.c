@@ -294,7 +294,7 @@ Chaines Plateau_capturerChaines(Plateau plateau, Pion pion, int* valide)
 
 	chaines = Liste_creer();
 
-	if(chaines == NULL) // ça serait quand même bête...
+	if(chaines == NULL)
 		return NULL;
 
 	// Haut

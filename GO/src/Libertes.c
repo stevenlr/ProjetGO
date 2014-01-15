@@ -23,6 +23,7 @@ Libertes Libertes_determinerLibertes(Plateau plateau, Chaine chaine)
 		return NULL;
 
 	taille = Plateau_getTaille(plateau);
+	Chaine_tete(chaine);
 
 	do
 	{
