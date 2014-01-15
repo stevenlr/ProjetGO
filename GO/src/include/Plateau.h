@@ -7,6 +7,7 @@
 #include "Couleur.h"
 #include "Position.h"
 #include "Chaine.h"
+#include "Chaines.h"
 
 typedef Matrice Plateau;
 
@@ -92,4 +93,16 @@ Chaine Plateau_determinerChaine(Plateau plateau, Position origine);
  * @param chaine
  */
 void Plateau_realiserCapture(Plateau plateau, Chaine chaine);
+
+/**
+ * Détermine les chaînes éventuellement capturées par la pose du pion.
+ * Valide est mis à 1 si le coup était valide, 0 sinon.
+ *
+ * @param plateau
+ * @param pion
+ * @param valide
+ * @return Les chaînes éventuellement capturées.
+ */
+Chaines Plateau_capturerChaines(Plateau plateau, Pion pion, int* valide);
+
 #endif

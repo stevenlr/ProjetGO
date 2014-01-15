@@ -53,8 +53,6 @@ void Chaine_vider(Chaine chaine)
 
 	assert(chaine);
 
-	assert(chaine);
-
 	if(Chaine_estVide(chaine))
 		return;
 

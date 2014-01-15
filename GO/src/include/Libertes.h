@@ -35,4 +35,11 @@ Libertes Libertes_determinerLibertes(Plateau plateau, Chaine chaine);
  */
 int Libertes_appartient(Libertes libertes, Position position);
 
+/**
+ * Vide la liste des libertés et désalloue ses éléments.
+ *
+ * @param libertes
+ */
+void Libertes_vider(Libertes libertes);
+
 #endif

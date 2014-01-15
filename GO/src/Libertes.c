@@ -26,7 +26,7 @@ Libertes Libertes_determinerLibertes(Plateau plateau, Chaine chaine)
 
 	do
 	{
-		position = Position_copier(Liste_courant(chaine));
+		position = Position_copier(Chaine_courant(chaine));
 		x = Position_getX(position);
 		y = Position_getY(position);
 
@@ -92,4 +92,25 @@ int Libertes_appartient(Libertes libertes, Position position)
 	} while(Liste_suivant(libertes));
 
 	return 0;
+}
+
+void Libertes_vider(Libertes libertes)
+{
+	Position pos;
+
+	assert(libertes);
+
+	if(Liste_estVide(libertes))
+		return;
+
+	Liste_tete(libertes);
+
+	do
+	{
+		pos = Liste_courant(libertes);
+		assert(pos);
+		free(pos);
+
+		Liste_supprimerCourant(libertes);
+	} while(!Liste_estVide(libertes));
 }

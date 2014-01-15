@@ -12,7 +12,7 @@
 #include "include/Chaine.h"
 #include "include/Plateau.h"
 #include "include/Pile.h"
-
+#include "include/Libertes.h"
 
 Plateau Plateau_creer(int taille)
 {
@@ -201,6 +201,8 @@ Chaine Plateau_determinerChaine(Plateau plateau, Position origine)
 		Position_detruire(position);
 	}
 
+	Chaine_setCouleur(chaine, couleur);
+
 	return chaine;
 }
 
@@ -220,3 +222,112 @@ void Plateau_realiserCapture(Plateau plateau, Chaine chaine)
 	} while(Chaine_suivant(chaine));
 }
 
+/**
+ * Ajoute la chaine commençant à position à chaines si elle n'a plus de libertées.
+ *
+ * @param plateau
+ * @param position
+ * @param chaines
+ */
+static void Plateau_estCapturable(Plateau plateau, Position position, Chaines chaines)
+{
+	Chaine chaine;
+	Libertes libertes;
+
+	chaine = Plateau_determinerChaine(plateau, position);
+	libertes = Libertes_determinerLibertes(plateau, chaine);
+
+	if(Liste_estVide(libertes))
+	{
+		Liste_insererQueue(chaines, chaine);
+	}
+	else
+	{
+		Chaine_vider(chaine);
+		Chaine_detruire(chaine);
+	}
+
+	Libertes_vider(libertes);
+	Liste_detruire(libertes);
+}
+
+Chaines Plateau_capturerChaines(Plateau plateau, Pion pion, int* valide)
+{
+	Chaine chaine;
+	Libertes libertes;
+	Chaines chaines;
+	Position position, debutChaine;
+	Couleur couleur, aCapturer;
+	int x, y;
+
+	assert(plateau && pion);
+
+	position = Pion_getPosition(pion);
+	couleur = Pion_getCouleur(pion);
+
+	if(couleur == VIDE)
+	{
+		*valide = 0;
+		return NULL;
+	}
+
+	x = Position_getX(position);
+	y = Position_getY(position);
+
+	debutChaine = Position_creer(x, y);
+
+	aCapturer = (couleur == NOIR) ? BLANC : NOIR;
+
+	chaines = Liste_creer();
+
+	if(chaines == NULL) // ça serait quand même bête...
+		return NULL;
+
+	// Haut
+	Position_setY(debutChaine, --y);
+	if(Plateau_get(plateau, debutChaine) == aCapturer)
+		Plateau_estCapturable(plateau, debutChaine, chaines);
+
+	// Gauche
+	Position_setY(debutChaine, ++y);
+	Position_setX(debutChaine, --x);
+	if(Plateau_get(plateau, debutChaine) == aCapturer)
+		Plateau_estCapturable(plateau, debutChaine, chaines);
+
+	// Bas
+	Position_setY(debutChaine, ++y);
+	Position_setX(debutChaine, ++x);
+	if(Plateau_get(plateau, debutChaine) == aCapturer)
+		Plateau_estCapturable(plateau, debutChaine, chaines);
+
+	// Droite
+	Position_setY(debutChaine, --y);
+	Position_setX(debutChaine, ++x);
+	if(Plateau_get(plateau, debutChaine) == aCapturer)
+		Plateau_estCapturable(plateau, debutChaine, chaines);
+
+	if(Liste_estVide(chaines))
+	{
+		chaine = Plateau_determinerChaine(plateau, position);
+		libertes = Libertes_determinerLibertes(plateau, chaine);
+
+		if(Liste_estVide(libertes))
+		{
+			*valide = 0;
+		}
+		else
+		{
+			Chaine_vider(chaine);
+			Chaine_detruire(chaine);
+		}
+
+		Libertes_vider(libertes);
+		Liste_detruire(libertes);
+	}
+	else
+		*valide = 1;
+
+	Position_detruire(debutChaine);
+
+	return chaines;
+}
