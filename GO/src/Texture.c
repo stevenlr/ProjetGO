@@ -43,7 +43,7 @@ Texture Texture_creer(const char* fichier)
 {
 	Texture texture;
 
-	texture = (Texture) malloc(sizeof(Texture));
+	texture = (Texture) malloc(sizeof(struct Texture));
 
 	if(texture == NULL)
 		return NULL;

@@ -33,6 +33,17 @@ Couleur Plateau_get(Plateau plateau, Position pos)
 	return Matrice_get(plateau, Position_getY(pos), Position_getX(pos));
 }
 
+int Plateau_getTaille(Plateau plateau)
+{
+	int taille;
+
+	assert(plateau);
+
+	Matrice_getTaille(plateau, &taille, NULL);
+
+	return taille;
+}
+
 void Plateau_set(Plateau plateau, Position pos, Couleur couleur)
 {
 	assert(plateau);
@@ -258,12 +269,15 @@ Chaines Plateau_capturerChaines(Plateau plateau, Pion pion, int* valide)
 	Chaines chaines;
 	Position position, debutChaine;
 	Couleur couleur, aCapturer;
-	int x, y;
+	int x, y, taille;
 
 	assert(plateau && pion);
 
 	position = Pion_getPosition(pion);
 	couleur = Pion_getCouleur(pion);
+
+	Plateau_set(plateau, position, couleur);
+	taille = Plateau_getTaille(plateau);
 
 	if(couleur == VIDE)
 	{
@@ -285,26 +299,30 @@ Chaines Plateau_capturerChaines(Plateau plateau, Pion pion, int* valide)
 
 	// Haut
 	Position_setY(debutChaine, --y);
-	if(Plateau_get(plateau, debutChaine) == aCapturer)
-		Plateau_estCapturable(plateau, debutChaine, chaines);
+	if(y >= 0)
+		if(Plateau_get(plateau, debutChaine) == aCapturer)
+			Plateau_estCapturable(plateau, debutChaine, chaines);
 
 	// Gauche
 	Position_setY(debutChaine, ++y);
 	Position_setX(debutChaine, --x);
-	if(Plateau_get(plateau, debutChaine) == aCapturer)
-		Plateau_estCapturable(plateau, debutChaine, chaines);
+	if(x >= 0)
+		if(Plateau_get(plateau, debutChaine) == aCapturer)
+			Plateau_estCapturable(plateau, debutChaine, chaines);
 
 	// Bas
 	Position_setY(debutChaine, ++y);
 	Position_setX(debutChaine, ++x);
-	if(Plateau_get(plateau, debutChaine) == aCapturer)
-		Plateau_estCapturable(plateau, debutChaine, chaines);
+	if(y < taille)
+		if(Plateau_get(plateau, debutChaine) == aCapturer)
+			Plateau_estCapturable(plateau, debutChaine, chaines);
 
 	// Droite
 	Position_setY(debutChaine, --y);
 	Position_setX(debutChaine, ++x);
-	if(Plateau_get(plateau, debutChaine) == aCapturer)
-		Plateau_estCapturable(plateau, debutChaine, chaines);
+	if(x < taille)
+		if(Plateau_get(plateau, debutChaine) == aCapturer)
+			Plateau_estCapturable(plateau, debutChaine, chaines);
 
 	if(Liste_estVide(chaines))
 	{
@@ -319,6 +337,7 @@ Chaines Plateau_capturerChaines(Plateau plateau, Pion pion, int* valide)
 		{
 			Chaine_vider(chaine);
 			Chaine_detruire(chaine);
+			*valide = 1;
 		}
 
 		Libertes_vider(libertes);

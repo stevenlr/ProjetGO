@@ -22,7 +22,7 @@ Pion Pion_creer(Position position, Couleur couleur)
 {
 	Pion pion;
 
-	pion = (Pion) malloc(sizeof(Pion));
+	pion = (Pion) malloc(sizeof(struct Pion));
 
 	if(pion == NULL)
 		return NULL;

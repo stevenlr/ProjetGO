@@ -22,7 +22,7 @@ Libertes Libertes_determinerLibertes(Plateau plateau, Chaine chaine)
 	if((libertes = Liste_creer()) == NULL)
 		return NULL;
 
-	Matrice_getTaille(plateau, NULL, &taille);
+	taille = Plateau_getTaille(plateau);
 
 	do
 	{
@@ -31,7 +31,7 @@ Libertes Libertes_determinerLibertes(Plateau plateau, Chaine chaine)
 		y = Position_getY(position);
 
 		// Haut
-		Position_setY(position, y--);
+		Position_setY(position, --y);
 		if(y >= 0)
 		{
 			if(Plateau_get(plateau, position) == VIDE && !(Libertes_appartient(libertes, position)))
@@ -39,8 +39,8 @@ Libertes Libertes_determinerLibertes(Plateau plateau, Chaine chaine)
 		}
 
 		// Gauche
-		Position_setY(position, y++);
-		Position_setX(position, x--);
+		Position_setY(position, ++y);
+		Position_setX(position, --x);
 		if(x >= 0)
 		{
 			if(Plateau_get(plateau, position) == VIDE && !(Libertes_appartient(libertes, position)))
@@ -48,8 +48,8 @@ Libertes Libertes_determinerLibertes(Plateau plateau, Chaine chaine)
 		}
 
 		// Bas
-		Position_setY(position, y++);
-		Position_setX(position, x++);
+		Position_setY(position, ++y);
+		Position_setX(position, ++x);
 		if(y < taille)
 		{
 			if(Plateau_get(plateau, position) == VIDE && !(Libertes_appartient(libertes, position)))
@@ -57,8 +57,8 @@ Libertes Libertes_determinerLibertes(Plateau plateau, Chaine chaine)
 		}
 
 		// Droite
-		Position_setY(position, y--);
-		Position_setX(position, x++);
+		Position_setY(position, --y);
+		Position_setX(position, ++x);
 		if(x < taille)
 		{
 			if(Plateau_get(plateau, position) == VIDE && !(Libertes_appartient(libertes, position)))

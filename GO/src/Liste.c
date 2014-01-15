@@ -77,7 +77,7 @@ Liste Liste_creer()
 {
 	Liste liste = NULL;
 
-	liste = (Liste) malloc(sizeof(Liste));
+	liste = (Liste) malloc(sizeof(struct Liste));
 
 	if(liste == NULL)
 		return NULL;

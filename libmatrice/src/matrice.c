@@ -26,7 +26,7 @@ Matrice Matrice_creer(int nLignes, int nColonnes, char caractereParDefaut)
 	if(nLignes <= 0 || nColonnes <= 0)
 		return NULL;
 
-	matrice = (Matrice) malloc(sizeof(Matrice));
+	matrice = (Matrice) malloc(sizeof(struct Matrice));
 	if(matrice == NULL)
 		return NULL;
 

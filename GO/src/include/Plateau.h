@@ -36,6 +36,14 @@ void Plateau_detruire(Plateau plateau);
 Couleur Plateau_get(Plateau plateau, Position pos);
 
 /**
+ * Renvoie la taille du plateau.
+ *
+ * @param plateau
+ * @return Taille du plateau.
+ */
+int Plateau_getTaille(Plateau plateau);
+
+/**
  * Met à la case (i,j) du plateau la Couleur passée en paramètre.
  *
  * @param plateau

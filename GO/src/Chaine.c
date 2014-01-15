@@ -24,7 +24,7 @@ Chaine Chaine_creer()
 {
 	Chaine chaine;
 
-	chaine = (Chaine) malloc(sizeof(Chaine));
+	chaine = (Chaine) malloc(sizeof(struct Chaine));
 	if(chaine == NULL)
 		return NULL;
 

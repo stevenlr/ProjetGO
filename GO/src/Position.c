@@ -21,7 +21,7 @@ Position Position_creer(int x, int y)
 {
 	Position position;
 
-	position = (Position) malloc(sizeof(Position));
+	position = (Position) malloc(sizeof(struct Position));
 
 	if(position == NULL)
 		return NULL;

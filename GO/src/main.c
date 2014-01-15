@@ -5,14 +5,52 @@
 
 #include <stdlib.h>
 #include <stdio.h>
+#include <assert.h>
 
 #include <SDL/SDL.h>
 #include <SDL/SDL_image.h>
 
 #include "include/Texture.h"
 #include "include/Plateau.h"
+#include "include/Chaine.h"
 
 #define TAILLE_CELL 30
+
+void tourDeJeu(Plateau plateau, Couleur couleur, Position position)
+{
+	Pion pion;
+	Chaines chaines;
+	Chaine chaine;
+	int valide;
+
+	pion = Pion_creer(position, couleur);
+
+	chaines = Plateau_capturerChaines(plateau, pion, &valide);
+	assert(chaines);
+
+	if(!valide)
+	{
+		Plateau_set(plateau, position, VIDE);
+	}
+	else if(!Liste_estVide(chaines))
+	{
+		Liste_tete(chaines);
+
+		do
+		{
+			chaine = Liste_courant(chaines);
+			Liste_supprimerCourant(chaines);
+
+			Plateau_realiserCapture(plateau, chaine);
+
+			Chaine_vider(chaine);
+			Chaine_detruire(chaine);
+		} while(Liste_suivant(chaines));
+	}
+
+	Liste_detruire(chaines);
+	Pion_detruire(pion);
+}
 
 int main(int argc, char* argv[])
 {
@@ -25,7 +63,7 @@ int main(int argc, char* argv[])
 	Position position;
 	Couleur couleur;
 	SDL_Rect rect;
-	int i, j, couleurAPoser = 0;
+	int i, j;
 	int cx, cy;
 
 	if(SDL_Init(SDL_INIT_VIDEO) < 0)
@@ -72,15 +110,10 @@ int main(int argc, char* argv[])
 					Position_setX(position, cx);
 					Position_setY(position, cy);
 
-					if(event.button.button == SDL_BUTTON_LEFT && Plateau_get(plateau, position) == VIDE)
+					if(Plateau_get(plateau, position) == VIDE)
 					{
-						couleurAPoser = (couleurAPoser + 1) % 2;
-						couleur = (couleurAPoser == 0) ? BLANC : NOIR;
-						Plateau_set(plateau, position, couleur);
-					}
-					else if(event.button.button == SDL_BUTTON_RIGHT)
-					{
-						Plateau_set(plateau, position, VIDE);
+						couleur = (event.button.button == SDL_BUTTON_LEFT) ? BLANC : NOIR;
+						tourDeJeu(plateau, couleur, position);
 					}
 				}
 			}
