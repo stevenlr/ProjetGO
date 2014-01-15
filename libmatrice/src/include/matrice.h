@@ -19,6 +19,14 @@ typedef struct Matrice* Matrice;
 Matrice Matrice_creer(int nLignes, int nColonnes, char caractereParDefaut);
 
 /**
+ * Copie une matrice.
+ *
+ * @param matrice Matrice à copier.
+ * @return Matrice copiée.
+ */
+Matrice Matrice_copier(Matrice matrice);
+
+/**
  * Détruit une matrice.
  *
  * @param matrice Matrice à détruire.

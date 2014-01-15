@@ -45,6 +45,22 @@ Matrice Matrice_creer(int nLignes, int nColonnes, char caractereParDefaut)
 	return matrice;
 }
 
+Matrice Matrice_copier(Matrice matrice)
+{
+	Matrice copie;
+
+	assert(matrice);
+
+	copie = Matrice_creer(matrice->nLignes, matrice->nColonnes, ' ');
+
+	if(copie == NULL)
+		return NULL;
+
+	memcpy(copie->donnees, matrice->donnees, matrice->nLignes * matrice->nColonnes * sizeof(char));
+
+	return copie;
+}
+
 void Matrice_detruire(Matrice matrice)
 {
 	assert(matrice != NULL);
