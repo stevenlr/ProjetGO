@@ -4,7 +4,6 @@
 int Chaines_positionAppartient(Chaines chaines, Position position)
 {
 	Chaine chaine;
-	int appartientChaine = 0;
 
 	if(Liste_estVide(chaines))
 		return 0;
@@ -16,10 +15,10 @@ int Chaines_positionAppartient(Chaines chaines, Position position)
 		chaine = Liste_courant(chaines);
 		if(Chaine_appartient(chaine, position))
 		{
-			appartientChaine = 1;
+			return 1;
 		}
 	}while(Liste_suivant(chaines));
 
-	return appartientChaine;
+	return 0;
 }
 
