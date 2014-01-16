@@ -97,7 +97,7 @@ Couleur Chaine_getCouleur(Chaine chaine);
 /**
  * Determine la position des yeux relatifs à une chaine.
  *
- * @return NULL si aucun yeux, sinon la liste des positions des yeux
+ * @return NULL si aucun oeil, sinon la liste des positions des yeux
  */
 Positions Chaine_determinerYeux(Plateau plateau, Chaine chaine);
 
