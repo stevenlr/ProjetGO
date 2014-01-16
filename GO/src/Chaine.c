@@ -15,7 +15,7 @@
 /*========Fonction privée==============
  */
 
-static int Chaine_determinerSiEstOeil(plateau, position)
+static int Chaine_determinerSiEstOeil(Plateau plateau, Position position)
 {
 	Couleur couleurOeil;
 	int x, y, taille;

@@ -132,3 +132,98 @@ Territoire determineTerritoire(Plateau plateau, Position origine)
 	return territoire;
 }
 
+Chaines Territoire_determinerChainesAutour(Territoire territoire, Plateau plateau)
+{
+	Chaines chaines;
+	Chaine chaine;
+	Position position;
+	int x, y, taille;
+
+	if(Chaine_estVide(territoire))
+		return NULL;
+
+	chaines = Liste_creer();
+
+	taille = Matrice_getTaille(plateau);
+
+	do
+	{
+		position = Chaine_courant(territoire);
+		x = Position_getX(position);
+		y = Position_getY(position);
+
+		// Haut
+		Position_setY(position, --y);
+		if(y >= 0)
+			if(Plateau_get(plateau, position) != VIDE)
+				if(!Chaines_positionAppartient(chaines))
+					{
+					chaine = Plateau_determinerChaine(plateau, position);
+					Liste_inserer(chaines, chaine);
+					}
+
+		// Gauche
+		Position_setY(position, ++y);
+		Position_setX(position, --x);
+		if(x >= 0)
+			if(Plateau_get(plateau, position) != VIDE)
+				if(!Chaines_positionAppartient(chaines))
+					{
+					chaine = Plateau_determinerChaine(plateau, position);
+					Liste_inserer(chaines, chaine);
+					}
+
+		// Bas
+		Position_setY(position, ++y);
+		Position_setX(position, ++x);
+		if(y < taille)
+			if(Plateau_get(plateau, position) != VIDE)
+				if(!Chaines_positionAppartient(chaines))
+					{
+					chaine = Plateau_determinerChaine(plateau, position);
+					Liste_inserer(chaines, chaine);
+					}
+		// Droite
+		Position_setY(position, --y);
+		Position_setX(position, ++x);
+		if(x < taille)
+			if(Plateau_get(plateau, position) != VIDE)
+				if(!Chaines_positionAppartient(chaines))
+					{
+					chaine = Plateau_determinerChaine(plateau, position);
+					Liste_inserer(chaines, chaine);
+					}
+
+	}while(Chaine_suivant(territoire));
+
+	return chaines;
+}
+
+int Territoire_estUnSeki(Territoire territoire,  Plateau plateau)
+{
+	Chaines chaines;
+	Chaine chaine;
+	Libertes libertes;
+	Position position;
+
+	chaines = Territoire_determinerChainesAutour(territoire, plateau);
+
+	do
+	{
+		chaine = Liste_courant(chaines);
+		libertes = Libertes_determinerLibertes(plateau, chaine);	//Forcément, il y a des libertés vu que ce sont les chaines qui entourent un territoire vide.
+
+		do
+		{
+			position = Liste_courant(libertes);
+
+			if(!Chaine_appartient(territoire, position))	//Si une liberté n'est pas dans le territoire dit Seki, il n'y a pas Seki.
+				return 0;
+
+		}while(Liste_suivant(libertes));
+
+	}while(Liste_suivant(chaines));
+
+	return 1;
+}
+

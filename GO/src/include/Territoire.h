@@ -20,4 +20,23 @@ typedef Chaine Territoire;
  */
 Territoire determineTerritoire(Plateau plateau,Position origine);
 
+/**
+ * Déterminer les chaines entourants le territoire.
+ *
+ * @param territoire
+ * @return Chaines
+ */
+Chaines Territoire_determinerChainesAutour(Territoire territoire, Plateau plateau);
+
+/**
+ * Détermine si un territoire forme un seki pour les chaines concernées.
+ *
+ * @param territoire
+ * @param plateau
+ * @return 1 si vrai, sinon 0.
+ */
+int Territoire_estUnSeki(Territoire territoire,  Plateau plateau);
+
+
+
 #endif

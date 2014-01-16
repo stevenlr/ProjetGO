@@ -9,6 +9,7 @@
 #include "Liste.h"
 #include "Pion.h"
 #include "Positions.h"
+#include "Plateau.h"
 
 typedef struct Chaine* Chaine;
 
