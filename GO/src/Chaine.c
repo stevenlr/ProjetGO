@@ -12,6 +12,59 @@
 #include "include/Couleur.h"
 #include "include/Chaine.h"
 
+/*========Fonction privée==============
+ */
+
+static int Chaine_determinerSiEstOeil(plateau, position)
+{
+	Couleur couleurOeil;
+	int x, y, taille;
+
+	taille = Matrice_getTaille(plateau);
+
+	x = Position_getX(position);
+	y = Position_getY(position);
+	couleurOeil = VIDE;
+
+	// Haut
+	Position_setY(position, --y);
+	if(y >= 0)
+		if(Plateau_get(plateau, position) == VIDE)
+			return 0;
+		else
+			couleurOeil = Plateau_get(plateau, position);	//Car la couleur est encore inconnue.
+
+
+	// Gauche
+	Position_setY(position, ++y);
+	Position_setX(position, --x);
+	if(x >= 0)
+		if(couleurOeil != Plateau_get(plateau, position))	//Car la couleur est obligatoirement déjà devinée.
+			return 0;
+
+	// Bas
+	Position_setY(position, ++y);
+	Position_setX(position, ++x);
+	if(y < taille)
+		if(couleurOeil != Plateau_get(plateau, position))
+			return 0;
+
+	// Droite
+	Position_setY(position, --y);
+	Position_setX(position, ++x);
+	if(x < taille)
+		if(couleurOeil != Plateau_get(plateau, position))
+			return 0;
+
+	Position_setX(position, --x);
+
+	return 1;
+}
+
+/*========Fonction publique============
+ */
+
+
 /**
  * Chaine.
  */
@@ -138,4 +191,33 @@ Couleur Chaine_getCouleur(Chaine chaine)
 	assert(chaine);
 
 	return chaine->couleur;
+}
+
+Positions Chaine_determinerYeux(Plateau plateau, Chaine chaine)
+{
+	Positions positions;
+	Libertes libertes;
+	Position position;
+	Couleur couleurOeil;
+	int x, y, taille;
+
+	libertes = Libertes_determinerLibertes(plateau, chaine);
+	positions = Liste_creer();
+	taille = Matrice_getTaille(plateau);
+
+	if(libertes == NULL)
+		return NULL;
+
+	Liste_tete(libertes);
+
+	do
+	{
+		position = Liste_courant(libertes);
+
+		if(Chaine_determinerSiEstOeil(plateau, position))	//Très pratique d'utiliser une sous-fonction à part pour éviter les sous cas à rallonge :)
+			Liste_insererCourant(positions, position);
+
+	}while( Liste_suivant(libertes) );
+
+	return positions;
 }
