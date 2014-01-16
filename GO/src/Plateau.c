@@ -14,6 +14,51 @@
 #include "include/Pile.h"
 #include "include/Libertes.h"
 
+// Fonctions privées ==========================================================
+
+static int Plateau_determinerSiEstOeil(Plateau plateau, Position position, Chaine chaine)
+{
+	int x, y, taille;
+
+	Matrice_getTaille(plateau, NULL, &taille);
+
+	x = Position_getX(position);
+	y = Position_getY(position);
+
+	// Haut
+	Position_setY(position, --y);
+	if(y >= 0)
+		if(Chaine_appartient(chaine, position))
+			return 0;
+
+	// Gauche
+	Position_setY(position, ++y);
+	Position_setX(position, --x);
+	if(x >= 0)
+		if(Chaine_appartient(chaine, position))
+			return 0;
+
+	// Bas
+	Position_setY(position, ++y);
+	Position_setX(position, ++x);
+	if(y < taille)
+		if(Chaine_appartient(chaine, position))
+			return 0;
+
+	// Droite
+	Position_setY(position, --y);
+	Position_setX(position, ++x);
+	if(x < taille)
+		if(Chaine_appartient(chaine, position))
+			return 0;
+
+	Position_setX(position, --x);
+
+	return 1;
+}
+
+// Fonctions publiques ========================================================
+
 Plateau Plateau_creer(int taille)
 {
 	return Matrice_creer(taille, taille, VIDE);
@@ -349,4 +394,35 @@ Chaines Plateau_capturerChaines(Plateau plateau, Pion pion, int* valide)
 	Position_detruire(debutChaine);
 
 	return chaines;
+}
+
+Positions Plateau_determinerYeux(Plateau plateau, Chaine chaine)
+{
+	Positions positions;
+	Libertes libertes;
+	Position position;
+
+	libertes = Libertes_determinerLibertes(plateau, chaine);
+	positions = Liste_creer();
+
+	if(libertes == NULL)
+		return NULL;
+
+	Liste_tete(libertes);
+
+	do
+	{
+		position = Liste_courant(libertes);
+
+		if(Plateau_determinerSiEstOeil(plateau, position, chaine))
+			Liste_insererCourant(positions, Position_copier(position));
+
+		Liste_supprimerCourant(libertes);
+		Position_detruire(position);
+
+	} while(!Liste_estVide(libertes));
+
+	Liste_detruire(libertes);
+
+	return positions;
 }

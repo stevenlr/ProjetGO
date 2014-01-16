@@ -113,4 +113,11 @@ void Plateau_realiserCapture(Plateau plateau, Chaine chaine);
  */
 Chaines Plateau_capturerChaines(Plateau plateau, Pion pion, int* valide);
 
+/**
+ * Determine la position des yeux relatifs à une chaine.
+ *
+ * @return NULL si aucun oeil, sinon la liste des positions des yeux
+ */
+Positions Plateau_determinerYeux(Plateau plateau, Chaine chaine);
+
 #endif

@@ -9,8 +9,6 @@
 #include "Liste.h"
 #include "Pion.h"
 #include "Positions.h"
-#include "Plateau.h"
-#include "Libertes.h"
 
 typedef struct Chaine* Chaine;
 
@@ -95,12 +93,5 @@ void Chaine_setCouleur(Chaine chaine, Couleur couleur);
  * @return couleur
  */
 Couleur Chaine_getCouleur(Chaine chaine);
-
-/**
- * Determine la position des yeux relatifs à une chaine.
- *
- * @return NULL si aucun oeil, sinon la liste des positions des yeux
- */
-Positions Chaine_determinerYeux(Plateau plateau, Chaine chaine);
 
 #endif

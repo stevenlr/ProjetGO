@@ -1,6 +1,5 @@
 #include "include/Chaines.h"
 
-
 int Chaines_positionAppartient(Chaines chaines, Position position)
 {
 	Chaine chaine;
@@ -14,10 +13,9 @@ int Chaines_positionAppartient(Chaines chaines, Position position)
 	{
 		chaine = Liste_courant(chaines);
 		if(Chaine_appartient(chaine, position))
-		{
 			return 1;
-		}
-	}while(Liste_suivant(chaines));
+
+	} while(Liste_suivant(chaines));
 
 	return 0;
 }

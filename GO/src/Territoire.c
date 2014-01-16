@@ -7,8 +7,9 @@
 #include "include/Pile.h"
 #include "include/Pion.h"
 #include "include/Couleur.h"
+#include "include/Libertes.h"
 
-/*=FONCTION PRIVEE=======================================================*/
+// Fonctions privées ==========================================================
 
 static void Territoire_determinerCouleur(Couleur couleur, Territoire territoire, int estNeutre)
 {
@@ -26,7 +27,7 @@ static void Territoire_determinerCouleur(Couleur couleur, Territoire territoire,
 	}
 }
 
-/*=FONCTIONS PUBLIQUES===================================================*/
+// Fonctions publiques ========================================================
 
 Territoire determineTerritoire(Plateau plateau, Position origine)
 {
@@ -143,8 +144,8 @@ Chaines Territoire_determinerChainesAutour(Territoire territoire, Plateau platea
 		return NULL;
 
 	chaines = Liste_creer();
-
-	Matrice_getTaille(plateau, NULL, &taille);
+	taille = Plateau_getTaille(plateau);
+	Chaine_tete(territoire);
 
 	do
 	{
@@ -157,10 +158,10 @@ Chaines Territoire_determinerChainesAutour(Territoire territoire, Plateau platea
 		if(y >= 0)
 			if(Plateau_get(plateau, position) != VIDE)
 				if(!Chaines_positionAppartient(chaines, position))
-					{
+				{
 					chaine = Plateau_determinerChaine(plateau, position);
 					Liste_insererCourant(chaines, chaine);
-					}
+				}
 
 		// Gauche
 		Position_setY(position, ++y);
@@ -168,10 +169,10 @@ Chaines Territoire_determinerChainesAutour(Territoire territoire, Plateau platea
 		if(x >= 0)
 			if(Plateau_get(plateau, position) != VIDE)
 				if(!Chaines_positionAppartient(chaines, position))
-					{
+				{
 					chaine = Plateau_determinerChaine(plateau, position);
 					Liste_insererCourant(chaines, chaine);
-					}
+				}
 
 		// Bas
 		Position_setY(position, ++y);
@@ -179,51 +180,62 @@ Chaines Territoire_determinerChainesAutour(Territoire territoire, Plateau platea
 		if(y < taille)
 			if(Plateau_get(plateau, position) != VIDE)
 				if(!Chaines_positionAppartient(chaines, position))
-					{
+				{
 					chaine = Plateau_determinerChaine(plateau, position);
 					Liste_insererCourant(chaines, chaine);
-					}
+				}
 		// Droite
 		Position_setY(position, --y);
 		Position_setX(position, ++x);
 		if(x < taille)
 			if(Plateau_get(plateau, position) != VIDE)
 				if(!Chaines_positionAppartient(chaines, position))
-					{
+				{
 					chaine = Plateau_determinerChaine(plateau, position);
 					Liste_insererCourant(chaines, chaine);
-					}
+				}
 
-	}while(Chaine_suivant(territoire));
+	} while(Chaine_suivant(territoire));
 
 	return chaines;
 }
 
-int Territoire_estUnSeki(Territoire territoire,  Plateau plateau)
+int Territoire_estUnSeki(Territoire territoire, Plateau plateau)
 {
 	Chaines chaines;
 	Chaine chaine;
 	Libertes libertes;
 	Position position;
+	int status = 1; // Histoire d'avoir le temps de libérer la mémoire.
 
 	chaines = Territoire_determinerChainesAutour(territoire, plateau);
 
 	do
 	{
 		chaine = Liste_courant(chaines);
-		libertes = Libertes_determinerLibertes(plateau, chaine);	//Forcément, il y a des libertés vu que ce sont les chaines qui entourent un territoire vide.
+		libertes = Libertes_determinerLibertes(plateau, chaine); //Forcément, il y a des libertés vu que ce sont les chaines qui entourent un territoire vide.
 
 		do
 		{
 			position = Liste_courant(libertes);
 
-			if(!Chaine_appartient(territoire, position))	//Si une liberté n'est pas dans le territoire dit Seki, il n'y a pas Seki.
-				return 0;
+			if(!Chaine_appartient(territoire, position)) //Si une liberté n'est pas dans le territoire dit Seki, il n'y a pas Seki.
+				status = 0;
 
-		}while(Liste_suivant(libertes));
+		} while(Liste_suivant(libertes) && !status);
 
-	}while(Liste_suivant(chaines));
+		Libertes_vider(libertes);
+		Liste_detruire(libertes);
 
-	return 1;
+		Chaine_vider(chaine);
+		Chaine_detruire(chaine);
+
+		Liste_supprimerCourant(chaines);
+
+	} while(!Liste_estVide(chaines)); // On s'arrête pas quand status=0 car il faut désallouer toutes les choses !
+
+	Liste_detruire(chaines);
+
+	return status;
 }
 

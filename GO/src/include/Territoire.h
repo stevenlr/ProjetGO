@@ -37,6 +37,4 @@ Chaines Territoire_determinerChainesAutour(Territoire territoire, Plateau platea
  */
 int Territoire_estUnSeki(Territoire territoire,  Plateau plateau);
 
-
-
 #endif

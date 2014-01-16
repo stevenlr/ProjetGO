@@ -8,4 +8,4 @@
 
 typedef Liste Positions;
 
-#endif /* POSITIONS_H_ */
+#endif
