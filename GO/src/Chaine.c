@@ -20,7 +20,7 @@ static int Chaine_determinerSiEstOeil(Plateau plateau, Position position)
 	Couleur couleurOeil;
 	int x, y, taille;
 
-	taille = Matrice_getTaille(plateau);
+	Matrice_getTaille(plateau, NULL, &taille);
 
 	x = Position_getX(position);
 	y = Position_getY(position);
@@ -29,10 +29,12 @@ static int Chaine_determinerSiEstOeil(Plateau plateau, Position position)
 	// Haut
 	Position_setY(position, --y);
 	if(y >= 0)
+		{
 		if(Plateau_get(plateau, position) == VIDE)
 			return 0;
 		else
 			couleurOeil = Plateau_get(plateau, position);	//Car la couleur est encore inconnue.
+		}
 
 
 	// Gauche
@@ -203,7 +205,7 @@ Positions Chaine_determinerYeux(Plateau plateau, Chaine chaine)
 
 	libertes = Libertes_determinerLibertes(plateau, chaine);
 	positions = Liste_creer();
-	taille = Matrice_getTaille(plateau);
+	Matrice_getTaille(plateau, NULL, &taille);
 
 	if(libertes == NULL)
 		return NULL;

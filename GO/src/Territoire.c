@@ -144,7 +144,7 @@ Chaines Territoire_determinerChainesAutour(Territoire territoire, Plateau platea
 
 	chaines = Liste_creer();
 
-	taille = Matrice_getTaille(plateau);
+	Matrice_getTaille(plateau, NULL, &taille);
 
 	do
 	{
@@ -156,10 +156,10 @@ Chaines Territoire_determinerChainesAutour(Territoire territoire, Plateau platea
 		Position_setY(position, --y);
 		if(y >= 0)
 			if(Plateau_get(plateau, position) != VIDE)
-				if(!Chaines_positionAppartient(chaines))
+				if(!Chaines_positionAppartient(chaines, position))
 					{
 					chaine = Plateau_determinerChaine(plateau, position);
-					Liste_inserer(chaines, chaine);
+					Liste_insererCourant(chaines, chaine);
 					}
 
 		// Gauche
@@ -167,10 +167,10 @@ Chaines Territoire_determinerChainesAutour(Territoire territoire, Plateau platea
 		Position_setX(position, --x);
 		if(x >= 0)
 			if(Plateau_get(plateau, position) != VIDE)
-				if(!Chaines_positionAppartient(chaines))
+				if(!Chaines_positionAppartient(chaines, position))
 					{
 					chaine = Plateau_determinerChaine(plateau, position);
-					Liste_inserer(chaines, chaine);
+					Liste_insererCourant(chaines, chaine);
 					}
 
 		// Bas
@@ -178,20 +178,20 @@ Chaines Territoire_determinerChainesAutour(Territoire territoire, Plateau platea
 		Position_setX(position, ++x);
 		if(y < taille)
 			if(Plateau_get(plateau, position) != VIDE)
-				if(!Chaines_positionAppartient(chaines))
+				if(!Chaines_positionAppartient(chaines, position))
 					{
 					chaine = Plateau_determinerChaine(plateau, position);
-					Liste_inserer(chaines, chaine);
+					Liste_insererCourant(chaines, chaine);
 					}
 		// Droite
 		Position_setY(position, --y);
 		Position_setX(position, ++x);
 		if(x < taille)
 			if(Plateau_get(plateau, position) != VIDE)
-				if(!Chaines_positionAppartient(chaines))
+				if(!Chaines_positionAppartient(chaines, position))
 					{
 					chaine = Plateau_determinerChaine(plateau, position);
-					Liste_inserer(chaines, chaine);
+					Liste_insererCourant(chaines, chaine);
 					}
 
 	}while(Chaine_suivant(territoire));

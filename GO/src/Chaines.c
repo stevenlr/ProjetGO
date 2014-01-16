@@ -1,5 +1,6 @@
 #include "include/Chaines.h"
 
+
 int Chaines_positionAppartient(Chaines chaines, Position position)
 {
 	Chaine chaine;

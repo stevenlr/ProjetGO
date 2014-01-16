@@ -10,6 +10,7 @@
 #include "Pion.h"
 #include "Positions.h"
 #include "Plateau.h"
+#include "Libertes.h"
 
 typedef struct Chaine* Chaine;
 

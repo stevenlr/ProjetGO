@@ -6,6 +6,10 @@
 #ifndef CHAINES_H_
 #define CHAINES_H_
 
+#include "Liste.h"
+#include "Position.h"
+#include "Chaine.h"
+
 typedef Liste Chaines;
 
 /**
