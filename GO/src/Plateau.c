@@ -428,7 +428,7 @@ Positions Plateau_determinerYeux(Plateau plateau, Chaine chaine)
 	return positions;
 }
 
-void Plateau_calculerScore(Plateau plateau, int komi, int* scoreNoir, int* scoreBlanc)
+void Plateau_calculerScore(Plateau plateau, float komi, float* scoreNoir, float* scoreBlanc)
 {
 	int i, j, taille;
 	Territoire territoire;
@@ -447,7 +447,7 @@ void Plateau_calculerScore(Plateau plateau, int komi, int* scoreNoir, int* score
 		{
 			Position_setY(position, j);
 
-			if( (territoire = Territoire_determinerTerritoire(plateau, position) ) != NULL)
+			if((territoire = Territoire_determinerTerritoire(plateau, position)) != NULL)
 			{
 				if(Chaine_getCouleur(territoire) != VIDE)
 				{
@@ -460,7 +460,6 @@ void Plateau_calculerScore(Plateau plateau, int komi, int* scoreNoir, int* score
 				Chaine_vider(territoire);
 				Chaine_detruire(territoire);
 			}
-
 		}
 	}
 

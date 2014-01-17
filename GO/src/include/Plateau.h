@@ -128,6 +128,6 @@ Positions Plateau_determinerYeux(Plateau plateau, Chaine chaine);
  * @param scoreNoir
  * @param scoreBlanc
  */
-void Plateau_calculerScore(Plateau plateau, int komi, int* scoreNoir, int* scoreBlanc);
+void Plateau_calculerScore(Plateau plateau, float komi, float* scoreNoir, float* scoreBlanc);
 
 #endif

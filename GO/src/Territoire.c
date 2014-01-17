@@ -251,7 +251,7 @@ int Territoire_determinerNbCases(Territoire territoire)
 	do
 	{
 		n++;
-	}while(Chaine_suivant(territoire));
+	} while(Chaine_suivant(territoire));
 
 	return n;
 }
