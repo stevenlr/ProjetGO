@@ -10,6 +10,12 @@
 #include "include/Position.h"
 
 /**
+ * Ramasse miettes, car des positions sont sans arrêt allouées et désallouées.
+ */
+static Position gc[100];
+static int gcIndex = 0;
+
+/**
  * Position
  */
 struct Position{
