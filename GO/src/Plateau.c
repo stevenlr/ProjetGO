@@ -13,6 +13,7 @@
 #include "include/Plateau.h"
 #include "include/Pile.h"
 #include "include/Libertes.h"
+#include "include/Territoire.h"
 
 // Fonctions privées ==========================================================
 
@@ -425,4 +426,43 @@ Positions Plateau_determinerYeux(Plateau plateau, Chaine chaine)
 	Liste_detruire(libertes);
 
 	return positions;
+}
+
+void Plateau_calculerScore(Plateau plateau, int komi, int* scoreNoir, int* scoreBlanc)
+{
+	int i, j, taille;
+	Territoire territoire;
+	Position position;
+
+	taille = Plateau_getTaille(plateau);
+	*scoreNoir = 0;
+	*scoreBlanc = komi;
+	position = Position_creer(0, 0);
+
+	for(i = 0; i < taille; i++)
+	{
+		Position_setX(position, i);
+
+		for(j = 0; j < taille; j++)
+		{
+			Position_setY(position, j);
+
+			if( (territoire = Territoire_determinerTerritoire(plateau, position) ) != NULL)
+			{
+				if(Chaine_getCouleur(territoire) != VIDE)
+				{
+					if(Chaine_getCouleur(territoire) == BLANC)
+						*scoreBlanc += Territoire_determinerNbCases(territoire);
+					else
+						*scoreNoir += Territoire_determinerNbCases(territoire);
+				}
+
+				Chaine_vider(territoire);
+				Chaine_detruire(territoire);
+			}
+
+		}
+	}
+
+	Position_detruire(position);
 }

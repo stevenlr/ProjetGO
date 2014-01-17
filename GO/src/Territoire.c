@@ -29,7 +29,7 @@ static void Territoire_determinerCouleur(Couleur couleur, Territoire territoire,
 
 // Fonctions publiques ========================================================
 
-Territoire determineTerritoire(Plateau plateau, Position origine)
+Territoire Territoire_determinerTerritoire(Plateau plateau, Position origine)
 {
 	Territoire territoire;
 	Pile pile;
@@ -237,5 +237,22 @@ int Territoire_estUnSeki(Territoire territoire, Plateau plateau)
 	Liste_detruire(chaines);
 
 	return status;
+}
+
+int Territoire_determinerNbCases(Territoire territoire)
+{
+	int n = 0;
+
+	if(territoire == NULL)
+		return 0;
+
+	Chaine_tete(territoire);
+
+	do
+	{
+		n++;
+	}while(Chaine_suivant(territoire));
+
+	return n;
 }
 

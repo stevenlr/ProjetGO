@@ -120,4 +120,14 @@ Chaines Plateau_capturerChaines(Plateau plateau, Pion pion, int* valide);
  */
 Positions Plateau_determinerYeux(Plateau plateau, Chaine chaine);
 
+/**
+ * Calcule le score de la partie.
+ *
+ * @param plateau
+ * @param komi
+ * @param scoreNoir
+ * @param scoreBlanc
+ */
+void Plateau_calculerScore(Plateau plateau, int komi, int* scoreNoir, int* scoreBlanc);
+
 #endif

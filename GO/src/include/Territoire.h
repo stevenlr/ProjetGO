@@ -14,11 +14,12 @@ typedef Chaine Territoire;
 
 /**
  * Determine le territoire de la case origine
+ *
  * @param plateau
  * @param pos
- * @return territoire : Chaine des cases du territoires
+ * @return territoire : Chaine des cases du territoires. La couleur du territoire est VIDE si territoire neutre.
  */
-Territoire determineTerritoire(Plateau plateau,Position origine);
+Territoire Territoire_determineTerritoire(Plateau plateau,Position origine);
 
 /**
  * Déterminer les chaines entourants le territoire.
@@ -36,5 +37,13 @@ Chaines Territoire_determinerChainesAutour(Territoire territoire, Plateau platea
  * @return 1 si vrai, sinon 0.
  */
 int Territoire_estUnSeki(Territoire territoire,  Plateau plateau);
+
+/**
+ * Determiner le nombre de cases d'un territoire
+ *
+ * @param territoire
+ * @return nombre de cases du territoire
+ */
+int Territoire_determinerNbCases(Territoire territoire);
 
 #endif
