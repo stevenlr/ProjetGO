@@ -11,6 +11,16 @@
 typedef struct Position* Position;
 
 /**
+ * Initialise le ramasse miettes.
+ */
+void Position_initGC();
+
+/**
+ * Nettoie le contenu restand dans le ramasse miettes.
+ */
+void Position_nettoyerGC();
+
+/**
  * Creer un position
  *
  * @param position

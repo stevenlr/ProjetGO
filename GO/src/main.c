@@ -74,6 +74,8 @@ int main(int argc, char* argv[])
 		return 1;
 	}
 
+	Position_initGC();
+
 	window = ContexteGraphique_getWindow();
 
 	position = Position_creer(0, 0);
@@ -140,6 +142,8 @@ int main(int argc, char* argv[])
 	Plateau_detruire(plateau);
 
 	Contexte_detruire();
+
+	Position_nettoyerGC();
 
 	return 0;
 }

@@ -9,11 +9,6 @@
 #include "include/Couleur.h"
 #include "include/Position.h"
 
-/**
- * Ramasse miettes, car des positions sont sans arrêt allouées et désallouées.
- */
-static Position gc[100];
-static int gcIndex = 0;
 
 /**
  * Position
@@ -23,11 +18,66 @@ struct Position{
 	int y;	/**< Ordonnée */
 };
 
+/**
+ * Ramasse miettes, car des positions sont sans arrêt allouées et désallouées.
+ */
+static Position gc[100];
+static int gcIndex = 0;
+
+void Position_initGC()
+{
+	int i;
+
+	for(i = 0; i < 100; i++)
+		gc[i] = NULL;
+}
+
+void Position_nettoyerGC()
+{
+	int i = 0;
+
+	for(i = gcIndex - 1; i >= 0; i--)
+	{
+		free(gc[i]);
+		gc[i] = NULL;
+	}
+
+	gcIndex = 0;
+}
+
+static Position Position_gcAllouer()
+{
+	Position position;
+
+	if(gcIndex == 0)
+	{
+		return (Position) malloc(sizeof(struct Position));
+	}
+
+	position = gc[--gcIndex];
+	gc[gcIndex] = NULL;
+
+	return position;
+}
+
+static void Position_gcDesallouer(Position position)
+{
+	if(gcIndex == 100)
+	{
+		free(position);
+		return;
+	}
+
+	gc[gcIndex++] = position;
+}
+
+// Fin du ramasse miettes.
+
 Position Position_creer(int x, int y)
 {
 	Position position;
 
-	position = (Position) malloc(sizeof(struct Position));
+	position = Position_gcAllouer();
 
 	if(position == NULL)
 		return NULL;
@@ -49,7 +99,7 @@ void Position_detruire(Position position)
 {
 	assert(position);
 
-	free(position);
+	Position_gcDesallouer(position);
 }
 
 int Position_getX(Position position)
