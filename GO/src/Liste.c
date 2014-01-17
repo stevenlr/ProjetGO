@@ -20,6 +20,61 @@ struct _ElementListe {
 typedef struct _ElementListe ElementListe;
 
 /**
+ * Ramasse miettes, car des ElementListe sont sans arrêt allouées et désallouées.
+ */
+static ElementListe* gc[100];
+static int gcIndex = 0;
+
+void Liste_initGC()
+{
+	int i;
+
+	for(i = 0; i < 100; i++)
+		gc[i] = NULL;
+}
+
+void Liste_nettoyerGC()
+{
+	int i = 0;
+
+	for(i = gcIndex - 1; i >= 0; i--)
+	{
+		free(gc[i]);
+		gc[i] = NULL;
+	}
+
+	gcIndex = 0;
+}
+
+static ElementListe* Liste_gcAllouer()
+{
+	ElementListe* element;
+
+	if(gcIndex == 0)
+	{
+		return (ElementListe*) malloc(sizeof(ElementListe));
+	}
+
+	element = gc[--gcIndex];
+	gc[gcIndex] = NULL;
+
+	return element;
+}
+
+static void Liste_gcDesallouer(ElementListe* element)
+{
+	if(gcIndex == 100)
+	{
+		free(element);
+		return;
+	}
+
+	gc[gcIndex++] = element;
+}
+
+// Fin du ramasse miettes.
+
+/**
  * Liste doublement chaînée.
  */
 struct Liste {
@@ -48,7 +103,7 @@ static ElementListe* ElementListe_creer(void* ptr)
 {
 	ElementListe* element = NULL;
 
-	element = (ElementListe*) malloc(sizeof(ElementListe));
+	element = Liste_gcAllouer();
 
 	if(element == NULL)
 		return NULL;
@@ -68,7 +123,7 @@ static void ElementListe_detruire(ElementListe* element)
 	element->suivant = NULL;
 	element->ptr = NULL;
 
-	free(element);
+	Liste_gcDesallouer(element);
 }
 
 // Fonctions publiques ========================================================

@@ -16,7 +16,7 @@ typedef struct Position* Position;
 void Position_initGC();
 
 /**
- * Nettoie le contenu restand dans le ramasse miettes.
+ * Nettoie le contenu restant dans le ramasse miettes.
  */
 void Position_nettoyerGC();
 

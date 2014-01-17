@@ -9,6 +9,16 @@
 typedef struct Liste* Liste;
 
 /**
+ * Initialise le ramasse miettes.
+ */
+void Liste_initGC();
+
+/**
+ * Nettoie le contenu restant dans le ramasse miettes.
+ */
+void Liste_nettoyerGC();
+
+/**
  * Crée une liste vide.
  *
  * @return La liste ! NULL en cas de problème. (ça devrait pas arriver mais bon...)

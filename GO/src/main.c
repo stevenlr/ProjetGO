@@ -75,6 +75,7 @@ int main(int argc, char* argv[])
 	}
 
 	Position_initGC();
+	Liste_initGC();
 
 	window = ContexteGraphique_getWindow();
 
@@ -144,6 +145,7 @@ int main(int argc, char* argv[])
 	Contexte_detruire();
 
 	Position_nettoyerGC();
+	Liste_nettoyerGC();
 
 	return 0;
 }
