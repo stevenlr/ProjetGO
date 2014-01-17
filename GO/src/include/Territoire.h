@@ -19,7 +19,7 @@ typedef Chaine Territoire;
  * @param pos
  * @return territoire : Chaine des cases du territoires. La couleur du territoire est VIDE si territoire neutre.
  */
-Territoire Territoire_determineTerritoire(Plateau plateau,Position origine);
+Territoire Territoire_determinerTerritoire(Plateau plateau,Position origine);
 
 /**
  * Déterminer les chaines entourants le territoire.
