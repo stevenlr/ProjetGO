@@ -15,9 +15,4 @@
  * Chaque fonctions d"interface prendra en argument les états de l'écran et le contexte de l'interface.
  */
 
-typedef enum {
-	GRAPHIQUE,
-	CONSOLE
-} TypeInterface;
-
 #endif
