@@ -8,7 +8,9 @@
 #include <assert.h>
 
 #include <SDL/SDL.h>
-#include <SDL/SDL_image.h>
+
+#include "include/modes/contextes/Contexte.h"
+#include "include/modes/contextes/ContexteGraphique.h"
 
 #include "include/Texture.h"
 #include "include/Plateau.h"
@@ -66,27 +68,13 @@ int main(int argc, char* argv[])
 	int i, j;
 	int cx, cy;
 
-	if(SDL_Init(SDL_INIT_VIDEO) < 0)
+	if(!Contexte_initialiser(GRAPHIQUE))
 	{
-		fprintf(stderr, "Erreur d'initialisation SDL.\n");
+		fprintf(stderr, "Erreur d'initialisation du contexte graphique.\n");
 		return 1;
 	}
 
-	SDL_WM_SetCaption("Jeu de Go", NULL);
-
-	window = SDL_SetVideoMode(1066, 600, 24, SDL_HWSURFACE);
-	if(window == NULL)
-	{
-		fprintf(stderr, "Erreur de creation de la fenetre.\n");
-		return 1;
-	}
-
-	if(!Texture_chargerRegistre())
-	{
-		Texture_libererRegistre();
-		SDL_Quit();
-		return 1;
-	}
+	window = ContexteGraphique_getWindow();
 
 	position = Position_creer(0, 0);
 	plateau = Plateau_creer(taillePlateau);
@@ -150,8 +138,8 @@ int main(int argc, char* argv[])
 
 	Position_detruire(position);
 	Plateau_detruire(plateau);
-	Texture_libererRegistre();
-	SDL_Quit();
+
+	Contexte_detruire();
 
 	return 0;
 }

@@ -6,6 +6,4 @@
 #ifndef CONTEXTECONSOLE_H_
 #define CONTEXTECONSOLE_H_
 
-
-
 #endif
