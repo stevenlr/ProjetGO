@@ -70,3 +70,13 @@ SDL_Surface* ContexteGraphique_getWindow()
 {
 	return ((ContexteGraphique) Contexte_get())->window;
 }
+
+int ContexteGraphique_getTailleX()
+{
+	return ((ContexteGraphique) Contexte_get())->tailleX;
+}
+
+int ContexteGraphique_getTailleY()
+{
+	return ((ContexteGraphique) Contexte_get())->tailleY;
+}

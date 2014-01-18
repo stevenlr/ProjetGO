@@ -26,5 +26,7 @@ ContexteGraphique ContexteGraphique_creer();
 void ContexteGraphique_detruire(ContexteGraphique ctx);
 
 SDL_Surface* ContexteGraphique_getWindow();
+int ContexteGraphique_getTailleX();
+int ContexteGraphique_getTailleY();
 
 #endif
