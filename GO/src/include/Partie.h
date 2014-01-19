@@ -21,7 +21,7 @@ typedef struct Partie* Partie;
  * @param taille 	: Taille du plateau
  * @return partie
  */
-Partie Partie_creer(char* joueurNoir, char* joueurBlanc, int komi, int handicap, int taille);
+Partie Partie_creer(char* joueurNoir, char* joueurBlanc, float komi, int handicap, int taille);
 
 /**
  * Désalloue une partie
@@ -44,7 +44,7 @@ int Partie_getHandicap(Partie partie);
  * @param partie
  * @return komi
  */
-int Partie_getKomi(Partie partie);
+float Partie_getKomi(Partie partie);
 
 /**
  * Renvoie la taille du goban.
@@ -120,4 +120,5 @@ int Partie_sauvegarder(Partie partie, FILE* fichier);
  * @return NULL si echec, la partie chargée sinon.
  */
 Partie Partie_charger(FILE* fichier);
+
 #endif

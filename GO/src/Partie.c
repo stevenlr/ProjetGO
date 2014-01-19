@@ -11,18 +11,18 @@
 #include "include/Liste.h"
 #include "include/Territoire.h"
 
-
-struct Partie {
+struct Partie
+{
 	Liste plateaux;
 	Couleur joueurActuel;
-	int komi;
+	float komi;
 	int taille;
-	int handicap;	//< +X = Noir a X coup au départ. -X = Blanc a X coup au départ. 0 = sans handicap. (A voir si on gère ça là ou pas)
+	int handicap;		//< +X = Noir a X coup au départ. -X = Blanc a X coup au départ. 0 = sans handicap. (A voir si on gère ça là ou pas)
 	char* joueurNoir;	//< Noir
 	char* joueurBlanc;	//< Blanc
 };
 
-Partie Partie_creer(char* joueurNoir, char* joueurBlanc, int komi, int handicap, int taille)
+Partie Partie_creer(char* joueurNoir, char* joueurBlanc, float komi, int handicap, int taille)
 {
 	Partie partie;
 	Plateau plateau;
@@ -57,7 +57,7 @@ Partie Partie_creer(char* joueurNoir, char* joueurBlanc, int komi, int handicap,
 	return partie;
 }
 
-static void Partie_viderPlateaux(Liste plateaux)	//< Oui Mr. Gautier a eu la flemme de faire un fichier Plateaux.h/.c pour UNE fonction x)
+static void Partie_viderPlateaux(Liste plateaux)	// Oui Mr. Gautier a eu la flemme de faire un fichier Plateaux.h/.c pour UNE fonction x)
 {
 	Plateau plateau;
 
@@ -94,7 +94,7 @@ int Partie_getHandicap(Partie partie)
 	return partie->handicap;
 }
 
-int Partie_getKomi(Partie partie)
+float Partie_getKomi(Partie partie)
 {
 	return partie->komi;
 }
@@ -147,7 +147,7 @@ static int Partie_appartientPlateau(Partie partie, Plateau plateau)
 	if(Liste_estVide(partie->plateaux))
 		return 0;
 
-	Liste_queue(partie->plateaux);	//Parcours inversé car il y a + de chances de trouver rapidement que plateau == plateauPrec
+	Liste_queue(partie->plateaux);	// Parcours inversé car il y a + de chances de trouver rapidement que plateau == plateauPrec
 
 	do
 	{
@@ -156,7 +156,7 @@ static int Partie_appartientPlateau(Partie partie, Plateau plateau)
 		if(Plateau_estIdentique(plateau, plateauCourant))
 			return 1;
 
-	}while(Liste_precedent(partie->plateaux));
+	} while(Liste_precedent(partie->plateaux));
 
 	return 0;
 }
@@ -219,7 +219,7 @@ int Partie_sauvegarder(Partie partie, FILE* fichier)
 	tailleNoir = strlen(partie->joueurNoir);
 
 	fwrite(&(partie->handicap), sizeof(int), 1, fichier);
-	fwrite(&(partie->komi), sizeof(int), 1, fichier);
+	fwrite(&(partie->komi), sizeof(float), 1, fichier);
 	fwrite(&(partie->taille), sizeof(int), 1, fichier);
 	fwrite(&(partie->joueurActuel), sizeof(Couleur), 1, fichier);
 	fwrite(&tailleBlanc, sizeof(int), 1, fichier);
@@ -229,7 +229,7 @@ int Partie_sauvegarder(Partie partie, FILE* fichier)
 
 	Liste_tete(partie->plateaux);
 
-	if(!Liste_suivant(partie->plateaux))	//Plateau_creer insere déjà le plateau vide ! Pas besoin de le stocker. (cf Partie_charger)
+	if(!Liste_suivant(partie->plateaux))	// Plateau_creer insere déjà le plateau vide ! Pas besoin de le stocker. (cf Partie_charger)
 		return !ferror(fichier);
 
 	do
@@ -237,51 +237,52 @@ int Partie_sauvegarder(Partie partie, FILE* fichier)
 		plateau = Liste_courant(partie->plateaux);
 
 		Plateau_sauvegarder(plateau, fichier);
-	}while(Liste_suivant(partie->plateaux));
+	} while(Liste_suivant(partie->plateaux));
 
-	return !ferror(fichier);				//Check s'il y a eu une erreur de writing
+	return !ferror(fichier);				// Check s'il y a eu une erreur de writing
 }
 
 Partie Partie_charger(FILE* fichier)
 {
 	Partie partie;
-	int handicap, komi, taille, tailleBlanc, tailleNoir;
+	int handicap, taille, tailleBlanc, tailleNoir;
+	float komi;
 	Couleur joueurActuel;
 	char* joueurBlanc;
 	char* joueurNoir;
 	Plateau plateau;
 
 	fread(&handicap, sizeof(int), 1, fichier);
-	fread(&komi, sizeof(int), 1, fichier);
+	fread(&komi, sizeof(float), 1, fichier);
 	fread(&taille, sizeof(int), 1, fichier);
 	fread(&joueurActuel, sizeof(Couleur), 1, fichier);
-	fread(&tailleBlanc, sizeof(int), 1 , fichier);
-	fread(&tailleNoir, sizeof(int), 1 , fichier);
+	fread(&tailleBlanc, sizeof(int), 1, fichier);
+	fread(&tailleNoir, sizeof(int), 1, fichier);
 
 	joueurBlanc = malloc(sizeof(char) * tailleBlanc);
 	joueurNoir = malloc(sizeof(char) * tailleNoir);
 	fread(joueurBlanc, sizeof(char), tailleBlanc, fichier);
 	fread(joueurNoir, sizeof(char), tailleNoir, fichier);
 
-	if(ferror(fichier))			//<S'il y a une erreur maintenant, il ne peut creer une partie via Partie_creer.
-		{
+	if(ferror(fichier))			// S'il y a une erreur maintenant, il ne peut creer une partie via Partie_creer.
+	{
 		free(joueurBlanc);
 		free(joueurNoir);
 		return NULL;
-		}
+	}
 
 	partie = Partie_creer(joueurNoir, joueurBlanc, komi, handicap, taille);
 
 	free(joueurBlanc);
 	free(joueurNoir);
 
-	while(!feof(fichier))		//<Jusqu'à ce qu'on atteint la fin du fichier
+	while(!feof(fichier))		// Jusqu'à ce qu'on atteint la fin du fichier
 	{
 		plateau = Plateau_charger(fichier);
 		Partie_insererPlateau(partie, plateau);
 	}
 
-	if(ferror(fichier))			//<Check s'il y a eu une erreur de reading
+	if(ferror(fichier))			// Check s'il y a eu une erreur de reading
 		return NULL;
 
 	return partie;
