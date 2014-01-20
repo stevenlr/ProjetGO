@@ -6,7 +6,7 @@
 #ifndef TEXTURE_H_
 #define TEXTURE_H_
 
-#define NB_TEXTURES 5
+#define NB_TEXTURES 6
 
 typedef struct Texture* Texture;
 
@@ -15,7 +15,8 @@ typedef enum {
 	TEXTURE_PION_NOIR,
 	TEXTURE_PLATEAU_9,
 	TEXTURE_PLATEAU_13,
-	TEXTURE_PLATEAU_19
+	TEXTURE_PLATEAU_19,
+	TEXTURE_AURA
 } IdTexture;
 
 /**

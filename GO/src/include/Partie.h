@@ -105,6 +105,28 @@ void Partie_insererPlateau(Partie partie, Plateau plateau);
 void Partie_calculerScore(Partie partie, float* scoreNoir, float* scoreBlanc);
 
 /**
+ * Passe un tour.
+ *
+ * @param partie
+ */
+void Partie_passerTour(Partie partie);
+
+/**
+ * Joue un tour normal.
+ *
+ * @param partie
+ */
+void Partie_jouerTour(Partie partie);
+
+/**
+ * Vérifie si la partie est finie.
+ *
+ * @param partie
+ * @return 1 si la partie est finie, 0 sinon.
+ */
+int Partie_estFinie(Partie partie);
+
+/**
  * Sauvegarde une Partie de le FILE "fichier"
  *
  * @param partie
