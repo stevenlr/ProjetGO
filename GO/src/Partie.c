@@ -22,9 +22,11 @@ struct Partie
 	int passe;
 	char* joueurNoir;	//< Noir
 	char* joueurBlanc;	//< Blanc
+	TypeJoueur typeJoueurNoir;
+	TypeJoueur typeJoueurBlanc;
 };
 
-Partie Partie_creer(char* joueurNoir, char* joueurBlanc, float komi, int handicap, int taille)
+Partie Partie_creer(char* joueurNoir, char* joueurBlanc, TypeJoueur typeNoir, TypeJoueur typeBlanc, float komi, int handicap, int taille)
 {
 	Partie partie;
 	Plateau plateau;
@@ -36,6 +38,8 @@ Partie Partie_creer(char* joueurNoir, char* joueurBlanc, float komi, int handica
 
 	partie->joueurNoir = malloc(sizeof(strlen(joueurNoir)));
 	partie->joueurBlanc = malloc(sizeof(strlen(joueurBlanc)));
+	partie->typeJoueurNoir = typeNoir;
+	partie->typeJoueurBlanc = typeBlanc;
 
 	if(partie->joueurNoir == NULL || partie->joueurBlanc == NULL)
 		return NULL;
@@ -53,15 +57,10 @@ Partie Partie_creer(char* joueurNoir, char* joueurBlanc, float komi, int handica
 	partie->taille = taille;
 	partie->passe = 0;
 
-	if(handicap < 0)
-		partie->joueurActuel = BLANC;
-	else
-		partie->joueurActuel = NOIR;
-
 	return partie;
 }
 
-static void Partie_viderPlateaux(Liste plateaux)	// Oui Mr. Gautier a eu la flemme de faire un fichier Plateaux.h/.c pour UNE fonction x)
+static void Partie_viderPlateaux(Liste plateaux)
 {
 	Plateau plateau;
 
@@ -118,19 +117,20 @@ void Partie_getJoueur(Partie partie, Couleur couleur, char* joueur)
 
 Couleur Partie_getJoueurActuel(Partie partie)
 {
-	return partie->joueurActuel;
-}
-
-void Partie_changeJoueurActuel(Partie partie)
-{
 	int nhandicap = (partie->handicap < 0) ? -(partie->handicap) : partie->handicap;
+	int mod = (partie->tour - nhandicap) % 2;
 
-	if(partie->tour >= nhandicap)
+	if(partie->tour < nhandicap)
 	{
-		partie->joueurActuel = (partie->joueurActuel == NOIR) ? BLANC : NOIR;
+		return (partie->handicap < 0) ? BLANC : NOIR;
 	}
 
-	partie->tour++;
+	if(partie->handicap > 0)
+	{
+		return (mod == 0) ? BLANC : NOIR;
+	}
+
+	return (mod == 0) ? NOIR : BLANC;
 }
 
 Plateau Partie_getPlateauActuel(Partie partie)
@@ -139,7 +139,7 @@ Plateau Partie_getPlateauActuel(Partie partie)
 	return Liste_courant(partie->plateaux);
 }
 
-static int Partie_appartientPlateau(Partie partie, Plateau plateau)
+int Partie_appartientPlateau(Partie partie, Plateau plateau)
 {
 	Plateau plateauCourant;
 
@@ -178,8 +178,8 @@ void Plateau_calculerScore(Partie partie, float* scoreNoir, float* scoreBlanc)
 	plateau = Partie_getPlateauActuel(partie);
 
 	taille = Plateau_getTaille(plateau);
-	*scoreNoir = 0;
-	*scoreBlanc = Partie_getKomi(partie);
+	*scoreNoir = (partie->handicap < 0) ? partie->komi : 0;
+	*scoreBlanc = (partie->handicap >= 0) ? partie->komi : 0;
 	position = Position_creer(0, 0);
 
 	for(i = 0; i < taille; i++)
@@ -217,11 +217,13 @@ void Plateau_calculerScore(Partie partie, float* scoreNoir, float* scoreBlanc)
 
 void Partie_passerTour(Partie partie)
 {
+	partie->tour++;
 	partie->passe++;
 }
 
 void Partie_jouerTour(Partie partie)
 {
+	partie->tour++;
 	partie->passe = 0;
 }
 
@@ -241,11 +243,14 @@ int Partie_sauvegarder(Partie partie, FILE* fichier)
 	fwrite(&(partie->handicap), sizeof(int), 1, fichier);
 	fwrite(&(partie->komi), sizeof(float), 1, fichier);
 	fwrite(&(partie->taille), sizeof(int), 1, fichier);
-	fwrite(&(partie->joueurActuel), sizeof(Couleur), 1, fichier);
+	fwrite(&(partie->tour), sizeof(int), 1, fichier);
+	fwrite(&(partie->passe), sizeof(int), 1, fichier);
 	fwrite(&tailleBlanc, sizeof(int), 1, fichier);
 	fwrite(&tailleNoir, sizeof(int), 1, fichier);
 	fwrite(partie->joueurBlanc, sizeof(char), tailleBlanc, fichier);
 	fwrite(partie->joueurNoir, sizeof(char), tailleNoir, fichier);
+	fwrite(&(partie->typeJoueurBlanc), sizeof(TypeJoueur), 1, fichier);
+	fwrite(&(partie->typeJoueurNoir), sizeof(TypeJoueur), 1, fichier);
 
 	Liste_tete(partie->plateaux);
 
@@ -265,17 +270,20 @@ int Partie_sauvegarder(Partie partie, FILE* fichier)
 Partie Partie_charger(FILE* fichier)
 {
 	Partie partie;
-	int handicap, taille, tailleBlanc, tailleNoir;
+	int handicap, taille, tailleBlanc, tailleNoir, tour, passe;
 	float komi;
 	Couleur joueurActuel;
 	char* joueurBlanc;
 	char* joueurNoir;
 	Plateau plateau;
+	TypeJoueur typeBlanc, typeNoir;
 
 	fread(&handicap, sizeof(int), 1, fichier);
 	fread(&komi, sizeof(float), 1, fichier);
 	fread(&taille, sizeof(int), 1, fichier);
-	fread(&joueurActuel, sizeof(Couleur), 1, fichier);
+	fread(&tour, sizeof(int), 1, fichier);
+	fread(&passe, sizeof(int), 1, fichier);
+
 	fread(&tailleBlanc, sizeof(int), 1, fichier);
 	fread(&tailleNoir, sizeof(int), 1, fichier);
 
@@ -283,6 +291,8 @@ Partie Partie_charger(FILE* fichier)
 	joueurNoir = malloc(sizeof(char) * tailleNoir);
 	fread(joueurBlanc, sizeof(char), tailleBlanc, fichier);
 	fread(joueurNoir, sizeof(char), tailleNoir, fichier);
+	fread(&typeBlanc, sizeof(TypeJoueur), 1, fichier);
+	fread(&typeNoir, sizeof(TypeJoueur), 1, fichier);
 
 	if(ferror(fichier))			// S'il y a une erreur maintenant, il ne peut creer une partie via Partie_creer.
 	{
@@ -291,7 +301,9 @@ Partie Partie_charger(FILE* fichier)
 		return NULL;
 	}
 
-	partie = Partie_creer(joueurNoir, joueurBlanc, komi, handicap, taille);
+	partie = Partie_creer(joueurNoir, joueurBlanc, typeBlanc, typeNoir, komi, handicap, taille);
+	partie->tour = tour;
+	partie->passe = passe;
 
 	free(joueurBlanc);
 	free(joueurNoir);

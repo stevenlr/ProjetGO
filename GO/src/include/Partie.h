@@ -12,6 +12,14 @@
 typedef struct Partie* Partie;
 
 /**
+ * Type de joueur.
+ */
+typedef enum {
+	HUMAIN,   //!< HUMAIN
+	ORDINATEUR//!< ORDINATEUR
+} TypeJoueur;
+
+/**
  * Creer une partie avec les paramètres suivant. Inserer un plateau vide (plateau de départ).
  *
  * @param joueurNoir	: Pseudonyme
@@ -21,7 +29,7 @@ typedef struct Partie* Partie;
  * @param taille 	: Taille du plateau
  * @return partie
  */
-Partie Partie_creer(char* joueurNoir, char* joueurBlanc, float komi, int handicap, int taille);
+Partie Partie_creer(char* joueurNoir, char* joueurBlanc, TypeJoueur typeNoir, TypeJoueur typeBlanc, float komi, int handicap, int taille);
 
 /**
  * Désalloue une partie
@@ -85,6 +93,15 @@ void Partie_changeJoueurActuel(Partie partie);
  * @return plateau
  */
 Plateau Partie_getPlateauActuel(Partie partie);
+
+/**
+ * Vérifie si un plateau a déjà été joué.
+ *
+ * @param partie
+ * @param plateau
+ * @return 1 si un plateau identique a existé, 0 sinon.
+ */
+int Partie_appartientPlateau(Partie partie, Plateau plateau);
 
 /**
  * Insere un plateau dans la liste des plateaux de la partie.

@@ -6,13 +6,11 @@
 #ifndef ETATSJEU_H_
 #define ETATSJEU_H_
 
-#include "include/Plateau.h"
+#include "include/Partie.h"
 
 typedef struct {
-	int tour;
-	int taillePlateau;
 	int continuer;
-	Plateau plateau;
+	Partie partie;
 } EtatsJeu;
 
 #endif

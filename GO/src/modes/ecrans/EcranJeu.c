@@ -9,6 +9,7 @@
 
 #include "include/Position.h"
 #include "include/Plateau.h"
+#include "include/Partie.h"
 #include "include/Liste.h"
 #include "include/Chaine.h"
 #include "include/Chaines.h"
@@ -23,40 +24,53 @@
 
 static EtatsJeu etats;
 
-static void tourDeJeu(Couleur couleur, Position position)
+static void tourDeJeu(Position position)
 {
 	Pion pion;
 	Chaines chaines;
 	Chaine chaine;
+	Couleur couleur;
+	Plateau copiePlateau;
 	int valide;
 
+	copiePlateau = Plateau_copier(Partie_getPlateauActuel(etats.partie));
+	couleur = Partie_getJoueurActuel(etats.partie);
 	pion = Pion_creer(position, couleur);
 
-	chaines = Plateau_capturerChaines(etats.plateau, pion, &valide);
+	chaines = Plateau_capturerChaines(copiePlateau, pion, &valide);
 	assert(chaines);
 
-	if(!valide)
+	if(valide)
 	{
-		Plateau_set(etats.plateau, position, VIDE);
-	}
-	else if(!Liste_estVide(chaines))
-	{
-		Liste_tete(chaines);
-
-		do
+		if(!Liste_estVide(chaines))
 		{
-			chaine = Liste_courant(chaines);
-			Liste_supprimerCourant(chaines);
+			Liste_tete(chaines);
 
-			Plateau_realiserCapture(etats.plateau, chaine);
+			do
+			{
+				chaine = Liste_courant(chaines);
+				Liste_supprimerCourant(chaines);
 
-			Chaine_vider(chaine);
-			Chaine_detruire(chaine);
-		} while(!Liste_estVide(chaines));
+				Plateau_realiserCapture(copiePlateau, chaine);
+
+				Chaine_vider(chaine);
+				Chaine_detruire(chaine);
+			} while(!Liste_estVide(chaines));
+		}
+
+		if(Partie_appartientPlateau(etats.partie, copiePlateau))
+		{
+			valide = 0;
+		}
 	}
 
 	if(valide)
-		etats.tour++;
+	{
+		Partie_jouerTour(etats.partie);
+		Partie_insererPlateau(etats.partie, copiePlateau);
+	}
+	else
+		Plateau_detruire(copiePlateau);
 
 	Liste_detruire(chaines);
 	Pion_detruire(pion);
@@ -64,15 +78,13 @@ static void tourDeJeu(Couleur couleur, Position position)
 
 void EcranJeu_init()
 {
-	etats.tour = 0;
-	etats.taillePlateau = 19;
 	etats.continuer = 1;
-	etats.plateau = Plateau_creer(etats.taillePlateau);
+	etats.partie = Partie_creer("Joueur 1", "Joueur 2", HUMAIN, HUMAIN, 7.5, 0, 19);
 }
 
 void EcranJeu_detruire()
 {
-	Plateau_detruire(etats.plateau);
+	Partie_detruire(etats.partie);
 }
 
 void EcranJeu_main()
@@ -126,10 +138,9 @@ void EcranJeu_eventPlacerPion(int cx, int cy)
 	Position position = Position_creer(cx, cy);
 	Couleur couleur;
 
-	if(Plateau_get(etats.plateau, position) == VIDE)
+	if(Plateau_get(Partie_getPlateauActuel(etats.partie), position) == VIDE)
 	{
-		couleur = (etats.tour % 2 == 0) ? NOIR : BLANC;
-		tourDeJeu(couleur, position);
+		tourDeJeu(position);
 	}
 
 	Position_detruire(position);

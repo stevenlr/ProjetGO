@@ -6,6 +6,7 @@
 #include <SDL/SDL.h>
 
 #include "include/Position.h"
+#include "include/Partie.h"
 #include "include/Plateau.h"
 #include "include/Couleur.h"
 
@@ -23,7 +24,7 @@ void InterfaceGraphique_entreeJeu(EtatsJeu* etats)
 	int originePlateau;
 	int taillePlateau;
 
-	taillePlateau = etats->taillePlateau;
+	taillePlateau = Partie_getTaille(etats->partie);
 	originePlateau = (ContexteGraphique_getTailleY() - taillePlateau * TAILLE_CELL) / 2;
 
 	while(SDL_PollEvent(&event))
@@ -48,17 +49,18 @@ void InterfaceGraphique_entreeJeu(EtatsJeu* etats)
 void InterfaceGraphique_sortieJeu(EtatsJeu* etats)
 {
 	SDL_Surface* window;
-	int tailleX, tailleY, i, j, originePlateau;
+	int tailleX, tailleY, i, j, originePlateau, taillePlateau;
 	SDL_Rect rect;
 	Position position;
 	Couleur couleur;
 	IdTexture texture;
 
+	taillePlateau = Partie_getTaille(etats->partie);
 	window = ContexteGraphique_getWindow();
 	tailleX = ContexteGraphique_getTailleX();
 	tailleY = ContexteGraphique_getTailleY();
 
-	originePlateau = (ContexteGraphique_getTailleY() - etats->taillePlateau * TAILLE_CELL) / 2;
+	originePlateau = (ContexteGraphique_getTailleY() - taillePlateau * TAILLE_CELL) / 2;
 
 	rect.x = 0;
 	rect.y = 0;
@@ -69,7 +71,7 @@ void InterfaceGraphique_sortieJeu(EtatsJeu* etats)
 
 	position = Position_creer(0, 0);
 
-	switch(etats->taillePlateau)
+	switch(taillePlateau)
 	{
 		case 9:
 			texture = TEXTURE_PLATEAU_9;
@@ -87,14 +89,14 @@ void InterfaceGraphique_sortieJeu(EtatsJeu* etats)
 
 	Texture_blitCentre(texture, window, tailleY / 2, tailleY / 2);
 
-	for(i = 0; i < etats->taillePlateau; i++)
+	for(i = 0; i < taillePlateau; i++)
 	{
-		for(j = 0; j < etats->taillePlateau; j++)
+		for(j = 0; j < taillePlateau; j++)
 		{
 			Position_setX(position, j);
 			Position_setY(position, i);
 
-			couleur = Plateau_get(etats->plateau, position);
+			couleur = Plateau_get(Partie_getPlateauActuel(etats->partie), position);
 
 			if(couleur == NOIR)
 				Texture_blit(TEXTURE_PION_NOIR, window, j * TAILLE_CELL + originePlateau, i * TAILLE_CELL + originePlateau);
@@ -108,5 +110,5 @@ void InterfaceGraphique_sortieJeu(EtatsJeu* etats)
 
 	Position_detruire(position);
 	SDL_Flip(window);
-	SDL_Delay(10); // Doucement le matin, pas trop vite l'après-midi.
+	SDL_Delay(20); // Doucement le matin, pas trop vite l'après-midi.
 }
