@@ -14,9 +14,9 @@
 #define NBOUTONS 3
 
 typedef enum {
-	PASSER,
-	SAUVEGARDER,
-	QUITTER
+	JEU_PASSER,
+	JEU_SAUVEGARDER,
+	JEU_QUITTER
 } Boutons;
 
 Bouton boutons[NBOUTONS];

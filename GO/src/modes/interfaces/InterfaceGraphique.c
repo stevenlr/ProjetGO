@@ -45,15 +45,15 @@ void InterfaceGraphique_entreeJeu(EtatsJeu* etats)
 			{
 				EcranJeu_eventPlacerPion(cx, cy);
 			}
-			else if(Bouton_clique(&(boutons[PASSER]), x, y))
+			else if(Bouton_clique(&(boutons[JEU_PASSER]), x, y))
 			{
 				EcranJeu_eventPasserTour();
 			}
-			else if(Bouton_clique(&(boutons[SAUVEGARDER]), x, y))
+			else if(Bouton_clique(&(boutons[JEU_SAUVEGARDER]), x, y))
 			{
 				EcranJeu_eventSauvegarder();
 			}
-			else if(Bouton_clique(&(boutons[QUITTER]), x, y))
+			else if(Bouton_clique(&(boutons[JEU_QUITTER]), x, y))
 			{
 				EcranJeu_eventArreter();
 			}
@@ -130,22 +130,37 @@ void InterfaceGraphique_sortieJeu(EtatsJeu* etats)
 	Texte_afficherChaine(window, milieu, 15, "Jeu de Go", GRAS | GRAND, 0xffffff, CENTRE_X);
 
 	sprintf(str, "Tour %d", Partie_getTour(etats->partie) + 1);
-	Texte_afficherChaine(window, milieu, 130, str, GRAND, 0xaaaaaa, CENTRE_X);
+	Texte_afficherChaine(window, milieu, 100, str, GRAND, 0xaaaaaa, CENTRE_X);
 
-	Texture_blit(TEXTURE_PION_NOIR, window, bordGauche, 187);
+	Texture_blit(TEXTURE_PION_NOIR, window, bordGauche, 157);
 	couleurInt = (tour == NOIR) ? 0xffffff : 0x707070;
-	Texte_afficherChaine(window, bordGauche + 40, 190, Partie_getJoueur(etats->partie, NOIR), NORMAL, couleurInt, GAUCHE);
+	Texte_afficherChaine(window, bordGauche + 40, 160, Partie_getJoueur(etats->partie, NOIR), NORMAL, couleurInt, GAUCHE);
 
-	Texture_blit(TEXTURE_PION_BLANC, window, bordGauche, 227);
+	Texture_blit(TEXTURE_PION_BLANC, window, bordGauche, 197);
 	couleurInt = (tour == NOIR) ? 0x707070 : 0xffffff;
-	Texte_afficherChaine(window, bordGauche + 40, 230, Partie_getJoueur(etats->partie, BLANC), NORMAL, couleurInt, GAUCHE);
+	Texte_afficherChaine(window, bordGauche + 40, 200, Partie_getJoueur(etats->partie, BLANC), NORMAL, couleurInt, GAUCHE);
 
-	for(i = 0; i < NBOUTONS; i++)
+	if(Partie_estFinie(etats->partie))
 	{
-		Bouton_afficher(&(boutons[i]), window);
+		Texte_afficherChaine(window, milieu, 330, "Partie terminée", GRAS | GRAND, 0xffff00, CENTRE_X);
+
+		sprintf(str, "Noir : %.1f - Blanc : %.1f", etats->scoreNoir, etats->scoreBlanc);
+		Texte_afficherChaine(window, milieu, 380, str, NORMAL, 0xaaaaaa, CENTRE_X);
+
+		if(etats->scoreNoir > etats->scoreBlanc)
+			couleur = NOIR;
+		else
+			couleur = BLANC;
+
+		sprintf(str, "%s remporte la partie", Partie_getJoueur(etats->partie, couleur));
+		Texte_afficherChaine(window, milieu, 410, str, NORMAL, 0xdddddd, CENTRE_X);
 	}
+
+	Bouton_afficher(&(boutons[JEU_PASSER]), window);
+	Bouton_afficher(&(boutons[JEU_QUITTER]), window);
+	Bouton_afficher(&(boutons[JEU_SAUVEGARDER]), window);
 
 	Position_detruire(position);
 	SDL_Flip(window);
-	SDL_Delay(20); // Doucement le matin, pas trop vite l'après-midi.
+	SDL_Delay(25); // Doucement le matin, pas trop vite l'après-midi.
 }

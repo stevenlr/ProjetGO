@@ -78,8 +78,16 @@ static void tourDeJeu(Position position)
 
 void EcranJeu_init()
 {
+	FILE* fp = fopen("sauvegarde.dat", "rb");
+
 	etats.continuer = 1;
-	etats.partie = Partie_creer("Joueur 1", "Joueur 2", HUMAIN, HUMAIN, 7.5, 0, 19);
+	etats.estFini = 0;
+	etats.scoreNoir = 0;
+	etats.scoreBlanc = 0;
+	//etats.partie = Partie_creer("Joueur 1", "Joueur 2", HUMAIN, HUMAIN, 7.5, 0, 19);
+	etats.partie = Partie_charger(fp);
+
+	fclose(fp);
 }
 
 void EcranJeu_detruire()
@@ -95,6 +103,13 @@ void EcranJeu_main()
 	while(etats.continuer)
 	{
 		entreeFct(&etats);
+
+		if(etats.estFini == 0 && Partie_estFinie(etats.partie))
+		{
+			etats.estFini = 1;
+			Partie_calculerScore(etats.partie, &(etats.scoreNoir), &(etats.scoreBlanc));
+		}
+
 		sortieFct(&etats);
 	}
 
@@ -135,6 +150,9 @@ void EcranJeu_eventArreter()
 
 void EcranJeu_eventPlacerPion(int cx, int cy)
 {
+	if(Partie_estFinie(etats.partie))
+			return;
+
 	Position position = Position_creer(cx, cy);
 
 	if(Plateau_get(Partie_getPlateauActuel(etats.partie), position) == VIDE)
@@ -147,6 +165,9 @@ void EcranJeu_eventPlacerPion(int cx, int cy)
 
 void EcranJeu_eventPasserTour()
 {
+	if(Partie_estFinie(etats.partie))
+		return;
+
 	Partie_passerTour(etats.partie);
 }
 

@@ -10,6 +10,8 @@
 
 typedef struct {
 	int continuer;
+	int estFini;	// 0 tant que la partie n'est pas finie et qu'on a pas encore calculé les scores.
+	float scoreNoir, scoreBlanc;
 	Partie partie;
 } EtatsJeu;
 

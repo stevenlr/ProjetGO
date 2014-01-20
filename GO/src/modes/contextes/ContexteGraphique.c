@@ -73,9 +73,9 @@ ContexteGraphique ContexteGraphique_creer()
 		return NULL;
 	}
 
-	boutons[PASSER] = Bouton_creer("Passer", bordGauche, bordDroit, 300, 330, 0x606060, 0xeeeeee);
-	boutons[SAUVEGARDER] = Bouton_creer("Sauvegarder", bordGauche, milieu - 7, tailleY - 45, tailleY - 15, 0x606060, 0xeeeeee);
-	boutons[QUITTER] = Bouton_creer("Quitter", milieu + 7, bordDroit, tailleY - 45, tailleY - 15, 0x803030, 0xeeeeee);
+	boutons[JEU_PASSER] = Bouton_creer("Passer", bordGauche, bordDroit, 265, 305, 0x606060, 0xeeeeee);
+	boutons[JEU_SAUVEGARDER] = Bouton_creer("Sauvegarder", bordGauche, milieu - 7, tailleY - 55, tailleY - 15, 0x606060, 0xeeeeee);
+	boutons[JEU_QUITTER] = Bouton_creer("Quitter", milieu + 7, bordDroit, tailleY - 55, tailleY - 15, 0x803030, 0xeeeeee);
 
 	return ctx;
 }

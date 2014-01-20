@@ -3,6 +3,7 @@
  * @brief Fonctions de Partie
  */
 
+#include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>
 #include <string.h>
@@ -167,13 +168,10 @@ int Partie_appartientPlateau(Partie partie, Plateau plateau)
 
 void Partie_insererPlateau(Partie partie, Plateau plateau)
 {
-	if(!Partie_appartientPlateau(partie, plateau))
-	{
-		Liste_insererQueue(partie->plateaux, plateau);
-	}
+	Liste_insererQueue(partie->plateaux, plateau);
 }
 
-void Plateau_calculerScore(Partie partie, float* scoreNoir, float* scoreBlanc)
+void Partie_calculerScore(Partie partie, float* scoreNoir, float* scoreBlanc)
 {
 	int i, j, taille;
 	Territoire territoire;
@@ -269,7 +267,7 @@ int Partie_sauvegarder(Partie partie, FILE* fichier)
 		Plateau_sauvegarder(plateau, fichier);
 	} while(Liste_suivant(partie->plateaux));
 
-	return !ferror(fichier);				// Check s'il y a eu une erreur de writing
+	return ferror(fichier) != 0;
 }
 
 Partie Partie_charger(FILE* fichier)
@@ -281,22 +279,24 @@ Partie Partie_charger(FILE* fichier)
 	char* joueurNoir;
 	Plateau plateau;
 	TypeJoueur typeBlanc, typeNoir;
+	int i;
 
 	fread(&handicap, sizeof(int), 1, fichier);
 	fread(&komi, sizeof(float), 1, fichier);
 	fread(&taille, sizeof(int), 1, fichier);
 	fread(&tour, sizeof(int), 1, fichier);
 	fread(&passe, sizeof(int), 1, fichier);
-
 	fread(&tailleBlanc, sizeof(int), 1, fichier);
 	fread(&tailleNoir, sizeof(int), 1, fichier);
-
-	joueurBlanc = malloc(sizeof(char) * tailleBlanc);
-	joueurNoir = malloc(sizeof(char) * tailleNoir);
+	joueurBlanc = malloc(sizeof(char) * tailleBlanc + 1);
+	joueurNoir = malloc(sizeof(char) * tailleNoir + 1);
 	fread(joueurBlanc, sizeof(char), tailleBlanc, fichier);
 	fread(joueurNoir, sizeof(char), tailleNoir, fichier);
 	fread(&typeBlanc, sizeof(TypeJoueur), 1, fichier);
 	fread(&typeNoir, sizeof(TypeJoueur), 1, fichier);
+
+	joueurBlanc[tailleBlanc] = '\0';
+	joueurNoir[tailleNoir] = '\0';
 
 	if(ferror(fichier))			// S'il y a une erreur maintenant, il ne peut creer une partie via Partie_creer.
 	{
@@ -312,7 +312,7 @@ Partie Partie_charger(FILE* fichier)
 	free(joueurBlanc);
 	free(joueurNoir);
 
-	while(!feof(fichier))		// Jusqu'à ce qu'on atteint la fin du fichier
+	for(i = 0; i < tour; i++)
 	{
 		plateau = Plateau_charger(fichier);
 		Partie_insererPlateau(partie, plateau);
