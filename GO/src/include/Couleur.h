@@ -10,9 +10,12 @@
  * Couleur d'un pion.
  */
 typedef enum {
-	VIDE, 	/**< Pas de données, case vide. */
-	BLANC,	/**< Pion blanc. */
-	NOIR  	/**< Pion noir. */
+	VIDE, 		/**< Pas de données, case vide. */
+	BLANC,		/**< Pion blanc. */
+	NOIR,  		/**< Pion noir. */
+	AURABLANC,	/**< Pion blanc avec une aura autour */
+	AURANOIR,	/**< Pion noir avec une aura autour */
+	AURAVIDE 	/**< Case vide avec une aura autour */
 } Couleur;
 
 /**
@@ -23,4 +26,11 @@ typedef enum {
  */
 char Couleur_versChar(Couleur couleur);
 
+/**
+ * Retourne la couleur utilisée pour représenter le caractère.
+ *
+ * @param c Caractère à représenter.
+ * @return Couleur représentant le caractère.
+ */
+Couleur Couleur_charVersCouleur(char c);
 #endif
