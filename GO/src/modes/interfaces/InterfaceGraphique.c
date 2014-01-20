@@ -10,6 +10,7 @@
 #include "include/Plateau.h"
 #include "include/Couleur.h"
 
+#include "include/graphics/Bouton.h"
 #include "include/graphics/Texture.h"
 #include "include/graphics/Texte.h"
 
@@ -20,7 +21,7 @@
 void InterfaceGraphique_entreeJeu(EtatsJeu* etats)
 {
 	SDL_Event event;
-	int cx, cy;
+	int cx, cy, x, y;
 	int originePlateau;
 	int taillePlateau;
 
@@ -35,12 +36,26 @@ void InterfaceGraphique_entreeJeu(EtatsJeu* etats)
 		}
 		else if(event.type == SDL_MOUSEBUTTONDOWN)
 		{
-			cx = (event.button.x - originePlateau) / TAILLE_CELL;
-			cy = (event.button.y - originePlateau) / TAILLE_CELL;
+			x = event.button.x;
+			y = event.button.y;
+			cx = (x - originePlateau) / TAILLE_CELL;
+			cy = (y - originePlateau) / TAILLE_CELL;
 
 			if(cx >= 0 && cx < taillePlateau && cy >= 0 && cy < taillePlateau)
 			{
 				EcranJeu_eventPlacerPion(cx, cy);
+			}
+			else if(Bouton_clique(&(boutons[PASSER]), x, y))
+			{
+				EcranJeu_eventPasserTour();
+			}
+			else if(Bouton_clique(&(boutons[SAUVEGARDER]), x, y))
+			{
+				EcranJeu_eventSauvegarder();
+			}
+			else if(Bouton_clique(&(boutons[QUITTER]), x, y))
+			{
+				EcranJeu_eventArreter();
 			}
 		}
 	}
@@ -50,13 +65,15 @@ void InterfaceGraphique_sortieJeu(EtatsJeu* etats)
 {
 	SDL_Surface* window;
 	int tailleX, tailleY, i, j, originePlateau, taillePlateau;
-	int bordDroit, bordGauche, milieu;
+	int bordDroit, bordGauche, milieu, couleurInt;
 	SDL_Rect rect;
 	Position position;
-	Couleur couleur;
+	Couleur couleur, tour;
 	IdTexture texture;
+	char str[32];
 
 	taillePlateau = Partie_getTaille(etats->partie);
+	tour = Partie_getJoueurActuel(etats->partie);
 	window = ContexteGraphique_getWindow();
 	tailleX = ContexteGraphique_getTailleX();
 	tailleY = ContexteGraphique_getTailleY();
@@ -111,7 +128,22 @@ void InterfaceGraphique_sortieJeu(EtatsJeu* etats)
 	}
 
 	Texte_afficherChaine(window, milieu, 15, "Jeu de Go", GRAS | GRAND, 0xffffff, CENTRE_X);
-	Texte_afficherChaine(window, bordDroit, 80, "Test accents é à ù ê", ITALIQUE, 0xffff00, DROITE);
+
+	sprintf(str, "Tour %d", Partie_getTour(etats->partie) + 1);
+	Texte_afficherChaine(window, milieu, 130, str, GRAND, 0xaaaaaa, CENTRE_X);
+
+	Texture_blit(TEXTURE_PION_NOIR, window, bordGauche, 187);
+	couleurInt = (tour == NOIR) ? 0xffffff : 0x707070;
+	Texte_afficherChaine(window, bordGauche + 40, 190, Partie_getJoueur(etats->partie, NOIR), NORMAL, couleurInt, GAUCHE);
+
+	Texture_blit(TEXTURE_PION_BLANC, window, bordGauche, 227);
+	couleurInt = (tour == NOIR) ? 0x707070 : 0xffffff;
+	Texte_afficherChaine(window, bordGauche + 40, 230, Partie_getJoueur(etats->partie, BLANC), NORMAL, couleurInt, GAUCHE);
+
+	for(i = 0; i < NBOUTONS; i++)
+	{
+		Bouton_afficher(&(boutons[i]), window);
+	}
 
 	Position_detruire(position);
 	SDL_Flip(window);

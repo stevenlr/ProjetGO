@@ -45,7 +45,7 @@ Partie Partie_creer(char* joueurNoir, char* joueurBlanc, TypeJoueur typeNoir, Ty
 		return NULL;
 
 	strcpy(partie->joueurNoir, joueurNoir);
-	strcpy(partie->joueurNoir, joueurNoir);
+	strcpy(partie->joueurBlanc, joueurBlanc);
 
 	plateau = Plateau_creer(taille);
 	partie->plateaux = Liste_creer();
@@ -107,12 +107,17 @@ int Partie_getTaille(Partie partie)
 	return partie->taille;
 }
 
-void Partie_getJoueur(Partie partie, Couleur couleur, char* joueur)
+int Partie_getTour(Partie partie)
+{
+	return partie->tour;
+}
+
+char* Partie_getJoueur(Partie partie, Couleur couleur)
 {
 	if(couleur == NOIR)
-		strcpy(joueur, partie->joueurNoir);
-	else
-		strcpy(joueur, partie->joueurBlanc);
+		return partie->joueurNoir;
+
+	return partie->joueurBlanc;
 }
 
 Couleur Partie_getJoueurActuel(Partie partie)

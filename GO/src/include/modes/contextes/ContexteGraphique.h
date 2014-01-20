@@ -7,7 +7,19 @@
 #define CONTEXTEGRAPHIQUE_H_
 
 #include <SDL/SDL.h>
+
 #include "Contexte.h"
+#include "include/graphics/Bouton.h"
+
+#define NBOUTONS 3
+
+typedef enum {
+	PASSER,
+	SAUVEGARDER,
+	QUITTER
+} Boutons;
+
+Bouton boutons[NBOUTONS];
 
 typedef struct ContexteGraphique* ContexteGraphique;
 

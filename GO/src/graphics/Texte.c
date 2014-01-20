@@ -62,8 +62,8 @@ void Texte_afficherChaine(SDL_Surface* surface, int x, int y, char* chaine, Styl
 	SDL_Rect rect;
 	int tailleX, tailleY;
 
-	couleurSDL.r = (couleur >> 4) & 0xff;
-	couleurSDL.g = (couleur >> 2) & 0xff;
+	couleurSDL.r = (couleur >> 16) & 0xff;
+	couleurSDL.g = (couleur >> 8) & 0xff;
 	couleurSDL.b = (couleur) & 0xff;
 
 	rect.x = x;

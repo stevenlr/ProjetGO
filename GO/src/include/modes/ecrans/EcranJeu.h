@@ -18,5 +18,7 @@ FonctionSortieEcran EcranJeu_getSortieFct();
 
 void EcranJeu_eventArreter();
 void EcranJeu_eventPlacerPion(int cx, int cy);
+void EcranJeu_eventPasserTour();
+void EcranJeu_eventSauvegarder();
 
 #endif

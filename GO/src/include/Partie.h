@@ -63,13 +63,21 @@ float Partie_getKomi(Partie partie);
 int Partie_getTaille(Partie partie);
 
 /**
+ * Renvoie le tour.
+ *
+ * @param partie
+ * @return tour
+ */
+int Partie_getTour(Partie partie);
+
+/**
  * Met dans joueur le pseudo du Joueur correspondant à couleur.
  *
  * @param partie
  * @param couleur
- * @param joueur
+ * @return Nom du joueur
  */
-void Partie_getJoueur(Partie partie, Couleur couleur, char* joueur);
+char* Partie_getJoueur(Partie partie, Couleur couleur);
 
 /**
  * Renvoie la couleur du joueur actuel

@@ -8,6 +8,7 @@
 
 #include <SDL/SDL.h>
 
+#include "include/graphics/Bouton.h"
 #include "include/graphics/Texture.h"
 #include "include/graphics/Texte.h"
 
@@ -19,8 +20,11 @@ struct ContexteGraphique {
 	int tailleX, tailleY;
 };
 
+Bouton boutons[NBOUTONS];
+
 ContexteGraphique ContexteGraphique_creer()
 {
+	int milieu, bordGauche, bordDroit, tailleX = 1066, tailleY = 600;
 	ContexteGraphique ctx;
 
 	ctx = (ContexteGraphique) malloc(sizeof(struct ContexteGraphique));
@@ -28,8 +32,12 @@ ContexteGraphique ContexteGraphique_creer()
 	if(ctx == NULL)
 		return NULL;
 
-	ctx->tailleX = 1066;
-	ctx->tailleY = 600;
+	ctx->tailleX = tailleX;
+	ctx->tailleY = tailleY;
+
+	bordGauche = tailleY;
+	bordDroit = tailleX - 15;
+	milieu = bordGauche + (bordDroit - bordGauche) / 2;
 
 	if(SDL_Init(SDL_INIT_VIDEO) < 0)
 	{
@@ -64,6 +72,10 @@ ContexteGraphique ContexteGraphique_creer()
 		free(ctx);
 		return NULL;
 	}
+
+	boutons[PASSER] = Bouton_creer("Passer", bordGauche, bordDroit, 300, 330, 0x606060, 0xeeeeee);
+	boutons[SAUVEGARDER] = Bouton_creer("Sauvegarder", bordGauche, milieu - 7, tailleY - 45, tailleY - 15, 0x606060, 0xeeeeee);
+	boutons[QUITTER] = Bouton_creer("Quitter", milieu + 7, bordDroit, tailleY - 45, tailleY - 15, 0x803030, 0xeeeeee);
 
 	return ctx;
 }

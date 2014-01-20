@@ -136,7 +136,6 @@ void EcranJeu_eventArreter()
 void EcranJeu_eventPlacerPion(int cx, int cy)
 {
 	Position position = Position_creer(cx, cy);
-	Couleur couleur;
 
 	if(Plateau_get(Partie_getPlateauActuel(etats.partie), position) == VIDE)
 	{
@@ -144,4 +143,21 @@ void EcranJeu_eventPlacerPion(int cx, int cy)
 	}
 
 	Position_detruire(position);
+}
+
+void EcranJeu_eventPasserTour()
+{
+	Partie_passerTour(etats.partie);
+}
+
+void EcranJeu_eventSauvegarder()
+{
+	FILE* fp = fopen("sauvegarde.dat", "wb");
+
+	if(!fp)
+		return;
+
+	Partie_sauvegarder(etats.partie, fp);
+
+	fclose(fp);
 }
