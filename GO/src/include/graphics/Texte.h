@@ -7,20 +7,23 @@
 #define TEXTE_H_
 
 /**
- * Styles de texte.
+ * Style de texte.
  */
 typedef enum {
-	NORMAL = 0,
-	GRAS = 1,
-	ITALIQUE = 2,
-	GRAND = 4
+	NORMAL = 0,  //!< NORMAL
+	GRAS = 1,    //!< GRAS
+	ITALIQUE = 2,//!< ITALIQUE
+	GRAND = 4    //!< GRAND
 } StyleTexte;
 
+/**
+ * Alignement du texte.
+ */
 typedef enum {
-	CENTRE_X = 1,
-	CENTRE_Y = 2,
-	DROITE = 4,
-	GAUCHE = 8
+	CENTRE_X = 1,//!< CENTRE_X
+	CENTRE_Y = 2,//!< CENTRE_Y
+	DROITE = 4,  //!< DROITE
+	GAUCHE = 8   //!< GAUCHE
 } AlignementTexte;
 
 /**
@@ -32,6 +35,7 @@ typedef enum {
  * @param chaine
  * @param style
  * @param couleur Exemple : 0xffffff pour blanc.
+ * @param alignement
  */
 void Texte_afficherChaine(SDL_Surface* surface, int x, int y, char* chaine, StyleTexte style, int couleur, AlignementTexte alignement);
 
