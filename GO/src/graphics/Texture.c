@@ -9,7 +9,7 @@
 #include <SDL/SDL.h>
 #include <SDL/SDL_image.h>
 
-#include "include/Texture.h"
+#include "include/graphics/Texture.h"
 
 /**
  * Texture

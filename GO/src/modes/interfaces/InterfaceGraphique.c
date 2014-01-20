@@ -5,10 +5,12 @@
 
 #include <SDL/SDL.h>
 
-#include "include/Texture.h"
 #include "include/Position.h"
 #include "include/Plateau.h"
 #include "include/Couleur.h"
+
+#include "include/graphics/Texture.h"
+#include "include/graphics/Texte.h"
 
 #include "include/modes/interfaces/InterfaceGraphique.h"
 #include "include/modes/contextes/ContexteGraphique.h"
@@ -100,6 +102,9 @@ void InterfaceGraphique_sortieJeu(EtatsJeu* etats)
 				Texture_blit(TEXTURE_PION_BLANC, window, j * TAILLE_CELL + originePlateau, i * TAILLE_CELL + originePlateau);
 		}
 	}
+
+	Texte_afficherChaine(window, 600 + ((1066 - 600) / 2), 15, "Jeu de Go", GRAS | GRAND, 0xffffff, CENTRE_X);
+	Texte_afficherChaine(window, 1066 - 15, 80, "Test accents é à ù ê", ITALIQUE, 0xffff00, DROITE);
 
 	Position_detruire(position);
 	SDL_Flip(window);

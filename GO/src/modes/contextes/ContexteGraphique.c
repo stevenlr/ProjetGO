@@ -8,7 +8,9 @@
 
 #include <SDL/SDL.h>
 
-#include "include/Texture.h"
+#include "include/graphics/Texture.h"
+#include "include/graphics/Texte.h"
+
 #include "include/modes/contextes/Contexte.h"
 #include "include/modes/contextes/ContexteGraphique.h"
 
@@ -46,8 +48,17 @@ ContexteGraphique ContexteGraphique_creer()
 		return NULL;
 	}
 
+	if(!Texte_chargerFontes())
+	{
+		Texte_libererFontes();
+		SDL_Quit();
+		free(ctx);
+		return NULL;
+	}
+
 	if(!Texture_chargerRegistre())
 	{
+		Texte_libererFontes();
 		Texture_libererRegistre();
 		SDL_Quit();
 		free(ctx);
@@ -61,6 +72,7 @@ void ContexteGraphique_detruire(ContexteGraphique ctx)
 {
 	assert(ctx);
 
+	Texte_libererFontes();
 	Texture_libererRegistre();
 	SDL_Quit();
 	free(ctx);
