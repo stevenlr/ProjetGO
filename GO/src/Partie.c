@@ -191,6 +191,12 @@ void Plateau_calculerScore(Partie partie, float* scoreNoir, float* scoreBlanc)
 		{
 			Position_setY(position, j);
 
+			if(Plateau_get(plateau, position) == NOIR)
+				*scoreNoir += 1;
+			else if(Plateau_get(plateau, position) == BLANC)
+				*scoreBlanc += 1;
+
+
 			if((territoire = Territoire_determinerTerritoire(plateau, position)) != NULL)
 			{
 				if(Chaine_getCouleur(territoire) != VIDE)

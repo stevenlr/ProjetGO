@@ -18,8 +18,32 @@ char Couleur_versChar(Couleur couleur)
 			return 'O';
 		case NOIR:
 			return 'X';
+		case AURABLANC:
+			return 'o';
+		case AURANOIR:
+			return 'x';
 		default:
 			return ' ';
 	}
 }
+
+Couleur Couleur_charVersCouleur(char c)
+{
+	switch(c)
+	{
+		case '.':
+			return VIDE;
+		case 'O':
+			return BLANC;
+		case 'X':
+			return NOIR;
+		case 'o':
+			return AURABLANC;
+		case 'x':
+			return AURANOIR;
+		default:
+			return AURAVIDE;	//Hum pas nécéssaire le default je suppose, mais c'est au cas où une faute de char
+	}
+}
+
 

@@ -10,9 +10,12 @@
  * Couleur d'un pion.
  */
 typedef enum {
-	VIDE, 	/**< Pas de données, case vide. */
-	BLANC,	/**< Pion blanc. */
-	NOIR  	/**< Pion noir. */
+	VIDE, 		/**< Pas de données, case vide. */
+	BLANC,		/**< Pion blanc. */
+	NOIR,  		/**< Pion noir. */
+	AURABLANC,	/**< Pion blanc avec une aura autour */
+	AURANOIR,	/**< Pion noir avec une aura autour */
+	AURAVIDE 	/**< Case vide avec une aura autour */
 } Couleur;
 
 /**
