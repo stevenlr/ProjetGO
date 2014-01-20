@@ -42,7 +42,7 @@ Couleur Couleur_charVersCouleur(char c)
 		case 'x':
 			return AURANOIR;
 		default:
-			return AURAVIDE;	//Hum pas nécéssaire le default je suppose, mais c'est au cas où une faute de char
+			return AURAVIDE;
 	}
 }
 
