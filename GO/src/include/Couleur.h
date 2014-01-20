@@ -26,4 +26,11 @@ typedef enum {
  */
 char Couleur_versChar(Couleur couleur);
 
+/**
+ * Retourne la couleur utilisée pour représenter le caractère.
+ *
+ * @param c Caractère à représenter.
+ * @return Couleur représentant le caractère.
+ */
+Couleur Couleur_charVersCouleur(char c);
 #endif
