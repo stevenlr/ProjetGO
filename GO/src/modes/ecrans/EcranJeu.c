@@ -84,8 +84,8 @@ void EcranJeu_init()
 	etats.estFini = 0;
 	etats.scoreNoir = 0;
 	etats.scoreBlanc = 0;
-	//etats.partie = Partie_creer("Joueur 1", "Joueur 2", HUMAIN, HUMAIN, 7.5, 0, 19);
-	etats.partie = Partie_charger(fp);
+	etats.partie = Partie_creer("Joueur 1", "Joueur 2", HUMAIN, HUMAIN, 7.5, 0, 19);
+	//etats.partie = Partie_charger(fp);
 
 	fclose(fp);
 }
