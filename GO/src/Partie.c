@@ -274,12 +274,16 @@ Partie Partie_charger(FILE* fichier)
 {
 	Partie partie;
 	int handicap, taille, tailleBlanc, tailleNoir, tour, passe;
+	long tailleFichier;
 	float komi;
 	char* joueurBlanc;
 	char* joueurNoir;
 	Plateau plateau;
 	TypeJoueur typeBlanc, typeNoir;
-	int i;
+
+	fseek(fichier, 0, SEEK_END);
+	tailleFichier = ftell(fichier);
+	fseek(fichier, 0, SEEK_SET);
 
 	fread(&handicap, sizeof(int), 1, fichier);
 	fread(&komi, sizeof(float), 1, fichier);
@@ -298,7 +302,7 @@ Partie Partie_charger(FILE* fichier)
 	joueurBlanc[tailleBlanc] = '\0';
 	joueurNoir[tailleNoir] = '\0';
 
-	if(ferror(fichier))			// S'il y a une erreur maintenant, il ne peut creer une partie via Partie_creer.
+	if(ferror(fichier))
 	{
 		free(joueurBlanc);
 		free(joueurNoir);
@@ -312,13 +316,14 @@ Partie Partie_charger(FILE* fichier)
 	free(joueurBlanc);
 	free(joueurNoir);
 
-	for(i = 0; i < tour; i++)
+
+	while(ftell(fichier) != tailleFichier)
 	{
 		plateau = Plateau_charger(fichier);
 		Partie_insererPlateau(partie, plateau);
 	}
 
-	if(ferror(fichier))			// Check s'il y a eu une erreur de reading
+	if(ferror(fichier))
 		return NULL;
 
 	return partie;
