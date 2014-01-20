@@ -18,6 +18,8 @@ struct Partie
 	float komi;
 	int taille;
 	int handicap;		//< +X = Noir a X coup au départ. -X = Blanc a X coup au départ. 0 = sans handicap. (A voir si on gère ça là ou pas)
+	int tour;
+	int passe;
 	char* joueurNoir;	//< Noir
 	char* joueurBlanc;	//< Blanc
 };
@@ -47,7 +49,9 @@ Partie Partie_creer(char* joueurNoir, char* joueurBlanc, float komi, int handica
 
 	partie->komi = komi;
 	partie->handicap = handicap;
+	partie->tour = 0;
 	partie->taille = taille;
+	partie->passe = 0;
 
 	if(handicap < 0)
 		partie->joueurActuel = BLANC;
@@ -119,19 +123,14 @@ Couleur Partie_getJoueurActuel(Partie partie)
 
 void Partie_changeJoueurActuel(Partie partie)
 {
-	if(partie->handicap == 0)
+	int nhandicap = (partie->handicap < 0) ? -(partie->handicap) : partie->handicap;
+
+	if(partie->tour >= nhandicap)
 	{
-		if(partie->joueurActuel == NOIR)
-			partie->joueurActuel = BLANC;
-		else
-			partie->joueurActuel = NOIR;
-		return;
+		partie->joueurActuel = (partie->joueurActuel == NOIR) ? BLANC : NOIR;
 	}
 
-	if(partie->handicap > 0)
-		partie->handicap--;
-	else
-		partie->handicap++;
+	partie->tour++;
 }
 
 Plateau Partie_getPlateauActuel(Partie partie)
@@ -214,6 +213,21 @@ void Plateau_calculerScore(Partie partie, float* scoreNoir, float* scoreBlanc)
 	}
 
 	Position_detruire(position);
+}
+
+void Partie_passerTour(Partie partie)
+{
+	partie->passe++;
+}
+
+void Partie_jouerTour(Partie partie)
+{
+	partie->passe = 0;
+}
+
+int Partie_estFinie(Partie partie)
+{
+	return partie->passe == 2;
 }
 
 int Partie_sauvegarder(Partie partie, FILE* fichier)
