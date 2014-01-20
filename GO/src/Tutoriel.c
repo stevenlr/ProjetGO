@@ -4,6 +4,12 @@
  */
 
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+#include "include/Tutoriel.h"
+#include "include/Liste.h"
+#include "include/Partie.h"
 
 struct Tutoriel {
 	Liste plateaux;
@@ -14,11 +20,11 @@ int Tutoriel_convertirTexteVersBinaire()
 {
 	char c;
 	char chaine[400];
-	FILE* fichier, fichier2;
+	FILE *fichier, *fichier2;
 	int n = 0, taille;
 
 	fichier = fopen("../assets/Tutoriel.txt", "r");
-	fichier2 = fopen("../assets/Tutoriel.bin", "w");
+	fichier2 = fopen("../assets/Tutoriel.bin", "wb");
 
 	if(fichier == NULL || fichier == NULL)
 		return 0;
@@ -47,9 +53,11 @@ int Tutoriel_convertirTexteVersBinaire()
 	return ferror(fichier2);
 }
 
-void Tutoriel_charger(Partie partie)
+Tutoriel Tutoriel_charger(Partie partie)
 {
 	/**
 	 * @todo Charger ce magnifique .bin (Easy, mais notime ! Je dois bosser mes exams o/)
 	 */
+
+	return NULL;
 }

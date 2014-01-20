@@ -20,8 +20,8 @@ struct Partie
 	int handicap;		//< +X = Noir a X coup au départ. -X = Blanc a X coup au départ. 0 = sans handicap. (A voir si on gère ça là ou pas)
 	int tour;
 	int passe;
-	char* joueurNoir;	//< Noir
-	char* joueurBlanc;	//< Blanc
+	char* joueurNoir;
+	char* joueurBlanc;
 	TypeJoueur typeJoueurNoir;
 	TypeJoueur typeJoueurBlanc;
 };
@@ -272,7 +272,6 @@ Partie Partie_charger(FILE* fichier)
 	Partie partie;
 	int handicap, taille, tailleBlanc, tailleNoir, tour, passe;
 	float komi;
-	Couleur joueurActuel;
 	char* joueurBlanc;
 	char* joueurNoir;
 	Plateau plateau;

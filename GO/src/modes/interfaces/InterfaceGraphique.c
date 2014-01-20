@@ -50,6 +50,7 @@ void InterfaceGraphique_sortieJeu(EtatsJeu* etats)
 {
 	SDL_Surface* window;
 	int tailleX, tailleY, i, j, originePlateau, taillePlateau;
+	int bordDroit, bordGauche, milieu;
 	SDL_Rect rect;
 	Position position;
 	Couleur couleur;
@@ -59,6 +60,10 @@ void InterfaceGraphique_sortieJeu(EtatsJeu* etats)
 	window = ContexteGraphique_getWindow();
 	tailleX = ContexteGraphique_getTailleX();
 	tailleY = ContexteGraphique_getTailleY();
+
+	bordGauche = tailleY;
+	bordDroit = tailleX - 15;
+	milieu = bordGauche + (bordDroit - bordGauche) / 2;
 
 	originePlateau = (ContexteGraphique_getTailleY() - taillePlateau * TAILLE_CELL) / 2;
 
@@ -105,8 +110,8 @@ void InterfaceGraphique_sortieJeu(EtatsJeu* etats)
 		}
 	}
 
-	Texte_afficherChaine(window, 600 + ((1066 - 600) / 2), 15, "Jeu de Go", GRAS | GRAND, 0xffffff, CENTRE_X);
-	Texte_afficherChaine(window, 1066 - 15, 80, "Test accents é à ù ê", ITALIQUE, 0xffff00, DROITE);
+	Texte_afficherChaine(window, milieu, 15, "Jeu de Go", GRAS | GRAND, 0xffffff, CENTRE_X);
+	Texte_afficherChaine(window, bordDroit, 80, "Test accents é à ù ê", ITALIQUE, 0xffff00, DROITE);
 
 	Position_detruire(position);
 	SDL_Flip(window);
