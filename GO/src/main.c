@@ -7,8 +7,6 @@
 #include <stdio.h>
 #include <assert.h>
 
-#include <SDL/SDL.h>
-
 #include "include/Liste.h"
 #include "include/Position.h"
 #include "include/modes/contextes/Contexte.h"
