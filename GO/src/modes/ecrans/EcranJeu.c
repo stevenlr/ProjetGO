@@ -154,7 +154,7 @@ void EcranJeu_eventPlacerPion(int cx, int cy)
 		return;
 
 	if(!Partie_estAuDernier(etats.partie))
-			return;
+		Partie_supprimerPlateauxSuivants(etats.partie);
 
 	Position position = Position_creer(cx, cy);
 
@@ -172,7 +172,7 @@ void EcranJeu_eventPasserTour()
 		return;
 
 	if(!Partie_estAuDernier(etats.partie))
-			return;
+		Partie_supprimerPlateauxSuivants(etats.partie);
 
 	Partie_insererPlateau(etats.partie, Plateau_copier(Partie_getPlateauActuel(etats.partie)));
 	Partie_passerTour(etats.partie);
@@ -202,6 +202,8 @@ void EcranJeu_eventPrecedent()
 {
 	if(Partie_estAuPremier(etats.partie))
 		return;
+
+	etats.estFini = 0;
 
 	Partie_rembobiner(etats.partie);
 }

@@ -198,4 +198,11 @@ void Partie_rembobiner(Partie partie);
  */
 void Partie_avancer(Partie partie);
 
+/**
+ * Supprime tous les plateaux après le courant.
+ *
+ * @param partie.
+ */
+void Partie_supprimerPlateauxSuivants(Partie partie);
+
 #endif

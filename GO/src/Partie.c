@@ -367,10 +367,31 @@ void Partie_rembobiner(Partie partie)
 {
 	partie->plateauCourant--;
 	partie->tour--;
+
+	if(partie->passe > 0)
+		partie->passe--;
 }
 
 void Partie_avancer(Partie partie)
 {
 	partie->plateauCourant++;
 	partie->tour++;
+}
+
+void Partie_supprimerPlateauxSuivants(Partie partie)
+{
+	Plateau plateau, courant;
+
+	Liste_setCourant(partie->plateaux, partie->plateauCourant);
+	courant = Liste_courant(partie->plateaux);
+
+	if(!Liste_suivant(partie->plateaux))
+		return;
+
+	while(Liste_courant(partie->plateaux) != courant)
+	{
+		plateau = Liste_courant(partie->plateaux);
+		Plateau_detruire(plateau);
+		Liste_supprimerCourant(partie->plateaux);
+	}
 }
