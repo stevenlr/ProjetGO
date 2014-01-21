@@ -81,6 +81,7 @@ struct Liste {
 	ElementListe* tete;		/**< Pointeur vers le début de la liste. */
 	ElementListe* queue;	/**< Pointeur vers la fin de la liste. */
 	ElementListe* courant;	/**< Pointeur vers l'élément courant. */
+	int nbElements;
 };
 
 /**
@@ -140,6 +141,7 @@ Liste Liste_creer()
 	liste->courant = NULL;
 	liste->tete = NULL;
 	liste->queue = NULL;
+	liste->nbElements = 0;
 
 	return liste;
 }
@@ -180,7 +182,7 @@ void Liste_queue(Liste liste)
 int Liste_estVide(Liste liste)
 {
 	assert(liste != NULL);
-	return liste->tete == NULL;
+	return liste->nbElements == 0;
 }
 
 void* Liste_courant(Liste liste)
@@ -234,6 +236,7 @@ void Liste_insererCourant(Liste liste, void* ptr)
 		liste->tete = element;
 		liste->queue = element;
 		liste->courant = element;
+		liste->nbElements++;
 
 		return;
 	}
@@ -249,6 +252,7 @@ void Liste_insererCourant(Liste liste, void* ptr)
 		liste->queue = element;
 	
 	liste->courant = element;
+	liste->nbElements++;
 }
 
 void Liste_insererTete(Liste liste, void* ptr)
@@ -262,6 +266,7 @@ void Liste_insererTete(Liste liste, void* ptr)
 		liste->tete = element;
 		liste->queue = element;
 		liste->courant = element;
+		liste->nbElements++;
 
 		return;
 	}
@@ -270,6 +275,7 @@ void Liste_insererTete(Liste liste, void* ptr)
 	liste->tete->precedent = element;
 	liste->tete = element;
 	liste->courant = element;
+	liste->nbElements++;
 }
 
 void Liste_insererQueue(Liste liste, void* ptr)
@@ -303,4 +309,27 @@ void Liste_supprimerCourant(Liste liste)
 		liste->courant = element->suivant;
 	else
 		liste->courant = element->precedent;
+
+	liste->nbElements--;
+}
+
+int Liste_getNbElements(Liste liste)
+{
+	assert(liste);
+
+	return liste->nbElements;
+}
+
+void Liste_setCourant(Liste liste, int i)
+{
+	assert(liste);
+	assert(i >= 0 && i < liste->nbElements);
+
+	Liste_tete(liste);
+
+	while(i > 0)
+	{
+		Liste_suivant(liste);
+		i--;
+	}
 }

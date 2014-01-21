@@ -25,6 +25,7 @@ struct Partie
 	char* joueurBlanc;
 	TypeJoueur typeJoueurNoir;
 	TypeJoueur typeJoueurBlanc;
+	int plateauCourant;
 };
 
 Partie Partie_creer(char* joueurNoir, char* joueurBlanc, TypeJoueur typeNoir, TypeJoueur typeBlanc, float komi, int handicap, int taille)
@@ -57,6 +58,7 @@ Partie Partie_creer(char* joueurNoir, char* joueurBlanc, TypeJoueur typeNoir, Ty
 	partie->tour = 0;
 	partie->taille = taille;
 	partie->passe = 0;
+	partie->plateauCourant = 0;
 
 	return partie;
 }
@@ -141,7 +143,7 @@ Couleur Partie_getJoueurActuel(Partie partie)
 
 Plateau Partie_getPlateauActuel(Partie partie)
 {
-	Liste_queue(partie->plateaux);
+	Liste_setCourant(partie->plateaux, partie->plateauCourant);
 	return Liste_courant(partie->plateaux);
 }
 
@@ -169,6 +171,7 @@ int Partie_appartientPlateau(Partie partie, Plateau plateau)
 void Partie_insererPlateau(Partie partie, Plateau plateau)
 {
 	Liste_insererQueue(partie->plateaux, plateau);
+	partie->plateauCourant++;
 }
 
 void Partie_calculerScore(Partie partie, float* scoreNoir, float* scoreBlanc)
@@ -348,4 +351,26 @@ Partie Partie_charger(FILE* fichier)
 		return NULL;
 
 	return partie;
+}
+
+int Partie_estAuPremier(Partie partie)
+{
+	return partie->plateauCourant == 0;
+}
+
+int Partie_estAuDernier(Partie partie)
+{
+	return partie->plateauCourant == (Liste_getNbElements(partie->plateaux) - 1);
+}
+
+void Partie_rembobiner(Partie partie)
+{
+	partie->plateauCourant--;
+	partie->tour--;
+}
+
+void Partie_avancer(Partie partie)
+{
+	partie->plateauCourant++;
+	partie->tour++;
 }

@@ -20,5 +20,7 @@ void EcranJeu_eventArreter();
 void EcranJeu_eventPlacerPion(int cx, int cy);
 void EcranJeu_eventPasserTour();
 void EcranJeu_eventSauvegarder();
+void EcranJeu_eventSuivant();
+void EcranJeu_eventPrecedent();
 
 #endif

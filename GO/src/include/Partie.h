@@ -168,4 +168,34 @@ int Partie_sauvegarder(Partie partie, FILE* fichier);
  */
 Partie Partie_charger(FILE* fichier);
 
+/**
+ * Vérifie si on est actuellement au premier plateau de la partie.
+ *
+ * @param partie
+ * @return 1 si on est est premier. 0 sinon.
+ */
+int Partie_estAuPremier(Partie partie);
+
+/**
+ * Vérifie si on est actuellement au dernier plateau de la partie.
+ *
+ * @param partie
+ * @return 1 si on est est dernier. 0 sinon.
+ */
+int Partie_estAuDernier(Partie partie);
+
+/**
+ * Revient au plateau précédent.
+ *
+ * @param partie
+ */
+void Partie_rembobiner(Partie partie);
+
+/**
+ * Avance d'un plateau dans la partie.
+ *
+ * @param partie
+ */
+void Partie_avancer(Partie partie);
+
 #endif

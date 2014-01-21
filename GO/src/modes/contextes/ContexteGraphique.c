@@ -17,6 +17,7 @@
 
 struct ContexteGraphique {
 	SDL_Surface* window;
+	SDL_Surface* icon;
 	int tailleX, tailleY;
 };
 
@@ -46,7 +47,11 @@ ContexteGraphique ContexteGraphique_creer()
 		return NULL;
 	}
 
+	ctx->icon = SDL_LoadBMP("assets/images/icon.bmp");
+
+	SDL_WM_SetIcon(ctx->icon, NULL);
 	SDL_WM_SetCaption("Jeu de Go", NULL);
+
 
 	ctx->window = SDL_SetVideoMode(ctx->tailleX, ctx->tailleY, 24, SDL_HWSURFACE);
 	if(ctx->window == NULL)
@@ -76,6 +81,8 @@ ContexteGraphique ContexteGraphique_creer()
 	boutons[JEU_PASSER] = Bouton_creer("Passer", bordGauche, bordDroit, 265, 305, 0x606060, 0xeeeeee);
 	boutons[JEU_SAUVEGARDER] = Bouton_creer("Sauvegarder", bordGauche, milieu - 7, tailleY - 55, tailleY - 15, 0x606060, 0xeeeeee);
 	boutons[JEU_QUITTER] = Bouton_creer("Quitter", milieu + 7, bordDroit, tailleY - 55, tailleY - 15, 0x803030, 0xeeeeee);
+	boutons[JEU_PRECEDENT] = Bouton_creer("<", bordGauche, milieu - 100, 320, 360, 0x606060, 0xeeeeee);
+	boutons[JEU_SUIVANT] = Bouton_creer(">", milieu + 100, bordDroit, 320, 360, 0x606060, 0xeeeeee);
 
 	return ctx;
 }
@@ -86,6 +93,7 @@ void ContexteGraphique_detruire(ContexteGraphique ctx)
 
 	Texte_libererFontes();
 	Texture_libererRegistre();
+	SDL_FreeSurface(ctx->icon);
 	SDL_Quit();
 	free(ctx);
 }

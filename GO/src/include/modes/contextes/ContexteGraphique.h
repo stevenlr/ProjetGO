@@ -11,12 +11,14 @@
 #include "Contexte.h"
 #include "include/graphics/Bouton.h"
 
-#define NBOUTONS 3
+#define NBOUTONS 5
 
 typedef enum {
 	JEU_PASSER,
 	JEU_SAUVEGARDER,
-	JEU_QUITTER
+	JEU_QUITTER,
+	JEU_PRECEDENT,
+	JEU_SUIVANT
 } Boutons;
 
 Bouton boutons[NBOUTONS];

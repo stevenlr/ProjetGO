@@ -108,4 +108,20 @@ void Liste_insererQueue(Liste liste, void* ptr);
  */
 void Liste_supprimerCourant(Liste liste);
 
+/**
+ * Retourne le nombre d'éléments dans la liste.
+ *
+ * @param liste
+ * @return Le nombre d'éléments.
+ */
+int Liste_getNbElements(Liste liste);
+
+/**
+ * Assigne comme élément courant le ième élément de la liste.
+ *
+ * @param liste
+ * @param i
+ */
+void Liste_setCourant(Liste liste, int i);
+
 #endif

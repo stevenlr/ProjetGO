@@ -23,11 +23,9 @@ static void Territoire_determinerCouleur(Couleur couleur, Territoire territoire,
 		{
 			Chaine_setCouleur(territoire, couleur);
 		}
-		else
+		else if(couleur != Chaine_getCouleur(territoire))
 		{
-			if(couleur != Chaine_getCouleur(territoire))
-				Chaine_setCouleur(territoire, VIDE);
-
+			Chaine_setCouleur(territoire, VIDE);
 			*estNeutre = 1;
 		}
 	}

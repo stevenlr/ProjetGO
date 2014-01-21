@@ -57,6 +57,14 @@ void InterfaceGraphique_entreeJeu(EtatsJeu* etats)
 			{
 				EcranJeu_eventArreter();
 			}
+			else if(Bouton_clique(&(boutons[JEU_SUIVANT]), x, y))
+			{
+				EcranJeu_eventSuivant();
+			}
+			else if(Bouton_clique(&(boutons[JEU_PRECEDENT]), x, y))
+			{
+				EcranJeu_eventPrecedent();
+			}
 		}
 	}
 }
@@ -142,10 +150,10 @@ void InterfaceGraphique_sortieJeu(EtatsJeu* etats)
 
 	if(Partie_estFinie(etats->partie))
 	{
-		Texte_afficherChaine(window, milieu, 330, "Partie terminée", GRAS | GRAND, 0xffff00, CENTRE_X);
+		Texte_afficherChaine(window, milieu, 400, "Partie terminée", GRAS | GRAND, 0xffff00, CENTRE_X);
 
 		sprintf(str, "Noir : %.1f - Blanc : %.1f", etats->scoreNoir, etats->scoreBlanc);
-		Texte_afficherChaine(window, milieu, 380, str, NORMAL, 0xaaaaaa, CENTRE_X);
+		Texte_afficherChaine(window, milieu, 450, str, NORMAL, 0xaaaaaa, CENTRE_X);
 
 		if(etats->scoreNoir > etats->scoreBlanc)
 			couleur = NOIR;
@@ -153,12 +161,18 @@ void InterfaceGraphique_sortieJeu(EtatsJeu* etats)
 			couleur = BLANC;
 
 		sprintf(str, "%s remporte la partie", Partie_getJoueur(etats->partie, couleur));
-		Texte_afficherChaine(window, milieu, 410, str, NORMAL, 0xdddddd, CENTRE_X);
+		Texte_afficherChaine(window, milieu, 480, str, NORMAL, 0xdddddd, CENTRE_X);
 	}
 
 	Bouton_afficher(&(boutons[JEU_PASSER]), window);
 	Bouton_afficher(&(boutons[JEU_QUITTER]), window);
 	Bouton_afficher(&(boutons[JEU_SAUVEGARDER]), window);
+
+	if(!Partie_estAuPremier(etats->partie))
+		Bouton_afficher(&(boutons[JEU_PRECEDENT]), window);
+
+	if(!Partie_estAuDernier(etats->partie))
+		Bouton_afficher(&(boutons[JEU_SUIVANT]), window);
 
 	Position_detruire(position);
 	SDL_Flip(window);
