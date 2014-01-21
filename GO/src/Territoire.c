@@ -1,3 +1,7 @@
+/**
+ * @file Territoire.c
+ */
+
 #include <stdlib.h>
 
 #include "include/Territoire.h"
@@ -11,9 +15,9 @@
 
 // Fonctions privées ==========================================================
 
-static void Territoire_determinerCouleur(Couleur couleur, Territoire territoire, int estNeutre)
+static void Territoire_determinerCouleur(Couleur couleur, Territoire territoire, int *estNeutre)
 {
-	if(!estNeutre && couleur != VIDE)
+	if(*estNeutre == 0 && couleur != VIDE)
 	{
 		if(Chaine_getCouleur(territoire) == VIDE)
 		{
@@ -21,8 +25,10 @@ static void Territoire_determinerCouleur(Couleur couleur, Territoire territoire,
 		}
 		else
 		{
-			Chaine_setCouleur(territoire, VIDE);
-			estNeutre++;
+			if(couleur != Chaine_getCouleur(territoire))
+				Chaine_setCouleur(territoire, VIDE);
+
+			*estNeutre = 1;
 		}
 	}
 }
@@ -35,22 +41,32 @@ Territoire Territoire_determinerTerritoire(Plateau plateau, Position origine)
 	Pile pile;
 	Position position, positionNouvelle;
 	int taille, x, y, estNeutre = 0;
+	Couleur couleur;
 
 	if((pile = Pile_creer()) == NULL)
 		return NULL;
 
 	if((territoire = Chaine_creer()) == NULL)
+	{
+		Pile_detruire(pile);
 		return NULL;
+	}
 
 	position = Position_copier(origine);
-
-	Matrice_getTaille(plateau, NULL, &taille);
+	taille = Plateau_getTaille(plateau);
 
 	if(Plateau_get(plateau, origine) != VIDE)
+	{
+		Pile_detruire(pile);
+		Chaine_detruire(territoire);
+		Position_detruire(position);
 		return NULL;
+	}
 
-	Chaine_inserer(territoire, position);
+	Chaine_inserer(territoire, Position_copier(position));
 	Pile_empiler(pile, position);
+
+	Chaine_setCouleur(territoire, VIDE);
 
 	while((position = Pile_depiler(pile)) != NULL)
 	{
@@ -62,16 +78,17 @@ Territoire Territoire_determinerTerritoire(Plateau plateau, Position origine)
 		if(y >= 0)
 		{
 			positionNouvelle = Position_creer(x, y);
+			couleur = Plateau_get(plateau, positionNouvelle);
 
-			if(Plateau_get(plateau, positionNouvelle) == VIDE && !Chaine_appartient(territoire, positionNouvelle))
+			if(couleur == VIDE && !Chaine_appartient(territoire, positionNouvelle))
 			{
-				Chaine_inserer(territoire, positionNouvelle);
+				Chaine_inserer(territoire, Position_copier(positionNouvelle));
 				Pile_empiler(pile, positionNouvelle);
 			}
 			else
-				free(positionNouvelle);
+				Position_detruire(positionNouvelle);
 
-			Territoire_determinerCouleur(Plateau_get(plateau, positionNouvelle), territoire, estNeutre);
+			Territoire_determinerCouleur(couleur, territoire, &estNeutre);
 		}
 
 		// Cas 2, à droite
@@ -80,16 +97,17 @@ Territoire Territoire_determinerTerritoire(Plateau plateau, Position origine)
 		if(x < taille)
 		{
 			positionNouvelle = Position_creer(x, y);
+			couleur = Plateau_get(plateau, positionNouvelle);
 
-			if(Plateau_get(plateau, positionNouvelle) == VIDE && !Chaine_appartient(territoire, positionNouvelle))
+			if(couleur == VIDE && !Chaine_appartient(territoire, positionNouvelle))
 			{
-				Chaine_inserer(territoire, positionNouvelle);
+				Chaine_inserer(territoire, Position_copier(positionNouvelle));
 				Pile_empiler(pile, positionNouvelle);
 			}
 			else
-				free(positionNouvelle);
+				Position_detruire(positionNouvelle);
 
-			Territoire_determinerCouleur(Plateau_get(plateau, positionNouvelle), territoire, estNeutre);
+			Territoire_determinerCouleur(couleur, territoire, &estNeutre);
 		}
 
 		// Cas 3, en bas
@@ -98,16 +116,17 @@ Territoire Territoire_determinerTerritoire(Plateau plateau, Position origine)
 		if(y < taille)
 		{
 			positionNouvelle = Position_creer(x, y);
+			couleur = Plateau_get(plateau, positionNouvelle);
 
-			if(Plateau_get(plateau, positionNouvelle) == VIDE && !Chaine_appartient(territoire, positionNouvelle))
+			if(couleur == VIDE && !Chaine_appartient(territoire, positionNouvelle))
 			{
-				Chaine_inserer(territoire, positionNouvelle);
+				Chaine_inserer(territoire, Position_copier(positionNouvelle));
 				Pile_empiler(pile, positionNouvelle);
 			}
 			else
-				free(positionNouvelle);
+				Position_detruire(positionNouvelle);
 
-			Territoire_determinerCouleur(Plateau_get(plateau, positionNouvelle), territoire, estNeutre);
+			Territoire_determinerCouleur(couleur, territoire, &estNeutre);
 		}
 
 		// Cas 4, à gauche
@@ -116,19 +135,23 @@ Territoire Territoire_determinerTerritoire(Plateau plateau, Position origine)
 		if(x >= 0)
 		{
 			positionNouvelle = Position_creer(x, y);
+			couleur = Plateau_get(plateau, positionNouvelle);
 
-			if(Plateau_get(plateau, positionNouvelle) == VIDE && !Chaine_appartient(territoire, positionNouvelle))
+			if(couleur == VIDE && !Chaine_appartient(territoire, positionNouvelle))
 			{
-				Chaine_inserer(territoire, positionNouvelle);
+				Chaine_inserer(territoire, Position_copier(positionNouvelle));
 				Pile_empiler(pile, positionNouvelle);
 			}
 			else
-				free(positionNouvelle);
+				Position_detruire(positionNouvelle);
 
-			Territoire_determinerCouleur(Plateau_get(plateau, positionNouvelle), territoire, estNeutre);
+			Territoire_determinerCouleur(couleur, territoire, &estNeutre);
 		}
 
+		Position_detruire(position);
 	}
+
+	Pile_detruire(pile);
 
 	return territoire;
 }

@@ -177,8 +177,10 @@ void Partie_calculerScore(Partie partie, float* scoreNoir, float* scoreBlanc)
 	Territoire territoire;
 	Position position;
 	Plateau plateau;
+	Plateau dejaTraite;
 
 	plateau = Partie_getPlateauActuel(partie);
+	dejaTraite = Plateau_creer(Plateau_getTaille(plateau));
 
 	taille = Plateau_getTaille(plateau);
 	*scoreNoir = (partie->handicap < 0) ? partie->komi : 0;
@@ -193,14 +195,30 @@ void Partie_calculerScore(Partie partie, float* scoreNoir, float* scoreBlanc)
 		{
 			Position_setY(position, j);
 
-			if(Plateau_get(plateau, position) == NOIR)
-				*scoreNoir += 1;
-			else if(Plateau_get(plateau, position) == BLANC)
-				*scoreBlanc += 1;
+			if(Plateau_get(dejaTraite, position) != VIDE)
+				continue;
 
+			if(Plateau_get(plateau, position) == NOIR)
+			{
+				*scoreNoir += 1;
+				Plateau_set(dejaTraite, position, NOIR);
+				continue;
+			}
+
+			if(Plateau_get(plateau, position) == BLANC)
+			{
+				*scoreBlanc += 1;
+				Plateau_set(dejaTraite, position, NOIR);
+				continue;
+			}
 
 			if((territoire = Territoire_determinerTerritoire(plateau, position)) != NULL)
 			{
+				/**
+				 * @todo debug
+				 */
+				printf("%d %d %d\n", i, j, Territoire_determinerNbCases(territoire));
+
 				if(Chaine_getCouleur(territoire) != VIDE)
 				{
 					if(Chaine_getCouleur(territoire) == BLANC)
@@ -209,12 +227,20 @@ void Partie_calculerScore(Partie partie, float* scoreNoir, float* scoreBlanc)
 						*scoreNoir += Territoire_determinerNbCases(territoire);
 				}
 
+				Chaine_tete(territoire);
+
+				do
+				{
+					Plateau_set(dejaTraite, Chaine_courant(territoire), NOIR);
+				} while(Chaine_suivant(territoire));
+
 				Chaine_vider(territoire);
 				Chaine_detruire(territoire);
 			}
 		}
 	}
 
+	Plateau_detruire(dejaTraite);
 	Position_detruire(position);
 }
 
