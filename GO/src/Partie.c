@@ -214,11 +214,6 @@ void Partie_calculerScore(Partie partie, float* scoreNoir, float* scoreBlanc)
 
 			if((territoire = Territoire_determinerTerritoire(plateau, position)) != NULL)
 			{
-				/**
-				 * @todo debug
-				 */
-				printf("%d %d %d\n", i, j, Territoire_determinerNbCases(territoire));
-
 				if(Chaine_getCouleur(territoire) != VIDE)
 				{
 					if(Chaine_getCouleur(territoire) == BLANC)
