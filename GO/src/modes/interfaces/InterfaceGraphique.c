@@ -148,7 +148,7 @@ void InterfaceGraphique_sortieJeu(EtatsJeu* etats)
 	couleurInt = (tour == NOIR) ? 0x707070 : 0xffffff;
 	Texte_afficherChaine(window, bordGauche + 40, 200, Partie_getJoueur(etats->partie, BLANC), NORMAL, couleurInt, GAUCHE);
 
-	if(Partie_estFinie(etats->partie))
+	if(etats->estFini)
 	{
 		Texte_afficherChaine(window, milieu, 400, "Partie terminée", GRAS | GRAND, 0xffff00, CENTRE_X);
 
