@@ -20,6 +20,7 @@
 
 #include "include/modes/contextes/Contexte.h"
 #include "include/modes/interfaces/InterfaceGraphique.h"
+#include "include/modes/interfaces/InterfaceConsole.h"
 
 #include "include/modes/etats/EtatsJeu.h"
 
@@ -84,6 +85,7 @@ void EcranJeu_init()
 	etats.scoreNoir = 0;
 	etats.scoreBlanc = 0;
 	etats.partie = Partie_creer("Joueur 1", "Joueur 2", HUMAIN, HUMAIN, 7.5, 0, 19);
+	etats.premiereBoucle = 1;
 }
 
 int EcranJeu_initCharger()
@@ -141,6 +143,9 @@ FonctionEntreeEcran EcranJeu_getEntreeFct()
 	{
 		case GRAPHIQUE:
 			return (FonctionEntreeEcran) InterfaceGraphique_entreeJeu;
+		case CONSOLE:
+			return (FonctionEntreeEcran) InterfaceConsole_entreeJeu;
+
 		default:
 			return NULL;
 	}
@@ -154,6 +159,9 @@ FonctionSortieEcran EcranJeu_getSortieFct()
 	{
 		case GRAPHIQUE:
 			return (FonctionSortieEcran) InterfaceGraphique_sortieJeu;
+		case CONSOLE:
+			return (FonctionSortieEcran) InterfaceConsole_sortieJeu;
+
 		default:
 			return NULL;
 	}

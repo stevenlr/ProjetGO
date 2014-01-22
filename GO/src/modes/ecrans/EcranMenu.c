@@ -15,6 +15,7 @@
 
 #include "include/modes/contextes/Contexte.h"
 #include "include/modes/interfaces/InterfaceGraphique.h"
+#include "include/modes/interfaces/InterfaceConsole.h"
 
 #include "include/modes/etats/EtatsMenu.h"
 
@@ -23,6 +24,8 @@ static EtatsMenu etats;
 void EcranMenu_init()
 {
 	etats.continuer = 1;
+	etats.premiereBoucle = 1;
+	etats.derniereBoucle = 0;
 }
 
 void EcranMenu_detruire()
@@ -53,6 +56,8 @@ FonctionEntreeEcran EcranMenu_getEntreeFct()
 	{
 		case GRAPHIQUE:
 			return (FonctionEntreeEcran) InterfaceGraphique_entreeMenu;
+		case CONSOLE:
+			return (FonctionEntreeEcran) InterfaceConsole_entreeMenu;
 		default:
 			return NULL;
 	}
@@ -66,6 +71,8 @@ FonctionSortieEcran EcranMenu_getSortieFct()
 	{
 		case GRAPHIQUE:
 			return (FonctionSortieEcran) InterfaceGraphique_sortieMenu;
+		case CONSOLE:
+			return (FonctionEntreeEcran) InterfaceConsole_sortieMenu;
 		default:
 			return NULL;
 	}

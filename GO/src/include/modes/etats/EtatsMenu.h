@@ -8,6 +8,8 @@
 
 typedef struct {
 	int continuer;
+	int premiereBoucle;
+	int derniereBoucle;
 } EtatsMenu;
 
 #endif
