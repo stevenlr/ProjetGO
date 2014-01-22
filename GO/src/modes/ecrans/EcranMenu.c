@@ -12,6 +12,7 @@
 #include "include/modes/ecrans/Ecran.h"
 #include "include/modes/ecrans/EcranMenu.h"
 #include "include/modes/ecrans/EcranJeu.h"
+#include "include/modes/ecrans/EcranGuide.h"
 
 #include "include/modes/contextes/Contexte.h"
 #include "include/modes/interfaces/InterfaceGraphique.h"
