@@ -15,6 +15,8 @@
 #include "include/modes/contextes/Contexte.h"
 #include "include/modes/contextes/ContexteGraphique.h"
 
+#define BASE_BOUTONS_MENU 200
+
 struct ContexteGraphique {
 	SDL_Surface* window;
 	SDL_Surface* icon;
@@ -83,6 +85,11 @@ ContexteGraphique ContexteGraphique_creer()
 	boutons[JEU_QUITTER] = Bouton_creer("Quitter", milieu + 7, bordDroit, tailleY - 55, tailleY - 15, 0x803030, 0xeeeeee);
 	boutons[JEU_PRECEDENT] = Bouton_creer("<", bordGauche, milieu - 100, 320, 360, 0x606060, 0xeeeeee);
 	boutons[JEU_SUIVANT] = Bouton_creer(">", milieu + 100, bordDroit, 320, 360, 0x606060, 0xeeeeee);
+
+	boutons[MENU_NOUVELLEPARTIE] = Bouton_creer("Nouvelle partie", 533 - 200, 533 + 200, BASE_BOUTONS_MENU, BASE_BOUTONS_MENU + 40, 0xd0d0d0, 0x505050);
+	boutons[MENU_REPRENDREPARTIE] = Bouton_creer("Reprendre une partie", 533 - 200, 533 + 200, BASE_BOUTONS_MENU + 60, BASE_BOUTONS_MENU + 100, 0xd0d0d0, 0x505050);
+	boutons[MENU_GUIDE] = Bouton_creer("Comment jouer ?", 533 - 200, 533 + 200, BASE_BOUTONS_MENU + 120, BASE_BOUTONS_MENU + 160, 0xd0d0d0, 0x505050);
+	boutons[MENU_QUITTER] = Bouton_creer("Quitter", 533 - 200, 533 + 200, BASE_BOUTONS_MENU + 260, BASE_BOUTONS_MENU + 300, 0xd0d0d0, 0x505050);
 
 	return ctx;
 }

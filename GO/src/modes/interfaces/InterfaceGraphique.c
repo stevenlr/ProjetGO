@@ -16,7 +16,12 @@
 
 #include "include/modes/interfaces/InterfaceGraphique.h"
 #include "include/modes/contextes/ContexteGraphique.h"
+
 #include "include/modes/ecrans/EcranJeu.h"
+#include "include/modes/ecrans/EcranMenu.h"
+
+#include "include/modes/etats/EtatsJeu.h"
+#include "include/modes/etats/EtatsMenu.h"
 
 void InterfaceGraphique_entreeJeu(EtatsJeu* etats)
 {
@@ -32,7 +37,7 @@ void InterfaceGraphique_entreeJeu(EtatsJeu* etats)
 	{
 		if(event.type == SDL_QUIT)
 		{
-			EcranJeu_eventArreter();
+			EcranJeu_eventArreter(0);
 		}
 		else if(event.type == SDL_MOUSEBUTTONDOWN)
 		{
@@ -55,7 +60,7 @@ void InterfaceGraphique_entreeJeu(EtatsJeu* etats)
 			}
 			else if(Bouton_clique(&(boutons[JEU_QUITTER]), x, y))
 			{
-				EcranJeu_eventArreter();
+				EcranJeu_eventArreter(1);
 			}
 			else if(Bouton_clique(&(boutons[JEU_SUIVANT]), x, y))
 			{
@@ -177,4 +182,57 @@ void InterfaceGraphique_sortieJeu(EtatsJeu* etats)
 	Position_detruire(position);
 	SDL_Flip(window);
 	SDL_Delay(25); // Doucement le matin, pas trop vite l'après-midi.
+}
+
+void InterfaceGraphique_entreeMenu(EtatsMenu* etats)
+{
+	SDL_Event event;
+	int x, y;
+
+	while(SDL_PollEvent(&event))
+	{
+		if(event.type == SDL_QUIT)
+		{
+			EcranMenu_eventQuitter();
+		}
+		else if(event.type == SDL_MOUSEBUTTONDOWN)
+		{
+			x = event.button.x;
+			y = event.button.y;
+
+			if(Bouton_clique(&(boutons[MENU_QUITTER]), x, y))
+			{
+				EcranMenu_eventQuitter();
+			}
+			else if(Bouton_clique(&(boutons[MENU_NOUVELLEPARTIE]), x, y))
+			{
+				EcranMenu_eventNouvellePartie();
+			}
+			else if(Bouton_clique(&(boutons[MENU_REPRENDREPARTIE]), x, y))
+			{
+				EcranMenu_eventReprendre();
+			}
+		}
+	}
+}
+
+void InterfaceGraphique_sortieMenu(EtatsMenu* etats)
+{
+	SDL_Surface* window;
+	int tailleX;
+
+	window = ContexteGraphique_getWindow();
+	tailleX = ContexteGraphique_getTailleX();
+
+	Texture_blit(TEXTURE_BACKGROUND, window, 0, 0);
+
+	Texte_afficherChaine(window, tailleX / 2, 50, "Jeu de Go", GRAS | GRAND, 0xffffff, CENTRE_X);
+
+	Bouton_afficher(&(boutons[MENU_NOUVELLEPARTIE]), window);
+	Bouton_afficher(&(boutons[MENU_REPRENDREPARTIE]), window);
+	Bouton_afficher(&(boutons[MENU_GUIDE]), window);
+	Bouton_afficher(&(boutons[MENU_QUITTER]), window);
+
+	SDL_Flip(window);
+	SDL_Delay(25);
 }

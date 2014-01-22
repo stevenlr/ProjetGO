@@ -11,7 +11,7 @@
 #include "include/Position.h"
 #include "include/modes/contextes/Contexte.h"
 #include "include/modes/ecrans/Ecran.h"
-#include "include/modes/ecrans/EcranJeu.h"
+#include "include/modes/ecrans/EcranMenu.h"
 
 int main(int argc, char* argv[])
 {
@@ -26,10 +26,10 @@ int main(int argc, char* argv[])
 	Position_initGC();
 	Liste_initGC();
 
-	Ecran_setIDProchain(JEU);
+	Ecran_setIDProchain(MENU);
 	Ecran_changer();
 
-	EcranJeu_init();
+	EcranMenu_init();
 
 	do
 	{

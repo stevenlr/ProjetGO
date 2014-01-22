@@ -16,6 +16,7 @@
 
 #include "include/modes/ecrans/Ecran.h"
 #include "include/modes/ecrans/EcranJeu.h"
+#include "include/modes/ecrans/EcranMenu.h"
 
 #include "include/modes/contextes/Contexte.h"
 #include "include/modes/interfaces/InterfaceGraphique.h"
@@ -78,16 +79,32 @@ static void tourDeJeu(Position position)
 
 void EcranJeu_init()
 {
+	etats.continuer = 1;
+	etats.estFini = 0;
+	etats.scoreNoir = 0;
+	etats.scoreBlanc = 0;
+	etats.partie = Partie_creer("Joueur 1", "Joueur 2", HUMAIN, HUMAIN, 7.5, 0, 19);
+}
+
+int EcranJeu_initCharger()
+{
 	FILE* fp = fopen("sauvegarde.dat", "rb");
+
+	if(fp == NULL)
+		return 0;
 
 	etats.continuer = 1;
 	etats.estFini = 0;
 	etats.scoreNoir = 0;
 	etats.scoreBlanc = 0;
-	//etats.partie = Partie_creer("Joueur 1", "Joueur 2", HUMAIN, HUMAIN, 7.5, 0, 19);
 	etats.partie = Partie_charger(fp);
 
 	fclose(fp);
+
+	if(etats.partie == NULL)
+		return 0;
+
+	return 1;
 }
 
 void EcranJeu_detruire()
@@ -114,7 +131,6 @@ void EcranJeu_main()
 	}
 
 	EcranJeu_detruire();
-	Ecran_setIDProchain(NONE);
 }
 
 FonctionEntreeEcran EcranJeu_getEntreeFct()
@@ -143,8 +159,16 @@ FonctionSortieEcran EcranJeu_getSortieFct()
 	}
 }
 
-void EcranJeu_eventArreter()
+void EcranJeu_eventArreter(int menu)
 {
+	if(menu)
+	{
+		Ecran_setIDProchain(MENU);
+		EcranMenu_init();
+	}
+	else
+		Ecran_setIDProchain(NONE);
+
 	etats.continuer = 0;
 }
 

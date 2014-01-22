@@ -32,22 +32,32 @@ Partie Partie_creer(char* joueurNoir, char* joueurBlanc, TypeJoueur typeNoir, Ty
 {
 	Partie partie;
 	Plateau plateau;
+	int tailleJ1, tailleJ2;
+
+	tailleJ1 = strlen(joueurNoir);
+	tailleJ2 = strlen(joueurBlanc);
 
 	partie = malloc(sizeof(struct Partie));
 
 	if(partie == NULL)
 		return NULL;
 
-	partie->joueurNoir = malloc(sizeof(strlen(joueurNoir)));
-	partie->joueurBlanc = malloc(sizeof(strlen(joueurBlanc)));
+	partie->joueurNoir = malloc(sizeof(char) * (tailleJ1+ 2));
+	partie->joueurBlanc = malloc(sizeof(char) * (tailleJ2 + 2));
 	partie->typeJoueurNoir = typeNoir;
 	partie->typeJoueurBlanc = typeBlanc;
 
 	if(partie->joueurNoir == NULL || partie->joueurBlanc == NULL)
+	{
+		free(partie);
 		return NULL;
+	}
 
-	strcpy(partie->joueurNoir, joueurNoir);
-	strcpy(partie->joueurBlanc, joueurBlanc);
+	strncpy(partie->joueurNoir, joueurNoir, tailleJ1);
+	strncpy(partie->joueurBlanc, joueurBlanc, tailleJ2);
+
+	partie->joueurNoir[tailleJ1] = '\0';
+	partie->joueurBlanc[tailleJ2] = '\0';
 
 	plateau = Plateau_creer(taille);
 	partie->plateaux = Liste_creer();
@@ -316,8 +326,8 @@ Partie Partie_charger(FILE* fichier)
 	fread(&passe, sizeof(int), 1, fichier);
 	fread(&tailleBlanc, sizeof(int), 1, fichier);
 	fread(&tailleNoir, sizeof(int), 1, fichier);
-	joueurBlanc = malloc(sizeof(char) * tailleBlanc + 1);
-	joueurNoir = malloc(sizeof(char) * tailleNoir + 1);
+	joueurBlanc = malloc(sizeof(char) * (tailleBlanc + 1));
+	joueurNoir = malloc(sizeof(char) * (tailleNoir + 1));
 	fread(joueurBlanc, sizeof(char), tailleBlanc, fichier);
 	fread(joueurNoir, sizeof(char), tailleNoir, fichier);
 	fread(&typeBlanc, sizeof(TypeJoueur), 1, fichier);
@@ -334,6 +344,10 @@ Partie Partie_charger(FILE* fichier)
 	}
 
 	partie = Partie_creer(joueurNoir, joueurBlanc, typeBlanc, typeNoir, komi, handicap, taille);
+
+	if(partie == NULL)
+		return NULL;
+
 	partie->tour = tour;
 	partie->passe = passe;
 
