@@ -188,6 +188,8 @@ void Tutoriel_detruire(Tutoriel tutoriel)
 
 	Liste_detruire(tutoriel->plateaux);
 	Liste_detruire(tutoriel->chaines);
+
+	free(tutoriel);
 }
 
 void Tutoriel_tete(Tutoriel tutoriel)
