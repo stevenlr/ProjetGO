@@ -33,8 +33,6 @@ int main(int argc, char* argv[])
 
 	EcranMenu_init();
 
-	Tutoriel_convertirTexteVersBinaire();
-
 	do
 	{
 		fctMain = Ecran_getFonctionMain();
