@@ -7,6 +7,7 @@
 
 #include "include/modes/contextes/Contexte.h"
 #include "include/modes/contextes/ContexteGraphique.h"
+#include "include/modes/contextes/ContexteConsole.h"
 
 static TypeContexte idContexteCourant;
 static Contexte contexteCourant = NULL;
@@ -24,9 +25,7 @@ int Contexte_initialiser(TypeContexte type)
 			contexteCourant = ContexteGraphique_creer();
 			break;
 		case CONSOLE:
-			/**
-			 * @todo idem pour console
-			 */
+			contexteCourant = ContexteConsole_creer();
 			break;
 		default:
 			break;
@@ -48,9 +47,7 @@ void Contexte_detruire()
 			ContexteGraphique_detruire(contexteCourant);
 			break;
 		case CONSOLE:
-			/**
-			 * @todo idem pour console
-			 */
+			ContexteConsole_detruire(contexteCourant);
 			break;
 		default:
 			break;
