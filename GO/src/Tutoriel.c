@@ -24,10 +24,10 @@ int Tutoriel_convertirTexteVersBinaire()
 	FILE *fichier, *fichier2;
 	int n = 0, taille;
 
-	fichier = fopen("../assets/Tutoriel.txt", "r");
-	fichier2 = fopen("../assets/Tutoriel.bin", "wb");
+	fichier = fopen("assets/Tutoriel.txt", "r");
+	fichier2 = fopen("assets/Tutoriel.bin", "wb");
 
-	if(fichier == NULL || fichier == NULL)
+	if(fichier == NULL || fichier2 == NULL)
 		return 0;
 
 	while((c = fgetc(fichier)) != EOF)
@@ -51,7 +51,7 @@ int Tutoriel_convertirTexteVersBinaire()
 		}
 	}
 
-	return ferror(fichier2);
+	return c == EOF || ferror(fichier2);
 }
 
 Tutoriel Tutoriel_charger(Partie partie, int nbCharParPhrase)
