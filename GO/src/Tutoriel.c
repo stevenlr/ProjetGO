@@ -12,7 +12,8 @@
 #include "include/Liste.h"
 #include "include/Partie.h"
 
-struct Tutoriel {
+struct Tutoriel
+{
 	Liste plateaux;
 	Liste chaines;
 };
@@ -125,10 +126,11 @@ void Tutoriel_inserer(Tutoriel tutoriel, Plateau plateau, char* chaine, int nbCh
 		chaine2 = malloc(sizeof(char) * nbCharParPhrase);
 		i = positionChaine;
 
-		do{
-			chaine2[i-positionChaine] = chaine[i];
+		do
+		{
+			chaine2[i - positionChaine] = chaine[i];
 			i++;
-		}while(i < positionChaine + nbCharParPhrase && chaine[i] != '\0');
+		} while(i < positionChaine + nbCharParPhrase && chaine[i] != '\0');
 
 		if(chaine[i] != ' ' && chaine[i] != '\0')	//On revient au mot entier le plus proche (pour éviter les coupures de mots)
 		{

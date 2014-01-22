@@ -108,6 +108,7 @@ int Texture_chargerRegistre()
 	registreTextures[TEXTURE_PLATEAU_13] = Texture_creer("assets/images/plateau_13.png");
 	registreTextures[TEXTURE_PLATEAU_19] = Texture_creer("assets/images/plateau_19.png");
 	registreTextures[TEXTURE_AURA] = Texture_creer("assets/images/aura.png");
+	registreTextures[TEXTURE_BACKGROUND] = Texture_creer("assets/images/background.jpg");
 
 	status = 1;
 
