@@ -14,6 +14,7 @@
 
 #include "include/modes/interfaces/InterfaceConsole.h"
 #include "include/modes/ecrans/EcranJeu.h"
+#include "include/modes/ecrans/EcranMenu.h"
 
 static void InterfaceConsole_viderBuffer()
 {
@@ -28,14 +29,20 @@ void InterfaceConsole_entreeJeu(EtatsJeu* etats)
 {
 	int cx, cy;
 	int taillePlateau;
-	char event[10];
+	char event[12];
+
+	if(etats->premiereBoucle)
+	{
+		etats->premiereBoucle = 0;
+		return;
+	}
 
 	taillePlateau = Partie_getTaille(etats->partie);
 
 	do
 	{
 		scanf("%11s", event);
-		InterfaceConsole_viderBuffer(event);		//Utile ? Habitude que j'ai pris donc bon
+		InterfaceConsole_viderBuffer();		//Utile ? Habitude que j'ai pris donc bon
 
 		if(strlen(event) < 4 && strlen(event) > 1)
 		{
@@ -55,27 +62,27 @@ void InterfaceConsole_entreeJeu(EtatsJeu* etats)
 				break;
 			}
 		}
-		else if(strcmp(event, "quitter"))
+		else if(strcmp(event, "quitter") == 0)
 		{
 			EcranJeu_eventArreter(1);
 			break;
 		}
-		else if(strcmp(event, "passer"))
+		else if(strcmp(event, "passer") == 0)
 		{
 			EcranJeu_eventPasserTour();
 			break;
 		}
-		else if(strcmp(event, "sauvegarder"))
+		else if(strcmp(event, "sauvegarder") == 0)
 		{
 			EcranJeu_eventSauvegarder();
 			break;
 		}
-		else if(strcmp(event, "suivant"))
+		else if(strcmp(event, "suivant") == 0)
 		{
 			EcranJeu_eventSuivant();
 			break;
 		}
-		else if(strcmp(event, "precedent"))
+		else if(strcmp(event, "precedent") == 0)
 		{
 			EcranJeu_eventPrecedent();
 			break;
@@ -157,7 +164,7 @@ void InterfaceConsole_sortieJeu(EtatsJeu* etats)
 		else
 			strcpy(str, "Blanc");
 
-		printf("Tour n°%d : C'est à %s de jouer ! Votre choix est : ", Partie_getTour(etats->partie) + 1, str);
+		printf("Tour n%d : C'est à %s de jouer ! Votre choix est : ", Partie_getTour(etats->partie) + 1, str);
 
 		free(str);
 	}
@@ -165,3 +172,57 @@ void InterfaceConsole_sortieJeu(EtatsJeu* etats)
 	Position_detruire(position);
 }
 
+
+void InterfaceConsole_entreeMenu(EtatsMenu* etats)
+{
+	int event;
+
+	if(etats->premiereBoucle)
+	{
+		etats->premiereBoucle = 0;
+		return;
+	}
+
+	do
+	{
+		scanf("%d", &event);
+		InterfaceConsole_viderBuffer();		//Utile ? Habitude que j'ai pris donc bon
+
+		switch(event)
+		{
+		case 1:
+			EcranMenu_eventNouvellePartie();
+			break;
+		case 2:
+			EcranMenu_eventReprendre();
+			break;
+		case 3:
+			// Tutoriel
+			break;
+		case 4:
+			EcranMenu_eventQuitter();
+			break;
+		}
+	}while(event < 1 || event > 4);
+
+	etats->derniereBoucle = 1;	//Tel que c'est codé, dans tous les cas ce sera la dernière. Sinon il aura fallu enlevé le while précédent.
+}
+
+void InterfaceConsole_sortieMenu(EtatsMenu* etats)
+{
+	if(etats->derniereBoucle)
+	{
+		etats->derniereBoucle = 0;
+		return;
+	}
+
+	printf("****************************\n*\tJeu de GO\t*\n****************************\n");
+
+	printf("Menu :\n");
+	printf("\t1. Nouvelle Partie\n");
+	printf("\t2. Reprendre une partie\n");
+	printf("\t3. Tutoriel\n");
+	printf("\t4. Quitter\n");
+
+	printf("Votre choix est : ");
+}
