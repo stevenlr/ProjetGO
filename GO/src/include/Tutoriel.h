@@ -1,5 +1,6 @@
 /**
  * @file Tutoriel.h
+ * @brief Fonctions pour le tutoriel du jeu de GO.
  */
 
 #ifndef TUTORIEL_H_
@@ -19,6 +20,12 @@ int Tutoriel_convertirTexteVersBinaire();
  *
  * @return Tutoriel : Retourne le tutoriel chargé
  */
-Tutoriel Tutoriel_charger(Partie partie);
+Tutoriel Tutoriel_charger(Partie partie, int nbCharParPhrase);
+
+void Tutoriel_inserer(Tutoriel tutoriel, Plateau plateau, char* chaine, int nbCharParPhrase);
+
+Tutoriel Tutoriel_creer();
+
+void Tutoriel_detruire(Tutoriel tutoriel);
 
 #endif /* TUTORIEL_H_ */
