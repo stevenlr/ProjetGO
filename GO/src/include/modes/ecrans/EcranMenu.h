@@ -19,5 +19,6 @@ FonctionSortieEcran EcranMenu_getSortieFct();
 void EcranMenu_eventQuitter();
 void EcranMenu_eventReprendre();
 void EcranMenu_eventNouvellePartie();
+void EcranMenu_eventGuide();
 
 #endif

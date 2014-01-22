@@ -124,4 +124,20 @@ int Liste_getNbElements(Liste liste);
  */
 void Liste_setCourant(Liste liste, int i);
 
+/**
+ * Vérifie si on est à la tête.
+ *
+ * @param liste
+ * @return 1 si oui, 0 sinon.
+ */
+int Liste_estPremier(Liste liste);
+
+/**
+ * Vérifie si on est à la queue.
+ *
+ * @param liste
+ * @return 1 si oui, 0 sinon.
+ */
+int Liste_estDernier(Liste liste);
+
 #endif

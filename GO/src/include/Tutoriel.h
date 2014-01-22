@@ -28,9 +28,10 @@ Tutoriel Tutoriel_charger(int nbCharParPhrase);
  * @param tutoriel
  * @param plateau
  * @param chaine
+ * @param tailleChaine
  * @param nbCharParPhrase
  */
-void Tutoriel_inserer(Tutoriel tutoriel, Plateau plateau, char* chaine, int nbCharParPhrase);
+void Tutoriel_inserer(Tutoriel tutoriel, Plateau plateau, char* chaine, int tailleChaine, int nbCharParPhrase);
 
 /**
  * Alloue un tutoriel
@@ -74,8 +75,24 @@ int Tutoriel_precedent(Tutoriel tutoriel);
  *
  * @param tutoriel
  * @param plateau
- * @param chaine
+ * @param chaines
  */
-void Tutoriel_courant(Tutoriel tutoriel, Plateau plateau, char** chaine);
+void Tutoriel_courant(Tutoriel tutoriel, Plateau *plateau, Liste *chaines);
+
+/**
+ * Vérifie si c'est la première page du tutoriel.
+ *
+ * @param tutoriel
+ * @return 1 si c'est la première, 0 sinon.
+ */
+int Tutoriel_estPremier(Tutoriel tutoriel);
+
+/**
+ * Vérifie si on est à la dernière page du tutoriel.
+ *
+ * @param tutoriel
+ * @return 1 si c'est la dernière page, 0 sinon.
+ */
+int Tutoriel_estDernier(Tutoriel tutoriel);
 
 #endif /* TUTORIEL_H_ */

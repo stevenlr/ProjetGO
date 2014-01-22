@@ -333,3 +333,17 @@ void Liste_setCourant(Liste liste, int i)
 		i--;
 	}
 }
+
+int Liste_estPremier(Liste liste)
+{
+	assert(liste);
+
+	return liste->courant == liste->tete;
+}
+
+int Liste_estDernier(Liste liste)
+{
+	assert(liste);
+
+	return liste->courant == liste->queue;
+}

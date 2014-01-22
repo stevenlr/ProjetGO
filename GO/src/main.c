@@ -7,6 +7,8 @@
 #include <stdio.h>
 #include <assert.h>
 
+#include "include/Tutoriel.h"
+
 #include "include/Liste.h"
 #include "include/Position.h"
 #include "include/modes/contextes/Contexte.h"
@@ -30,6 +32,8 @@ int main(int argc, char* argv[])
 	Ecran_changer();
 
 	EcranMenu_init();
+
+	Tutoriel_convertirTexteVersBinaire();
 
 	do
 	{

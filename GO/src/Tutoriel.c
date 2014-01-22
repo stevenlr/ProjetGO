@@ -20,10 +20,9 @@ struct Tutoriel
 
 int Tutoriel_convertirTexteVersBinaire()
 {
-	char c;
-	char chaine[400];
+	char chaine[512];
 	FILE *fichier, *fichier2;
-	int n = 0, taille;
+	int n = 0, taille, tailleFichier, i;
 
 	fichier = fopen("assets/Tutoriel.txt", "r");
 	fichier2 = fopen("assets/Tutoriel.bin", "wb");
@@ -31,28 +30,38 @@ int Tutoriel_convertirTexteVersBinaire()
 	if(fichier == NULL || fichier2 == NULL)
 		return 0;
 
-	while((c = fgetc(fichier)) != EOF)
+	fseek(fichier, 0, SEEK_END);
+	tailleFichier = ftell(fichier);
+	fseek(fichier, 0, SEEK_SET);
+
+	while(ftell(fichier) != tailleFichier)
 	{
-		if(c != '\n')
-			fwrite(&c, sizeof(char), 1, fichier2);
+		if(n % 10 == 9)
+		{
+			memset(chaine, 0, 512);
+			fgets(chaine, 512, fichier);
+			taille = strlen(chaine) - 1;
+			chaine[taille] = '\0';
+			fwrite(&taille, sizeof(int), 1, fichier2);
+			fwrite(chaine, sizeof(char), taille, fichier2);
+		}
 		else
 		{
-			n++;
+			fgets(chaine, 512, fichier);
 
-			if(n % 9 == 0)
-			{
-				fgets(chaine, 400, fichier);
+			for(i = 0; i < 9; i++)
+				chaine[i] = Couleur_charVersCouleur(chaine[i]);
 
-				taille = strlen(chaine) - 1;
-				chaine[taille] = '\0';	//Censé enlever le \n
-
-				fwrite(&taille, sizeof(int), 1, fichier2);		//Stocke la taille de la chaine
-				fwrite(chaine, sizeof(char), taille, fichier2);	//Stocke la chaine de taille "taille".
-			}
+			fwrite(chaine, sizeof(char), 9, fichier2);
 		}
+
+		n++;
 	}
 
-	return c == EOF || ferror(fichier2);
+	fclose(fichier);
+	fclose(fichier2);
+
+	return 1;
 }
 
 Tutoriel Tutoriel_charger(int nbCharParPhrase)
@@ -62,7 +71,7 @@ Tutoriel Tutoriel_charger(int nbCharParPhrase)
 	char* chaine;
 	char c;
 	FILE* fichier;
-	int tailleFichier, tailleChaine;
+	int tailleFichier, tailleChaine, x, y;
 	Position pos;
 
 	if((fichier = fopen("assets/Tutoriel.bin", "rb")) == NULL)
@@ -78,30 +87,25 @@ Tutoriel Tutoriel_charger(int nbCharParPhrase)
 
 	while(ftell(fichier) != tailleFichier)
 	{
-		fread(&c, sizeof(char), 1, fichier);
-		Plateau_set(plateau, pos, Couleur_charVersCouleur(c));
-
-		if(Position_getX(pos) == 8)
+		for(y = 0; y < 9; y++)
 		{
-			Position_setX(pos, 0);
-
-			if(Position_getY(pos) != 8)
-				Position_setY(pos, Position_getY(pos) + 1);
-			else
+			for(x = 0; x < 9; x++)
 			{
-				Position_setY(pos, 0);
-
-				fread(&tailleChaine, sizeof(int), 1, fichier);
-				chaine = malloc(sizeof(char) * tailleChaine);
-				fread(chaine, sizeof(char), tailleChaine, fichier);
-
-				Tutoriel_inserer(tutoriel, plateau, chaine, nbCharParPhrase);
-
-				free(chaine);
+				fread(&c, sizeof(char), 1, fichier);
+				Position_setX(pos, x);
+				Position_setY(pos, y);
+				Plateau_set(plateau, pos, c);
 			}
 		}
-		else
-			Position_setX(pos, Position_getX(pos) + 1);
+
+		fread(&tailleChaine, sizeof(int), 1, fichier);
+		chaine = malloc(sizeof(char) * (tailleChaine + 1));
+		fread(chaine, sizeof(char), tailleChaine, fichier);
+		chaine[tailleChaine] = '\0';
+
+		Tutoriel_inserer(tutoriel, plateau, chaine, tailleChaine, nbCharParPhrase);
+
+		free(chaine);
 	}
 
 	Plateau_detruire(plateau);
@@ -118,19 +122,22 @@ Tutoriel Tutoriel_charger(int nbCharParPhrase)
 	return tutoriel;
 }
 
-void Tutoriel_inserer(Tutoriel tutoriel, Plateau plateau, char* chaine, int nbCharParPhrase)
+void Tutoriel_inserer(Tutoriel tutoriel, Plateau plateau, char* chaine, int tailleChaine, int nbCharParPhrase)
 {
 	int positionChaine = 0, i;
 	char* chaine2;
+	Liste sousliste;
 
-	while(chaine[positionChaine] != '\0')
+	sousliste = Liste_creer();
+
+	Liste_insererCourant(tutoriel->plateaux, Plateau_copier(plateau));
+
+	while(positionChaine < tailleChaine)
 	{
-		Liste_insererCourant(tutoriel->plateaux, Plateau_copier(plateau));	//On insère le même plateau à chaque fois tant que toute la chaine n'est pas insérée.
-
-		chaine2 = malloc(sizeof(char) * (nbCharParPhrase));
+		chaine2 = malloc(sizeof(char) * (nbCharParPhrase + 1));
 		i = 0;
 
-		while(i < nbCharParPhrase && chaine[i] != '\0')
+		while(i < nbCharParPhrase && chaine[positionChaine + i] != '\0')
 		{
 			chaine2[i] = chaine[positionChaine + i];
 			i++;
@@ -144,12 +151,16 @@ void Tutoriel_inserer(Tutoriel tutoriel, Plateau plateau, char* chaine, int nbCh
 		}
 
 		chaine2[i] = '\0';
+		chaine2[nbCharParPhrase] = '\0';
+
 		positionChaine += i;
 
-		Liste_insererCourant(tutoriel->chaines, chaine2);
+		Liste_insererCourant(sousliste, chaine2);
 
 		chaine2 = NULL;
 	}
+
+	Liste_insererCourant(tutoriel->chaines, sousliste);
 }
 
 Tutoriel Tutoriel_creer()
@@ -168,6 +179,7 @@ void Tutoriel_detruire(Tutoriel tutoriel)
 {
 	Plateau plateau;
 	char* chaine;
+	Liste sousliste;
 
 	assert(tutoriel);
 
@@ -180,13 +192,22 @@ void Tutoriel_detruire(Tutoriel tutoriel)
 	do
 	{
 		plateau = Liste_courant(tutoriel->plateaux);
-		chaine = Liste_courant(tutoriel->chaines);
+		sousliste = Liste_courant(tutoriel->chaines);
 
 		assert(plateau);
-		assert(chaine);
+		assert(sousliste);
+
+		Liste_tete(sousliste);
+
+		do
+		{
+			chaine = Liste_courant(sousliste);
+			free(chaine);
+			Liste_supprimerCourant(sousliste);
+		} while(!Liste_estVide(sousliste));
 
 		Plateau_detruire(plateau);
-		free(chaine);
+		Liste_detruire(sousliste);
 
 		Liste_supprimerCourant(tutoriel->plateaux);
 		Liste_supprimerCourant(tutoriel->chaines);
@@ -214,8 +235,18 @@ int Tutoriel_precedent(Tutoriel tutoriel)
 	return Liste_precedent(tutoriel->plateaux) && Liste_precedent(tutoriel->chaines);
 }
 
-void Tutoriel_courant(Tutoriel tutoriel, Plateau plateau, char** chaine)
+void Tutoriel_courant(Tutoriel tutoriel, Plateau *plateau, Liste *chaines)
 {
-	plateau = Liste_courant(tutoriel->plateaux);
-	*chaine = Liste_courant(tutoriel->chaines);
+	*plateau = Liste_courant(tutoriel->plateaux);
+	*chaines = Liste_courant(tutoriel->chaines);
+}
+
+int Tutoriel_estPremier(Tutoriel tutoriel)
+{
+	return Liste_estPremier(tutoriel->plateaux);
+}
+
+int Tutoriel_estDernier(Tutoriel tutoriel)
+{
+	return Liste_estDernier(tutoriel->plateaux);
 }

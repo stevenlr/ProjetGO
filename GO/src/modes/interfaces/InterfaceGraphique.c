@@ -19,9 +19,32 @@
 
 #include "include/modes/ecrans/EcranJeu.h"
 #include "include/modes/ecrans/EcranMenu.h"
+#include "include/modes/ecrans/EcranGuide.h"
 
 #include "include/modes/etats/EtatsJeu.h"
 #include "include/modes/etats/EtatsMenu.h"
+#include "include/modes/etats/EtatsGuide.h"
+
+static void InterfaceGraphique_afficherPion(SDL_Surface* surface, Couleur couleur, int x, int y)
+{
+	if(couleur == AURANOIR || couleur == AURABLANC || couleur == AURAVIDE)
+	{
+		Texture_blit(TEXTURE_AURA, surface, x, y);
+
+		if(couleur == AURAVIDE)
+			return;
+
+		couleur = (couleur == AURANOIR) ? NOIR : BLANC;
+	}
+	if(couleur == NOIR)
+	{
+		Texture_blit(TEXTURE_PION_NOIR, surface, x, y);
+		return;
+	}
+
+	if(couleur == BLANC)
+		Texture_blit(TEXTURE_PION_BLANC, surface, x, y);
+}
 
 void InterfaceGraphique_entreeJeu(EtatsJeu* etats)
 {
@@ -133,10 +156,7 @@ void InterfaceGraphique_sortieJeu(EtatsJeu* etats)
 
 			couleur = Plateau_get(Partie_getPlateauActuel(etats->partie), position);
 
-			if(couleur == NOIR)
-				Texture_blit(TEXTURE_PION_NOIR, window, j * TAILLE_CELL + originePlateau, i * TAILLE_CELL + originePlateau);
-			else if(couleur == BLANC)
-				Texture_blit(TEXTURE_PION_BLANC, window, j * TAILLE_CELL + originePlateau, i * TAILLE_CELL + originePlateau);
+			InterfaceGraphique_afficherPion(window, couleur, j * TAILLE_CELL + originePlateau, i * TAILLE_CELL + originePlateau);
 		}
 	}
 
@@ -212,6 +232,10 @@ void InterfaceGraphique_entreeMenu(EtatsMenu* etats)
 			{
 				EcranMenu_eventReprendre();
 			}
+			else if(Bouton_clique(&(boutons[MENU_GUIDE]), x, y))
+			{
+				EcranMenu_eventGuide();
+			}
 		}
 	}
 }
@@ -234,5 +258,111 @@ void InterfaceGraphique_sortieMenu(EtatsMenu* etats)
 	Bouton_afficher(&(boutons[MENU_QUITTER]), window);
 
 	SDL_Flip(window);
+	SDL_Delay(25);
+}
+
+void InterfaceGraphique_entreeGuide(EtatsGuide* etats)
+{
+	SDL_Event event;
+	int x, y;
+
+	while(SDL_PollEvent(&event))
+	{
+		if(event.type == SDL_QUIT)
+		{
+			EcranGuide_eventQuitter(0);
+		}
+		else if(event.type == SDL_MOUSEBUTTONDOWN)
+		{
+			x = event.button.x;
+			y = event.button.y;
+
+			if(Bouton_clique(&(boutons[GUIDE_QUITTER]), x, y))
+			{
+				EcranGuide_eventQuitter(1);
+			}
+			else if(Bouton_clique(&(boutons[GUIDE_PRECEDENT]), x, y))
+			{
+				EcranGuide_eventPrecedent();
+			}
+			else if(Bouton_clique(&(boutons[GUIDE_SUIVANT]), x, y))
+			{
+				EcranGuide_eventSuivant();
+			}
+		}
+	}
+}
+
+void InterfaceGraphique_sortieGuide(EtatsGuide* etats)
+{
+	SDL_Surface* window;
+	int tailleX, tailleY, originePlateauX, originePlateauY, origineTexte;
+	int i, j;
+	SDL_Rect rect;
+	Liste chaines;
+	Plateau plateau;
+	Position pos;
+	Couleur couleur;
+
+	if(etats->besoinRafraichir)
+	{
+		window = ContexteGraphique_getWindow();
+		tailleX = ContexteGraphique_getTailleX();
+		tailleY = ContexteGraphique_getTailleY();
+
+		pos = Position_creer(0, 0);
+
+		originePlateauX = (tailleX - TAILLE_CELL * 9) / 2;
+		originePlateauY = 80;
+
+		origineTexte = originePlateauY + TAILLE_CELL * 9 + 50;
+
+		rect.x = 0;
+		rect.y = 0;
+		rect.w = tailleX;
+		rect.h = tailleY;
+
+		SDL_FillRect(window, &rect, 0x000000);
+
+		Bouton_afficher(&(boutons[GUIDE_QUITTER]), window);
+
+		if(!Tutoriel_estPremier(etats->tutoriel))
+			Bouton_afficher(&(boutons[GUIDE_PRECEDENT]), window);
+
+		if(!Tutoriel_estDernier(etats->tutoriel))
+			Bouton_afficher(&(boutons[GUIDE_SUIVANT]), window);
+
+		Texture_blit(TEXTURE_PLATEAU_9, window, originePlateauX, originePlateauY);
+
+		Tutoriel_courant(etats->tutoriel, &plateau, &chaines);
+
+		for(j = 0; j < 9; j++)
+		{
+			for(i = 0; i < 9; i++)
+			{
+				Position_setX(pos, i);
+				Position_setY(pos, j);
+
+				couleur = Plateau_get(plateau, pos);
+
+				InterfaceGraphique_afficherPion(window, couleur, i * TAILLE_CELL + originePlateauX, j * TAILLE_CELL + originePlateauY);
+			}
+		}
+
+		i = 0;
+		Liste_tete(chaines);
+
+		do
+		{
+			Texte_afficherChaine(window, 15, origineTexte + i * 25, Liste_courant(chaines), NORMAL, 0xffffff, GAUCHE);
+			i++;
+		} while(Liste_suivant(chaines));
+
+		SDL_Flip(window);
+		Position_detruire(pos);
+
+		etats->besoinRafraichir = 0;
+	}
+
 	SDL_Delay(25);
 }

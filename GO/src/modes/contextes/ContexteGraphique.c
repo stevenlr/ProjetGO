@@ -91,6 +91,10 @@ ContexteGraphique ContexteGraphique_creer()
 	boutons[MENU_GUIDE] = Bouton_creer("Comment jouer ?", 533 - 200, 533 + 200, BASE_BOUTONS_MENU + 120, BASE_BOUTONS_MENU + 160, 0xd0d0d0, 0x505050);
 	boutons[MENU_QUITTER] = Bouton_creer("Quitter", 533 - 200, 533 + 200, BASE_BOUTONS_MENU + 260, BASE_BOUTONS_MENU + 300, 0xd0d0d0, 0x505050);
 
+	boutons[GUIDE_QUITTER] = Bouton_creer("Retour", 15, 215, 15, 55, 0x606060, 0xeeeeee);
+	boutons[GUIDE_PRECEDENT] = Bouton_creer("<", 533 - 15 - 100, 533 - 15, 15, 55, 0x606060, 0xeeeeee);
+	boutons[GUIDE_SUIVANT] = Bouton_creer(">", 533 + 15, 533 + 15 + 100, 15, 55, 0x606060, 0xeeeeee);
+
 	return ctx;
 }
 

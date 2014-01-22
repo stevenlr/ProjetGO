@@ -7,12 +7,7 @@
 #include <stdio.h>
 #include <assert.h>
 
-#include "include/Position.h"
-#include "include/Plateau.h"
-#include "include/Partie.h"
 #include "include/Liste.h"
-#include "include/Chaine.h"
-#include "include/Chaines.h"
 
 #include "include/modes/ecrans/Ecran.h"
 #include "include/modes/ecrans/EcranMenu.h"
@@ -100,4 +95,13 @@ void EcranMenu_eventNouvellePartie()
 
 	etats.continuer = 0;
 	Ecran_setIDProchain(JEU);
+}
+
+void EcranMenu_eventGuide()
+{
+	if(!EcranGuide_init())
+		return;
+
+	etats.continuer = 0;
+	Ecran_setIDProchain(GUIDE);
 }
