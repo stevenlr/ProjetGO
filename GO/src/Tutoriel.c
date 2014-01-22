@@ -55,7 +55,7 @@ int Tutoriel_convertirTexteVersBinaire()
 	return c == EOF || ferror(fichier2);
 }
 
-Tutoriel Tutoriel_charger(Partie partie, int nbCharParPhrase)
+Tutoriel Tutoriel_charger(int nbCharParPhrase)
 {
 	Tutoriel tutoriel;
 	Plateau plateau;
@@ -65,7 +65,7 @@ Tutoriel Tutoriel_charger(Partie partie, int nbCharParPhrase)
 	int tailleFichier, tailleChaine;
 	Position pos;
 
-	if((fichier = fopen("../assets/Tutoriel.bin", "rb")) == NULL)
+	if((fichier = fopen("assets/Tutoriel.bin", "rb")) == NULL)
 		return NULL;
 
 	fseek(fichier, 0, SEEK_END);
@@ -96,6 +96,7 @@ Tutoriel Tutoriel_charger(Partie partie, int nbCharParPhrase)
 				fread(chaine, sizeof(char), tailleChaine, fichier);
 
 				Tutoriel_inserer(tutoriel, plateau, chaine, nbCharParPhrase);
+
 				free(chaine);
 			}
 		}
@@ -103,6 +104,7 @@ Tutoriel Tutoriel_charger(Partie partie, int nbCharParPhrase)
 			Position_setX(pos, Position_getX(pos) + 1);
 	}
 
+	Plateau_detruire(plateau);
 	Position_detruire(pos);
 
 	if(ferror(fichier))
@@ -110,6 +112,8 @@ Tutoriel Tutoriel_charger(Partie partie, int nbCharParPhrase)
 		Tutoriel_detruire(tutoriel);
 		return NULL;
 	}
+
+	fclose(fichier);
 
 	return tutoriel;
 }
@@ -121,26 +125,26 @@ void Tutoriel_inserer(Tutoriel tutoriel, Plateau plateau, char* chaine, int nbCh
 
 	while(chaine[positionChaine] != '\0')
 	{
-		Liste_insererCourant(tutoriel->plateaux, plateau);	//On insère le même plateau à chaque fois tant que toute la chaine n'est pas insérée.
+		Liste_insererCourant(tutoriel->plateaux, Plateau_copier(plateau));	//On insère le même plateau à chaque fois tant que toute la chaine n'est pas insérée.
 
-		chaine2 = malloc(sizeof(char) * nbCharParPhrase);
-		i = positionChaine;
+		chaine2 = malloc(sizeof(char) * (nbCharParPhrase));
+		i = 0;
 
-		do
+		while(i < nbCharParPhrase && chaine[i] != '\0')
 		{
-			chaine2[i - positionChaine] = chaine[i];
+			chaine2[i] = chaine[positionChaine + i];
 			i++;
-		} while(i < positionChaine + nbCharParPhrase && chaine[i] != '\0');
+		}
 
-		if(chaine[i] != ' ' && chaine[i] != '\0')	//On revient au mot entier le plus proche (pour éviter les coupures de mots)
+		if(chaine[positionChaine + i] != ' ' && chaine[positionChaine + i] != '\0')	//On revient au mot entier le plus proche (pour éviter les coupures de mots)
 		{
-			while(chaine[i] != ' ')
+			while(chaine[positionChaine + i] != ' ')
 				i--;
 			i++;		//On se replace au char suivant
 		}
 
 		chaine2[i] = '\0';
-		positionChaine = i;
+		positionChaine += i;
 
 		Liste_insererCourant(tutoriel->chaines, chaine2);
 
@@ -210,8 +214,8 @@ int Tutoriel_precedent(Tutoriel tutoriel)
 	return Liste_precedent(tutoriel->plateaux) && Liste_precedent(tutoriel->chaines);
 }
 
-void Tutoriel_courant(Tutoriel tutoriel, Plateau plateau, char* chaine)
+void Tutoriel_courant(Tutoriel tutoriel, Plateau plateau, char** chaine)
 {
 	plateau = Liste_courant(tutoriel->plateaux);
-	chaine = Liste_courant(tutoriel->chaines);
+	*chaine = Liste_courant(tutoriel->chaines);
 }

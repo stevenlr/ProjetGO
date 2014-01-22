@@ -3,6 +3,10 @@
  * @brief
  */
 
+#include <stdlib.h>
+#include <stdio.h>
+#include <string.h>
+
 #include "include/Position.h"
 #include "include/Partie.h"
 #include "include/Plateau.h"
@@ -53,7 +57,7 @@ void InterfaceConsole_entreeJeu(EtatsJeu* etats)
 		}
 		else if(strcmp(event, "quitter"))
 		{
-			EcranJeu_eventArreter();
+			EcranJeu_eventArreter(1);
 			break;
 		}
 		else if(strcmp(event, "passer"))
@@ -81,8 +85,7 @@ void InterfaceConsole_entreeJeu(EtatsJeu* etats)
 
 void InterfaceConsole_sortieJeu(EtatsJeu* etats)
 {
-	int i, j, originePlateau, taillePlateau;
-	int couleurInt;
+	int i, j, taillePlateau;
 	Position position;
 	Couleur couleur, tour;
 	char* str;
@@ -140,7 +143,7 @@ void InterfaceConsole_sortieJeu(EtatsJeu* etats)
 			strcpy(str, "Blanc");
 
 		printf("Partie terminée au tour %d !\n", Partie_getTour(etats->partie) + 1);
-		printf("Score Noir : %d\t Score Blanc : %d\n", etats->scoreNoir, etats->scoreBlanc);
+		printf("Score Noir : %.1f\t Score Blanc : %.1f\n", etats->scoreNoir, etats->scoreBlanc);
 		printf("%s a gagné !\nQue souhaitez vous faire : ", str);
 
 		free(str);
