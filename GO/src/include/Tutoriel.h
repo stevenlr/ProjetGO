@@ -20,7 +20,7 @@ int Tutoriel_convertirTexteVersBinaire();
  *
  * @return Tutoriel : Retourne le tutoriel chargé
  */
-Tutoriel Tutoriel_charger(Partie partie, int nbCharParPhrase);
+Tutoriel Tutoriel_charger(int nbCharParPhrase);
 
 /**
  * Inserer la chaine et le plateau dans le tutoriel en fonction du nombre de char par phrase.
@@ -76,6 +76,6 @@ int Tutoriel_precedent(Tutoriel tutoriel);
  * @param plateau
  * @param chaine
  */
-void Tutoriel_courant(Tutoriel tutoriel, Plateau plateau, char* chaine);
+void Tutoriel_courant(Tutoriel tutoriel, Plateau plateau, char** chaine);
 
 #endif /* TUTORIEL_H_ */
