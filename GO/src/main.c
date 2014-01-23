@@ -19,7 +19,7 @@ int main(int argc, char* argv[])
 {
 	FonctionMainEcran fctMain;
 
-	if(!Contexte_initialiser(GRAPHIQUE))
+	if(!Contexte_initialiser(CONSOLE))
 	{
 		fprintf(stderr, "Erreur d'initialisation du contexte.\n");
 		return 1;
