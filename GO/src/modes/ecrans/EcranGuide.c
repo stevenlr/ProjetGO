@@ -16,6 +16,7 @@
 
 #include "include/modes/contextes/Contexte.h"
 #include "include/modes/interfaces/InterfaceGraphique.h"
+#include "include/modes/interfaces/InterfaceConsole.h"
 
 #include "include/modes/etats/EtatsGuide.h"
 
@@ -23,9 +24,22 @@ static EtatsGuide etats;
 
 int EcranGuide_init()
 {
+	TypeContexte contexte = Contexte_getID();
+
 	etats.continuer = 1;
 	etats.besoinRafraichir = 1;
-	etats.tutoriel = Tutoriel_charger(100);
+	etats.premiereBoucle = 1;
+	etats.derniereBoucle = 0;
+
+	switch(contexte)
+	{
+		case GRAPHIQUE:
+			etats.tutoriel = Tutoriel_charger(100);
+			break;
+		case CONSOLE:
+			etats.tutoriel = Tutoriel_charger(78);
+			break;
+	}
 
 	if(etats.tutoriel == NULL)
 		return 0;
@@ -63,6 +77,8 @@ FonctionEntreeEcran EcranGuide_getEntreeFct()
 	{
 		case GRAPHIQUE:
 			return (FonctionEntreeEcran) InterfaceGraphique_entreeGuide;
+		case CONSOLE:
+			return (FonctionEntreeEcran) InterfaceConsole_entreeGuide;
 		default:
 			return NULL;
 	}
@@ -76,6 +92,8 @@ FonctionSortieEcran EcranGuide_getSortieFct()
 	{
 		case GRAPHIQUE:
 			return (FonctionSortieEcran) InterfaceGraphique_sortieGuide;
+		case CONSOLE:
+			return (FonctionEntreeEcran) InterfaceConsole_sortieGuide;
 		default:
 			return NULL;
 	}

@@ -89,6 +89,7 @@ void EcranJeu_init()
 	etats.scoreBlanc = 0;
 	etats.partie = Partie_creer("Joueur 1", "Joueur 2", ORDINATEUR, ORDINATEUR, 7.5, 0, 9);
 	etats.premiereBoucle = 1;
+	etats.derniereBoucle = 0;
 }
 
 int EcranJeu_initCharger()
@@ -103,6 +104,8 @@ int EcranJeu_initCharger()
 	etats.scoreNoir = 0;
 	etats.scoreBlanc = 0;
 	etats.partie = Partie_charger(fp);
+	etats.derniereBoucle = 0;
+	etats.premiereBoucle = 1;
 
 	fclose(fp);
 

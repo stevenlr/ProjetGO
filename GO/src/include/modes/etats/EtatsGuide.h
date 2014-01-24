@@ -11,6 +11,8 @@
 typedef struct {
 	int continuer;
 	int besoinRafraichir;
+	int premiereBoucle;
+	int derniereBoucle;
 	Tutoriel tutoriel;
 } EtatsGuide;
 
