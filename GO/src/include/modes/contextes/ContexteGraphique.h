@@ -11,6 +11,7 @@
 #include "Contexte.h"
 #include "include/graphics/Bouton.h"
 #include "include/graphics/ChoixMultiple.h"
+#include "include/graphics/EntreeTexte.h"
 
 #define NBOUTONS 18
 
@@ -50,6 +51,15 @@ typedef enum {
 } ChoixMultiples;
 
 ChoixMultiple choixMultiples[NCHOIXMULTIPLES];
+
+#define NENTREETEXTE 2
+
+typedef enum {
+	OPTIONS_NOMJ1,
+	OPTIONS_NOMJ2
+} EntreesTexte;
+
+EntreeTexte entreesTexte[NENTREETEXTE];
 
 typedef struct ContexteGraphique* ContexteGraphique;
 

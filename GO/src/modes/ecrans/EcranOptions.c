@@ -136,6 +136,14 @@ void EcranOptions_eventSetTypeJoueur(Couleur joueur, TypeJoueur type)
 		etats.typeJ2 = type;
 }
 
+void EcranOptions_eventSetNomJoueur(Couleur joueur, char* nom)
+{
+	if(joueur == NOIR)
+		strcpy(etats.nomJ1, nom);
+	else
+		strcpy(etats.nomJ2, nom);
+}
+
 void EcranOptions_eventSetJoueurHandicap(Couleur joueur)
 {
 	etats.joueurHandicap = joueur;

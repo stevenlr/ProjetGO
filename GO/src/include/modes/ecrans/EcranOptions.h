@@ -23,6 +23,7 @@ void EcranOptions_eventQuitter(int menu);
 void EcranOptions_eventSetKomi(int komi);
 void EcranOptions_eventSetHandicap(int handicap);
 void EcranOptions_eventSetTypeJoueur(Couleur joueur, TypeJoueur type);
+void EcranOptions_eventSetNomJoueur(Couleur joueur, char* nom);
 void EcranOptions_eventSetJoueurHandicap(Couleur joueur);
 void EcranOptions_eventSetTaille(int taille);
 void EcranOptions_eventCommencer();

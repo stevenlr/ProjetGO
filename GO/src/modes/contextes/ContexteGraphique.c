@@ -9,6 +9,8 @@
 #include <SDL/SDL.h>
 
 #include "include/graphics/Bouton.h"
+#include "include/graphics/ChoixMultiple.h"
+#include "include/graphics/EntreeTexte.h"
 #include "include/graphics/Texture.h"
 #include "include/graphics/Texte.h"
 
@@ -17,13 +19,16 @@
 
 #define BASE_BOUTONS_MENU 200
 
-struct ContexteGraphique {
+struct ContexteGraphique
+{
 	SDL_Surface* window;
 	SDL_Surface* icon;
 	int tailleX, tailleY;
 };
 
 Bouton boutons[NBOUTONS];
+ChoixMultiple choixMultiples[NCHOIXMULTIPLES];
+EntreeTexte entreesTexte[NENTREETEXTE];
 
 ContexteGraphique ContexteGraphique_creer()
 {
@@ -54,7 +59,6 @@ ContexteGraphique ContexteGraphique_creer()
 	SDL_WM_SetIcon(ctx->icon, NULL);
 	SDL_WM_SetCaption("Jeu de Go", NULL);
 
-
 	ctx->window = SDL_SetVideoMode(ctx->tailleX, ctx->tailleY, 24, SDL_HWSURFACE);
 	if(ctx->window == NULL)
 	{
@@ -79,6 +83,9 @@ ContexteGraphique ContexteGraphique_creer()
 		free(ctx);
 		return NULL;
 	}
+
+	SDL_EnableUNICODE(SDL_ENABLE);
+	SDL_EnableKeyRepeat(SDL_DEFAULT_REPEAT_DELAY, SDL_DEFAULT_REPEAT_INTERVAL);
 
 	boutons[JEU_PASSER] = Bouton_creer("Passer", bordGauche, bordDroit, 265, 305, 0x606060, 0xeeeeee);
 	boutons[JEU_SAUVEGARDER] = Bouton_creer("Sauvegarder", bordGauche, milieu - 7, tailleY - 55, tailleY - 15, 0x606060, 0xeeeeee);
@@ -142,6 +149,19 @@ ContexteGraphique ContexteGraphique_creer()
 	ChoixMultiple_ajouterChoix(choixMultiples[OPTIONS_TAILLE], "13");
 	ChoixMultiple_ajouterChoix(choixMultiples[OPTIONS_TAILLE], "19");
 
+	entreesTexte[OPTIONS_NOMJ1] = EntreeTexte_creer(300, 120, 250, 0x606060, 0xeeeeee, 16);
+	entreesTexte[OPTIONS_NOMJ2] = EntreeTexte_creer(300, 195, 250, 0x606060, 0xeeeeee, 16);
+
+	for(i = 0; i < NENTREETEXTE; i++)
+	{
+		if(entreesTexte[i] == NULL)
+		{
+			fprintf(stderr, "Erreur de création de l'entree %d.\n", i);
+			ContexteGraphique_detruire(ctx);
+			return NULL;
+		}
+	}
+
 	return ctx;
 }
 
@@ -161,6 +181,12 @@ void ContexteGraphique_detruire(ContexteGraphique ctx)
 	{
 		if(choixMultiples[i] != NULL)
 			ChoixMultiple_detruire(choixMultiples[i]);
+	}
+
+	for(i = 0; i < NENTREETEXTE; i++)
+	{
+		if(entreesTexte[i] != NULL)
+			EntreeTexte_detruire(entreesTexte[i]);
 	}
 
 	Texte_libererFontes();

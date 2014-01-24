@@ -249,7 +249,7 @@ void EcranJeu_eventArreter(int menu)
 
 int EcranJeu_eventPlacerPion(int cx, int cy)
 {
-	int valide;
+	int valide = 0;
 
 	if(Partie_estFinie(etats.partie))
 		return 0;

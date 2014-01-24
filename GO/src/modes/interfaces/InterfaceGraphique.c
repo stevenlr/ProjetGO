@@ -13,6 +13,8 @@
 #include "include/Plateau.h"
 #include "include/Couleur.h"
 
+#include "include/graphics/ChoixMultiple.h"
+#include "include/graphics/EntreeTexte.h"
 #include "include/graphics/Bouton.h"
 #include "include/graphics/Texture.h"
 #include "include/graphics/Texte.h"
@@ -380,9 +382,11 @@ void InterfaceGraphique_entreeOptions(EtatsOptions* etats)
 {
 	SDL_Event event;
 	TypeJoueur type;
+	EntreeTexte entree;
 	int taille;
 	Couleur joueur;
 	int x, y;
+	char c;
 
 	if(etats->premiereBoucle)
 	{
@@ -390,6 +394,13 @@ void InterfaceGraphique_entreeOptions(EtatsOptions* etats)
 		ChoixMultiple_setCourant(choixMultiples[OPTIONS_TYPEJ2], 0);
 		ChoixMultiple_setCourant(choixMultiples[OPTIONS_TAILLE], 2);
 		ChoixMultiple_setCourant(choixMultiples[OPTIONS_HANDICAP], 1);
+
+		EntreeTexte_setTexte(entreesTexte[OPTIONS_NOMJ1], etats->nomJ1);
+		EntreeTexte_setTexte(entreesTexte[OPTIONS_NOMJ2], etats->nomJ2);
+
+		EntreeTexte_setFocus(entreesTexte[OPTIONS_NOMJ1], 0);
+		EntreeTexte_setFocus(entreesTexte[OPTIONS_NOMJ2], 0);
+
 		etats->premiereBoucle = 0;
 	}
 
@@ -404,12 +415,20 @@ void InterfaceGraphique_entreeOptions(EtatsOptions* etats)
 			x = event.button.x;
 			y = event.button.y;
 
+			EntreeTexte_setFocus(entreesTexte[OPTIONS_NOMJ1], 0);
+			EntreeTexte_setFocus(entreesTexte[OPTIONS_NOMJ2], 0);
+
+			EntreeTexte_clique(entreesTexte[OPTIONS_NOMJ1], x, y);
+			EntreeTexte_clique(entreesTexte[OPTIONS_NOMJ2], x, y);
+
 			if(Bouton_clique(boutons[OPTIONS_RETOUR], x, y))
 			{
 				EcranOptions_eventQuitter(1);
 			}
 			else if(Bouton_clique(boutons[OPTIONS_COMMENCER], x, y))
 			{
+				EcranOptions_eventSetNomJoueur(NOIR, EntreeTexte_getTexte(entreesTexte[OPTIONS_NOMJ1]));
+				EcranOptions_eventSetNomJoueur(BLANC, EntreeTexte_getTexte(entreesTexte[OPTIONS_NOMJ2]));
 				EcranOptions_eventCommencer();
 			}
 			else if(Bouton_clique(boutons[OPTIONS_KOMI_MOINS], x, y))
@@ -464,6 +483,35 @@ void InterfaceGraphique_entreeOptions(EtatsOptions* etats)
 				EcranOptions_eventSetTaille(taille);
 			}
 		}
+		else if(event.type == SDL_KEYDOWN)
+		{
+			if(EntreeTexte_getFocus(entreesTexte[OPTIONS_NOMJ1]))
+				entree = entreesTexte[OPTIONS_NOMJ1];
+			else if(EntreeTexte_getFocus(entreesTexte[OPTIONS_NOMJ2]))
+				entree = entreesTexte[OPTIONS_NOMJ2];
+			else
+				continue;
+
+			if(event.key.keysym.sym == SDLK_BACKSPACE)
+			{
+				EntreeTexte_retour(entree);
+			}
+			else
+			{
+				c = (char) event.key.keysym.unicode;
+
+				if((c == ' ' || c == '-' || c == '_')
+						|| (c >= 'A' && c <= 'Z')
+						|| (c >= 'a' && c <= 'z')
+						|| (c >= '0' && c <=  '9'))
+				{
+					EntreeTexte_inserer(entree, c);
+				}
+			}
+
+			EcranOptions_eventSetNomJoueur(NOIR, EntreeTexte_getTexte(entreesTexte[OPTIONS_NOMJ1]));
+			EcranOptions_eventSetNomJoueur(BLANC, EntreeTexte_getTexte(entreesTexte[OPTIONS_NOMJ2]));
+		}
 	}
 }
 
@@ -488,9 +536,11 @@ void InterfaceGraphique_sortieOptions(EtatsOptions* etats)
 	Bouton_afficher(boutons[OPTIONS_RETOUR], window);
 
 	Texte_afficherChaine(window, 50, 130, "Joueur 1", NORMAL, 0xffffff, GAUCHE);
+	EntreeTexte_afficher(entreesTexte[OPTIONS_NOMJ1], window);
 	ChoixMultiple_afficher(choixMultiples[OPTIONS_TYPEJ1], window);
 
 	Texte_afficherChaine(window, 50, 205, "Joueur 2", NORMAL, 0xffffff, GAUCHE);
+	EntreeTexte_afficher(entreesTexte[OPTIONS_NOMJ2], window);
 	ChoixMultiple_afficher(choixMultiples[OPTIONS_TYPEJ2], window);
 
 	Texte_afficherChaine(window, 50, 280, "Taille du plateau", NORMAL, 0xffffff, GAUCHE);
