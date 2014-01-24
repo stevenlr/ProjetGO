@@ -81,15 +81,20 @@ static int tourDeJeu(Position position)
 	return valide;
 }
 
-void EcranJeu_init()
+int EcranJeu_init(char* nomJ1, char* nomJ2, TypeJoueur typeJ1, TypeJoueur typeJ2, int taille, int handicap, float komi)
 {
 	etats.continuer = 1;
 	etats.estFini = 0;
 	etats.scoreNoir = 0;
 	etats.scoreBlanc = 0;
-	etats.partie = Partie_creer("Joueur 1", "Joueur 2", ORDINATEUR, ORDINATEUR, 7.5, 0, 9);
+	etats.partie = Partie_creer(nomJ1, nomJ2, typeJ1, typeJ2, komi, handicap, taille);
 	etats.premiereBoucle = 1;
 	etats.derniereBoucle = 0;
+
+	if(etats.partie == NULL)
+		return 0;
+
+	return 1;
 }
 
 int EcranJeu_initCharger()

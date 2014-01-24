@@ -3,6 +3,9 @@
  * @brief 
  */
 
+#include <stdio.h>
+#include <string.h>
+
 #include <SDL/SDL.h>
 
 #include "include/Position.h"
@@ -20,10 +23,12 @@
 #include "include/modes/ecrans/EcranJeu.h"
 #include "include/modes/ecrans/EcranMenu.h"
 #include "include/modes/ecrans/EcranGuide.h"
+#include "include/modes/ecrans/EcranOptions.h"
 
 #include "include/modes/etats/EtatsJeu.h"
 #include "include/modes/etats/EtatsMenu.h"
 #include "include/modes/etats/EtatsGuide.h"
+#include "include/modes/etats/EtatsOptions.h"
 
 static void InterfaceGraphique_afficherPion(SDL_Surface* surface, Couleur couleur, int x, int y)
 {
@@ -76,24 +81,24 @@ void InterfaceGraphique_entreeJeu(EtatsJeu* etats)
 				if(typeJoueurActuel == HUMAIN)
 					EcranJeu_eventPlacerPion(cx, cy);
 			}
-			else if(Bouton_clique(&(boutons[JEU_PASSER]), x, y))
+			else if(Bouton_clique(boutons[JEU_PASSER], x, y))
 			{
 				if(typeJoueurActuel == HUMAIN)
 					EcranJeu_eventPasserTour();
 			}
-			else if(Bouton_clique(&(boutons[JEU_SAUVEGARDER]), x, y))
+			else if(Bouton_clique(boutons[JEU_SAUVEGARDER], x, y))
 			{
 				EcranJeu_eventSauvegarder();
 			}
-			else if(Bouton_clique(&(boutons[JEU_QUITTER]), x, y))
+			else if(Bouton_clique(boutons[JEU_QUITTER], x, y))
 			{
 				EcranJeu_eventArreter(1);
 			}
-			else if(Bouton_clique(&(boutons[JEU_SUIVANT]), x, y))
+			else if(Bouton_clique(boutons[JEU_SUIVANT], x, y))
 			{
 				EcranJeu_eventSuivant();
 			}
-			else if(Bouton_clique(&(boutons[JEU_PRECEDENT]), x, y))
+			else if(Bouton_clique(boutons[JEU_PRECEDENT], x, y))
 			{
 				EcranJeu_eventPrecedent();
 			}
@@ -193,15 +198,15 @@ void InterfaceGraphique_sortieJeu(EtatsJeu* etats)
 		Texte_afficherChaine(window, milieu, 480, str, NORMAL, 0xdddddd, CENTRE_X);
 	}
 
-	Bouton_afficher(&(boutons[JEU_PASSER]), window);
-	Bouton_afficher(&(boutons[JEU_QUITTER]), window);
-	Bouton_afficher(&(boutons[JEU_SAUVEGARDER]), window);
+	Bouton_afficher(boutons[JEU_PASSER], window);
+	Bouton_afficher(boutons[JEU_QUITTER], window);
+	Bouton_afficher(boutons[JEU_SAUVEGARDER], window);
 
 	if(!Partie_estAuPremier(etats->partie))
-		Bouton_afficher(&(boutons[JEU_PRECEDENT]), window);
+		Bouton_afficher(boutons[JEU_PRECEDENT], window);
 
 	if(!Partie_estAuDernier(etats->partie))
-		Bouton_afficher(&(boutons[JEU_SUIVANT]), window);
+		Bouton_afficher(boutons[JEU_SUIVANT], window);
 
 	Position_detruire(position);
 	SDL_Flip(window);
@@ -224,19 +229,19 @@ void InterfaceGraphique_entreeMenu(EtatsMenu* etats)
 			x = event.button.x;
 			y = event.button.y;
 
-			if(Bouton_clique(&(boutons[MENU_QUITTER]), x, y))
+			if(Bouton_clique(boutons[MENU_QUITTER], x, y))
 			{
 				EcranMenu_eventQuitter();
 			}
-			else if(Bouton_clique(&(boutons[MENU_NOUVELLEPARTIE]), x, y))
+			else if(Bouton_clique(boutons[MENU_NOUVELLEPARTIE], x, y))
 			{
 				EcranMenu_eventNouvellePartie();
 			}
-			else if(Bouton_clique(&(boutons[MENU_REPRENDREPARTIE]), x, y))
+			else if(Bouton_clique(boutons[MENU_REPRENDREPARTIE], x, y))
 			{
 				EcranMenu_eventReprendre();
 			}
-			else if(Bouton_clique(&(boutons[MENU_GUIDE]), x, y))
+			else if(Bouton_clique(boutons[MENU_GUIDE], x, y))
 			{
 				EcranMenu_eventGuide();
 			}
@@ -256,10 +261,10 @@ void InterfaceGraphique_sortieMenu(EtatsMenu* etats)
 
 	Texte_afficherChaine(window, tailleX / 2, 50, "Jeu de Go", GRAS | GRAND, 0xffffff, CENTRE_X);
 
-	Bouton_afficher(&(boutons[MENU_NOUVELLEPARTIE]), window);
-	Bouton_afficher(&(boutons[MENU_REPRENDREPARTIE]), window);
-	Bouton_afficher(&(boutons[MENU_GUIDE]), window);
-	Bouton_afficher(&(boutons[MENU_QUITTER]), window);
+	Bouton_afficher(boutons[MENU_NOUVELLEPARTIE], window);
+	Bouton_afficher(boutons[MENU_REPRENDREPARTIE], window);
+	Bouton_afficher(boutons[MENU_GUIDE], window);
+	Bouton_afficher(boutons[MENU_QUITTER], window);
 
 	SDL_Flip(window);
 	SDL_Delay(25);
@@ -281,15 +286,15 @@ void InterfaceGraphique_entreeGuide(EtatsGuide* etats)
 			x = event.button.x;
 			y = event.button.y;
 
-			if(Bouton_clique(&(boutons[GUIDE_QUITTER]), x, y))
+			if(Bouton_clique(boutons[GUIDE_QUITTER], x, y))
 			{
 				EcranGuide_eventQuitter(1);
 			}
-			else if(Bouton_clique(&(boutons[GUIDE_PRECEDENT]), x, y))
+			else if(Bouton_clique(boutons[GUIDE_PRECEDENT], x, y))
 			{
 				EcranGuide_eventPrecedent();
 			}
-			else if(Bouton_clique(&(boutons[GUIDE_SUIVANT]), x, y))
+			else if(Bouton_clique(boutons[GUIDE_SUIVANT], x, y))
 			{
 				EcranGuide_eventSuivant();
 			}
@@ -328,13 +333,13 @@ void InterfaceGraphique_sortieGuide(EtatsGuide* etats)
 
 		SDL_FillRect(window, &rect, 0x000000);
 
-		Bouton_afficher(&(boutons[GUIDE_QUITTER]), window);
+		Bouton_afficher(boutons[GUIDE_QUITTER], window);
 
 		if(!Tutoriel_estPremier(etats->tutoriel))
-			Bouton_afficher(&(boutons[GUIDE_PRECEDENT]), window);
+			Bouton_afficher(boutons[GUIDE_PRECEDENT], window);
 
 		if(!Tutoriel_estDernier(etats->tutoriel))
-			Bouton_afficher(&(boutons[GUIDE_SUIVANT]), window);
+			Bouton_afficher(boutons[GUIDE_SUIVANT], window);
 
 		Texture_blit(TEXTURE_PLATEAU_9, window, originePlateauX, originePlateauY);
 
@@ -368,5 +373,144 @@ void InterfaceGraphique_sortieGuide(EtatsGuide* etats)
 		etats->besoinRafraichir = 0;
 	}
 
+	SDL_Delay(25);
+}
+
+void InterfaceGraphique_entreeOptions(EtatsOptions* etats)
+{
+	SDL_Event event;
+	TypeJoueur type;
+	int taille;
+	Couleur joueur;
+	int x, y;
+
+	if(etats->premiereBoucle)
+	{
+		ChoixMultiple_setCourant(choixMultiples[OPTIONS_TYPEJ1], 0);
+		ChoixMultiple_setCourant(choixMultiples[OPTIONS_TYPEJ2], 0);
+		ChoixMultiple_setCourant(choixMultiples[OPTIONS_TAILLE], 2);
+		ChoixMultiple_setCourant(choixMultiples[OPTIONS_HANDICAP], 1);
+		etats->premiereBoucle = 0;
+	}
+
+	while(SDL_PollEvent(&event))
+	{
+		if(event.type == SDL_QUIT)
+		{
+			EcranOptions_eventQuitter(0);
+		}
+		else if(event.type == SDL_MOUSEBUTTONDOWN)
+		{
+			x = event.button.x;
+			y = event.button.y;
+
+			if(Bouton_clique(boutons[OPTIONS_RETOUR], x, y))
+			{
+				EcranOptions_eventQuitter(1);
+			}
+			else if(Bouton_clique(boutons[OPTIONS_COMMENCER], x, y))
+			{
+				EcranOptions_eventCommencer();
+			}
+			else if(Bouton_clique(boutons[OPTIONS_KOMI_MOINS], x, y))
+			{
+				EcranOptions_eventSetKomi(etats->komi - 1);
+			}
+			else if(Bouton_clique(boutons[OPTIONS_KOMI_PLUS], x, y))
+			{
+				EcranOptions_eventSetKomi(etats->komi + 1);
+			}
+			else if(Bouton_clique(boutons[OPTIONS_HANDICAP_MOINS], x, y))
+			{
+				EcranOptions_eventSetHandicap(etats->handicap - 1);
+			}
+			else if(Bouton_clique(boutons[OPTIONS_HANDICAP_PLUS], x, y))
+			{
+				EcranOptions_eventSetHandicap(etats->handicap + 1);
+			}
+			else if(ChoixMultiple_clique(choixMultiples[OPTIONS_TYPEJ1], x, y))
+			{
+				type = (ChoixMultiple_getCourant(choixMultiples[OPTIONS_TYPEJ1]) == 0) ? HUMAIN : ORDINATEUR;
+				EcranOptions_eventSetTypeJoueur(NOIR, type);
+			}
+			else if(ChoixMultiple_clique(choixMultiples[OPTIONS_TYPEJ2], x, y))
+			{
+				type = (ChoixMultiple_getCourant(choixMultiples[OPTIONS_TYPEJ2]) == 0) ? HUMAIN : ORDINATEUR;
+				EcranOptions_eventSetTypeJoueur(BLANC, type);
+			}
+			else if(ChoixMultiple_clique(choixMultiples[OPTIONS_HANDICAP], x, y))
+			{
+				joueur = (ChoixMultiple_getCourant(choixMultiples[OPTIONS_HANDICAP]) == 0) ? NOIR : BLANC;
+				EcranOptions_eventSetJoueurHandicap(joueur);
+			}
+			else if(ChoixMultiple_clique(choixMultiples[OPTIONS_TAILLE], x, y))
+			{
+				switch(ChoixMultiple_getCourant(choixMultiples[OPTIONS_TAILLE]))
+				{
+					case 0:
+						taille = 9;
+						break;
+					case 1:
+						taille = 13;
+						break;
+					case 2:
+						taille = 19;
+						break;
+					default:
+						taille = 19;
+						break;
+				}
+
+				EcranOptions_eventSetTaille(taille);
+			}
+		}
+	}
+}
+
+void InterfaceGraphique_sortieOptions(EtatsOptions* etats)
+{
+	SDL_Surface* window;
+	SDL_Rect rect;
+	int tailleX, tailleY;
+	char str[100];
+
+	window = ContexteGraphique_getWindow();
+	tailleX = ContexteGraphique_getTailleX();
+	tailleY = ContexteGraphique_getTailleY();
+
+	rect.x = 0;
+	rect.y = 0;
+	rect.w = tailleX;
+	rect.h = tailleY;
+
+	SDL_FillRect(window, &rect, 0x000000);
+
+	Bouton_afficher(boutons[OPTIONS_RETOUR], window);
+
+	Texte_afficherChaine(window, 50, 130, "Joueur 1", NORMAL, 0xffffff, GAUCHE);
+	ChoixMultiple_afficher(choixMultiples[OPTIONS_TYPEJ1], window);
+
+	Texte_afficherChaine(window, 50, 205, "Joueur 2", NORMAL, 0xffffff, GAUCHE);
+	ChoixMultiple_afficher(choixMultiples[OPTIONS_TYPEJ2], window);
+
+	Texte_afficherChaine(window, 50, 280, "Taille du plateau", NORMAL, 0xffffff, GAUCHE);
+	ChoixMultiple_afficher(choixMultiples[OPTIONS_TAILLE], window);
+
+	Texte_afficherChaine(window, 50, 355, "Komi", NORMAL, 0xffffff, GAUCHE);
+	Bouton_afficher(boutons[OPTIONS_KOMI_MOINS], window);
+	Bouton_afficher(boutons[OPTIONS_KOMI_PLUS], window);
+	sprintf(str, "%.1f", etats->komi + 0.5);
+	Texte_afficherChaine(window, 400, 355, str, NORMAL, 0xffffff, CENTRE_X);
+
+	Texte_afficherChaine(window, 50, 430, "Handicap", NORMAL, 0xffffff, GAUCHE);
+	Bouton_afficher(boutons[OPTIONS_HANDICAP_MOINS], window);
+	Bouton_afficher(boutons[OPTIONS_HANDICAP_PLUS], window);
+	sprintf(str, "%d", etats->handicap);
+	Texte_afficherChaine(window, 400, 430, str, NORMAL, 0xffffff, CENTRE_X);
+	ChoixMultiple_afficher(choixMultiples[OPTIONS_HANDICAP], window);
+
+	Bouton_afficher(boutons[OPTIONS_COMMENCER], window);
+
+	SDL_Flip(window);
 	SDL_Delay(25);
 }

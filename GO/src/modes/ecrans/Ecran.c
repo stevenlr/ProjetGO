@@ -9,6 +9,7 @@
 #include "include/modes/ecrans/EcranJeu.h"
 #include "include/modes/ecrans/EcranMenu.h"
 #include "include/modes/ecrans/EcranGuide.h"
+#include "include/modes/ecrans/EcranOptions.h"
 
 static TypeEcran idEcran = NONE;
 static TypeEcran idProchainEcran;
@@ -52,6 +53,9 @@ FonctionMainEcran Ecran_getFonctionMain()
 			break;
 		case GUIDE:
 			return EcranGuide_main;
+			break;
+		case OPTIONS:
+			return EcranOptions_main;
 			break;
 		default:
 			return NULL;

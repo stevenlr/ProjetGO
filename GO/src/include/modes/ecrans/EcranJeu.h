@@ -6,9 +6,10 @@
 #ifndef ECRANJEU_H_
 #define ECRANJEU_H_
 
+#include "include/Partie.h"
 #include "Ecran.h"
 
-void EcranJeu_init();
+int EcranJeu_init(char* nomJ1, char* nomJ2, TypeJoueur typeJ1, TypeJoueur typeJ2, int taille, int handicap, float komi);
 int EcranJeu_initCharger();
 void EcranJeu_detruire();
 

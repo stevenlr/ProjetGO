@@ -10,8 +10,9 @@
 
 #include "Contexte.h"
 #include "include/graphics/Bouton.h"
+#include "include/graphics/ChoixMultiple.h"
 
-#define NBOUTONS 12
+#define NBOUTONS 18
 
 typedef enum {
 	JEU_PASSER,
@@ -27,10 +28,28 @@ typedef enum {
 
 	GUIDE_QUITTER,
 	GUIDE_PRECEDENT,
-	GUIDE_SUIVANT
+	GUIDE_SUIVANT,
+
+	OPTIONS_RETOUR,
+	OPTIONS_COMMENCER,
+	OPTIONS_HANDICAP_MOINS,
+	OPTIONS_HANDICAP_PLUS,
+	OPTIONS_KOMI_MOINS,
+	OPTIONS_KOMI_PLUS
 } Boutons;
 
 Bouton boutons[NBOUTONS];
+
+#define NCHOIXMULTIPLES 4
+
+typedef enum {
+	OPTIONS_TYPEJ1,
+	OPTIONS_TYPEJ2,
+	OPTIONS_HANDICAP,
+	OPTIONS_TAILLE
+} ChoixMultiples;
+
+ChoixMultiple choixMultiples[NCHOIXMULTIPLES];
 
 typedef struct ContexteGraphique* ContexteGraphique;
 

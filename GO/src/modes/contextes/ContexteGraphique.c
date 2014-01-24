@@ -27,7 +27,7 @@ Bouton boutons[NBOUTONS];
 
 ContexteGraphique ContexteGraphique_creer()
 {
-	int milieu, bordGauche, bordDroit, tailleX = 1066, tailleY = 600;
+	int milieu, bordGauche, bordDroit, tailleX = 1066, tailleY = 600, i;
 	ContexteGraphique ctx;
 
 	ctx = (ContexteGraphique) malloc(sizeof(struct ContexteGraphique));
@@ -95,12 +95,73 @@ ContexteGraphique ContexteGraphique_creer()
 	boutons[GUIDE_PRECEDENT] = Bouton_creer("<", 533 - 15 - 100, 533 - 15, 15, 55, 0x606060, 0xeeeeee);
 	boutons[GUIDE_SUIVANT] = Bouton_creer(">", 533 + 15, 533 + 15 + 100, 15, 55, 0x606060, 0xeeeeee);
 
+	boutons[OPTIONS_RETOUR] = Bouton_creer("Retour", 15, 215, 15, 55, 0x606060, 0xeeeeee);
+	boutons[OPTIONS_COMMENCER] = Bouton_creer("Commencer", 15, 215, 600 - 55, 600 - 15, 0x606060, 0xeeeeee);
+
+	boutons[OPTIONS_KOMI_MOINS] = Bouton_creer("-", 300, 350, 345, 385, 0x606060, 0xeeeeee);
+	boutons[OPTIONS_KOMI_PLUS] = Bouton_creer("+", 450, 500, 345, 385, 0x606060, 0xeeeeee);
+
+	boutons[OPTIONS_HANDICAP_MOINS] = Bouton_creer("-", 300, 350, 420, 460, 0x606060, 0xeeeeee);
+	boutons[OPTIONS_HANDICAP_PLUS] = Bouton_creer("+", 450, 500, 420, 460, 0x606060, 0xeeeeee);
+
+	for(i = 0; i < NBOUTONS; i++)
+	{
+		if(boutons[i] == NULL)
+		{
+			fprintf(stderr, "Erreur de création du bouton %d.\n", i);
+			ContexteGraphique_detruire(ctx);
+			return NULL;
+		}
+	}
+
+	choixMultiples[OPTIONS_TYPEJ1] = ChoixMultiple_creer(600, 120, 130, 0x303030, 0x606060, 0xeeeeee);
+	choixMultiples[OPTIONS_TYPEJ2] = ChoixMultiple_creer(600, 195, 130, 0x303030, 0x606060, 0xeeeeee);
+	choixMultiples[OPTIONS_HANDICAP] = ChoixMultiple_creer(530, 420, 120, 0x303030, 0x606060, 0xeeeeee);
+	choixMultiples[OPTIONS_TAILLE] = ChoixMultiple_creer(300, 270, 80, 0x303030, 0x606060, 0xeeeeee);
+
+	for(i = 0; i < NCHOIXMULTIPLES; i++)
+	{
+		if(choixMultiples[i] == NULL)
+		{
+			fprintf(stderr, "Erreur de création du choix multiple %d.\n", i);
+			ContexteGraphique_detruire(ctx);
+			return NULL;
+		}
+	}
+
+	ChoixMultiple_ajouterChoix(choixMultiples[OPTIONS_TYPEJ1], "Humain");
+	ChoixMultiple_ajouterChoix(choixMultiples[OPTIONS_TYPEJ1], "Ordinateur");
+
+	ChoixMultiple_ajouterChoix(choixMultiples[OPTIONS_TYPEJ2], "Humain");
+	ChoixMultiple_ajouterChoix(choixMultiples[OPTIONS_TYPEJ2], "Ordinateur");
+
+	ChoixMultiple_ajouterChoix(choixMultiples[OPTIONS_HANDICAP], "Joueur 1");
+	ChoixMultiple_ajouterChoix(choixMultiples[OPTIONS_HANDICAP], "Joueur 2");
+
+	ChoixMultiple_ajouterChoix(choixMultiples[OPTIONS_TAILLE], "9");
+	ChoixMultiple_ajouterChoix(choixMultiples[OPTIONS_TAILLE], "13");
+	ChoixMultiple_ajouterChoix(choixMultiples[OPTIONS_TAILLE], "19");
+
 	return ctx;
 }
 
 void ContexteGraphique_detruire(ContexteGraphique ctx)
 {
+	int i;
+
 	assert(ctx);
+
+	for(i = 0; i < NBOUTONS; i++)
+	{
+		if(boutons[i] != NULL)
+			Bouton_detruire(boutons[i]);
+	}
+
+	for(i = 0; i < NCHOIXMULTIPLES; i++)
+	{
+		if(choixMultiples[i] != NULL)
+			ChoixMultiple_detruire(choixMultiples[i]);
+	}
 
 	Texte_libererFontes();
 	Texture_libererRegistre();

@@ -13,6 +13,7 @@
 #include "include/modes/ecrans/EcranMenu.h"
 #include "include/modes/ecrans/EcranJeu.h"
 #include "include/modes/ecrans/EcranGuide.h"
+#include "include/modes/ecrans/EcranOptions.h"
 
 #include "include/modes/contextes/Contexte.h"
 #include "include/modes/interfaces/InterfaceGraphique.h"
@@ -31,7 +32,6 @@ void EcranMenu_init()
 
 void EcranMenu_detruire()
 {
-
 }
 
 void EcranMenu_main()
@@ -96,13 +96,10 @@ void EcranMenu_eventReprendre()
 
 void EcranMenu_eventNouvellePartie()
 {
-	/**
-	 * @todo changer pour configurer partie
-	 */
-	EcranJeu_init();
+	EcranOptions_init();
 
 	etats.continuer = 0;
-	Ecran_setIDProchain(JEU);
+	Ecran_setIDProchain(OPTIONS);
 }
 
 void EcranMenu_eventGuide()

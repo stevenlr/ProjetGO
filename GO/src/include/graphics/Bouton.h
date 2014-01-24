@@ -6,12 +6,7 @@
 #ifndef BOUTON_H_
 #define BOUTON_H_
 
-typedef struct {
-	char* texte;
-	SDL_Rect rect;
-	int couleurBouton;
-	int couleurTexte;
-} Bouton;
+typedef struct Bouton* Bouton;
 
 /**
  * Crée un bouton.
@@ -30,7 +25,7 @@ Bouton Bouton_creer(char* texte, int x1, int x2, int y1, int y2, int couleurBout
  *
  * @param surface Surface sur laquelle l'afficher.
  */
-void Bouton_afficher(Bouton *bouton, SDL_Surface* surface);
+void Bouton_afficher(Bouton bouton, SDL_Surface* surface);
 
 /**
  * Détermine si on est sur un bouton.
@@ -40,6 +35,13 @@ void Bouton_afficher(Bouton *bouton, SDL_Surface* surface);
  * @param y
  * @return 1 si on clique dessus, 0 sinon.
  */
-int Bouton_clique(Bouton *bouton, int x, int y);
+int Bouton_clique(Bouton bouton, int x, int y);
+
+/**
+ * Détruit un bouton.
+ *
+ * @param bouton
+ */
+void Bouton_detruire(Bouton bouton);
 
 #endif
