@@ -22,7 +22,7 @@ FonctionSortieEcran EcranJeu_getSortieFct();
  * @param menu 1 si on soit revenir au menu, 0 sinon.
  */
 void EcranJeu_eventArreter(int menu);
-void EcranJeu_eventPlacerPion(int cx, int cy);
+int EcranJeu_eventPlacerPion(int cx, int cy);
 void EcranJeu_eventPasserTour();
 void EcranJeu_eventSauvegarder();
 void EcranJeu_eventSuivant();

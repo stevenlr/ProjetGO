@@ -71,6 +71,22 @@ int Partie_getTaille(Partie partie);
 int Partie_getTour(Partie partie);
 
 /**
+ * Renvoie le nombre de tours passés.
+ *
+ * @param partie
+ * @return Nombre de tours passés.
+ */
+int Partie_getToursPasses(Partie partie);
+
+/**
+ * Retourne une liste des positions libres sur le plateau courant.
+ *
+ * @param partie
+ * @return Positions libres.
+ */
+Liste Partie_getPositionsLibres(Partie partie);
+
+/**
  * Met dans joueur le pseudo du Joueur correspondant à couleur.
  *
  * @param partie
@@ -78,6 +94,15 @@ int Partie_getTour(Partie partie);
  * @return Nom du joueur
  */
 char* Partie_getJoueur(Partie partie, Couleur couleur);
+
+/**
+ * Retourne le type de joueur de la couleur associée.
+ *
+ * @param partie
+ * @param couleur
+ * @return Type de joueur.
+ */
+TypeJoueur Partie_getTypeJoueur(Partie partie, Couleur couleur);
 
 /**
  * Renvoie la couleur du joueur actuel

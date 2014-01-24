@@ -125,12 +125,51 @@ int Partie_getTour(Partie partie)
 	return partie->tour;
 }
 
+int Partie_getToursPasses(Partie partie)
+{
+	return partie->passe;
+}
+
+Liste Partie_getPositionsLibres(Partie partie)
+{
+	Liste positions = Liste_creer();
+	Position pos = Position_creer(0, 0);
+	int x, y, taille;
+	Couleur couleur;
+	Plateau plateau = Partie_getPlateauActuel(partie);
+
+	taille = partie->taille;
+
+	for(y = 0; y < taille; y++)
+	{
+		Position_setY(pos, y);
+
+		for(x = 0; x < taille; x++)
+		{
+			Position_setX(pos, x);
+			couleur = Plateau_get(plateau, pos);
+
+			if(couleur == VIDE)
+				Liste_insererCourant(positions, Position_copier(pos));
+		}
+	}
+
+	Position_detruire(pos);
+
+	return positions;
+}
+
 char* Partie_getJoueur(Partie partie, Couleur couleur)
 {
 	if(couleur == NOIR)
 		return partie->joueurNoir;
 
 	return partie->joueurBlanc;
+}
+
+TypeJoueur Partie_getTypeJoueur(Partie partie, Couleur couleur)
+{
+	return (Partie_getJoueurActuel(partie) == NOIR) ? partie->typeJoueurNoir : partie->typeJoueurBlanc;
 }
 
 Couleur Partie_getJoueurActuel(Partie partie)
@@ -266,7 +305,7 @@ void Partie_jouerTour(Partie partie)
 
 int Partie_estFinie(Partie partie)
 {
-	return partie->passe == 2;
+	return partie->passe >= 2;
 }
 
 int Partie_sauvegarder(Partie partie, FILE* fichier)

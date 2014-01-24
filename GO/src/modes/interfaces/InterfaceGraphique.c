@@ -52,6 +52,8 @@ void InterfaceGraphique_entreeJeu(EtatsJeu* etats)
 	int cx, cy, x, y;
 	int originePlateau;
 	int taillePlateau;
+	Couleur joueurActuel = Partie_getJoueurActuel(etats->partie);
+	TypeJoueur typeJoueurActuel = Partie_getTypeJoueur(etats->partie, joueurActuel);
 
 	taillePlateau = Partie_getTaille(etats->partie);
 	originePlateau = (ContexteGraphique_getTailleY() - taillePlateau * TAILLE_CELL) / 2;
@@ -71,11 +73,13 @@ void InterfaceGraphique_entreeJeu(EtatsJeu* etats)
 
 			if(cx >= 0 && cx < taillePlateau && cy >= 0 && cy < taillePlateau)
 			{
-				EcranJeu_eventPlacerPion(cx, cy);
+				if(typeJoueurActuel == HUMAIN)
+					EcranJeu_eventPlacerPion(cx, cy);
 			}
 			else if(Bouton_clique(&(boutons[JEU_PASSER]), x, y))
 			{
-				EcranJeu_eventPasserTour();
+				if(typeJoueurActuel == HUMAIN)
+					EcranJeu_eventPasserTour();
 			}
 			else if(Bouton_clique(&(boutons[JEU_SAUVEGARDER]), x, y))
 			{

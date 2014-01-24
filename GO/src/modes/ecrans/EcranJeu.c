@@ -5,6 +5,7 @@
 
 #include <stdlib.h>
 #include <stdio.h>
+#include <time.h>
 #include <assert.h>
 
 #include "include/Position.h"
@@ -26,7 +27,7 @@
 
 static EtatsJeu etats;
 
-static void tourDeJeu(Position position)
+static int tourDeJeu(Position position)
 {
 	Pion pion;
 	Chaines chaines;
@@ -76,6 +77,8 @@ static void tourDeJeu(Position position)
 
 	Liste_detruire(chaines);
 	Pion_detruire(pion);
+
+	return valide;
 }
 
 void EcranJeu_init()
@@ -84,7 +87,7 @@ void EcranJeu_init()
 	etats.estFini = 0;
 	etats.scoreNoir = 0;
 	etats.scoreBlanc = 0;
-	etats.partie = Partie_creer("Joueur 1", "Joueur 2", HUMAIN, HUMAIN, 7.5, 0, 19);
+	etats.partie = Partie_creer("Joueur 1", "Joueur 2", ORDINATEUR, ORDINATEUR, 7.5, 0, 9);
 	etats.premiereBoucle = 1;
 }
 
@@ -118,6 +121,12 @@ void EcranJeu_main()
 {
 	FonctionEntreeEcran entreeFct = EcranJeu_getEntreeFct();
 	FonctionSortieEcran sortieFct = EcranJeu_getSortieFct();
+	Couleur couleur;
+	Liste positions;
+	int passeTour, valide, id;
+	Position pos;
+
+	srand(time(NULL));
 
 	while(etats.continuer)
 	{
@@ -127,6 +136,56 @@ void EcranJeu_main()
 		{
 			etats.estFini = 1;
 			Partie_calculerScore(etats.partie, &(etats.scoreNoir), &(etats.scoreBlanc));
+		}
+
+		couleur = Partie_getJoueurActuel(etats.partie);
+
+		// Super IA de la mort !
+		if(!etats.estFini && Partie_getTypeJoueur(etats.partie, couleur) == ORDINATEUR)
+		{
+			passeTour = 0;
+			valide = 0;
+
+			if(Partie_getToursPasses(etats.partie) == 1) // Si un joueur a passé un tour, l'autre a une chance sur 4 de passer aussi.
+			{
+				if(rand() % 4 == 0)
+				{
+					passeTour = 1;
+					EcranJeu_eventPasserTour();
+				}
+			}
+
+			if(!passeTour)
+			{
+				positions = Partie_getPositionsLibres(etats.partie);
+
+				while(!Liste_estVide(positions) && !valide)
+				{
+					id = rand() % Liste_getNbElements(positions);
+					Liste_setCourant(positions, id);
+					pos = Liste_courant(positions);
+					valide = EcranJeu_eventPlacerPion(Position_getX(pos), Position_getY(pos));
+
+					if(!valide)
+					{
+						Position_detruire(pos);
+						Liste_supprimerCourant(positions);
+					}
+				}
+
+				if(!valide)
+					EcranJeu_eventPasserTour();
+
+				Liste_tete(positions);
+
+				while(!Liste_estVide(positions))
+				{
+					Position_detruire(Liste_courant(positions));
+					Liste_supprimerCourant(positions);
+				}
+
+				Liste_detruire(positions);
+			}
 		}
 
 		sortieFct(&etats);
@@ -180,10 +239,12 @@ void EcranJeu_eventArreter(int menu)
 	etats.continuer = 0;
 }
 
-void EcranJeu_eventPlacerPion(int cx, int cy)
+int EcranJeu_eventPlacerPion(int cx, int cy)
 {
+	int valide;
+
 	if(Partie_estFinie(etats.partie))
-		return;
+		return 0;
 
 	if(!Partie_estAuDernier(etats.partie))
 		Partie_supprimerPlateauxSuivants(etats.partie);
@@ -194,10 +255,12 @@ void EcranJeu_eventPlacerPion(int cx, int cy)
 
 	if(Plateau_get(Partie_getPlateauActuel(etats.partie), position) == VIDE)
 	{
-		tourDeJeu(position);
+		valide = tourDeJeu(position);
 	}
 
 	Position_detruire(position);
+
+	return valide;
 }
 
 void EcranJeu_eventPasserTour()
