@@ -9,6 +9,7 @@
 #include "include/modes/etats/EtatsJeu.h"
 #include "include/modes/etats/EtatsMenu.h"
 #include "include/modes/etats/EtatsGuide.h"
+#include "include/modes/etats/EtatsOptions.h"
 
 void InterfaceConsole_entreeJeu(EtatsJeu* etats);
 void InterfaceConsole_sortieJeu(EtatsJeu* etats);
@@ -18,5 +19,8 @@ void InterfaceConsole_sortieMenu(EtatsMenu* etats);
 
 void InterfaceConsole_entreeGuide(EtatsGuide* etats);
 void InterfaceConsole_sortieGuide(EtatsGuide* etats);
+
+void InterfaceConsole_entreeOptions(EtatsOptions* etats);
+void InterfaceConsole_sortieOptions(EtatsOptions* etats);
 
 #endif

@@ -70,10 +70,7 @@ FonctionEntreeEcran EcranOptions_getEntreeFct()
 		case GRAPHIQUE:
 			return (FonctionEntreeEcran) InterfaceGraphique_entreeOptions;
 		case CONSOLE:
-			/**
-			 * @todo ce truc là
-			 */
-			//return (FonctionEntreeEcran) InterfaceConsole_entreeOptions;
+			return (FonctionEntreeEcran) InterfaceConsole_entreeOptions;
 		default:
 			return NULL;
 	}
@@ -88,11 +85,7 @@ FonctionSortieEcran EcranOptions_getSortieFct()
 		case GRAPHIQUE:
 			return (FonctionSortieEcran) InterfaceGraphique_sortieOptions;
 		case CONSOLE:
-			/**
-			 * @todo ça aussi
-			 */
-			//return (FonctionSortieEcran) InterfaceConsole_sortieOptions;
-
+			return (FonctionSortieEcran) InterfaceConsole_sortieOptions;
 		default:
 			return NULL;
 	}

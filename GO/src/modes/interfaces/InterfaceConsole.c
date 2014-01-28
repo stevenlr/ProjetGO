@@ -1,12 +1,11 @@
 /**
- * @file InterfaceGraphique.c
+ * @file InterfaceConsole.c
  * @brief
  */
 
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
-#include <conio.h>
 
 #include "include/Position.h"
 #include "include/Partie.h"
@@ -17,6 +16,7 @@
 #include "include/modes/ecrans/EcranJeu.h"
 #include "include/modes/ecrans/EcranMenu.h"
 #include "include/modes/ecrans/EcranGuide.h"
+#include "include/modes/ecrans/EcranOptions.h"
 
 static void InterfaceConsole_viderBuffer()
 {
@@ -423,7 +423,243 @@ void InterfaceConsole_sortieGuide(EtatsGuide* etats)
 	printf(". ) Votre choix est : ");
 
 	Position_detruire(pos);
+}
 
+void InterfaceConsole_entreeOptions(EtatsOptions* etats)
+{
+	char c;
+	char event[14], pseudo[17];
+	int nb;
 
+	if(etats->premiereBoucle)
+	{
+		EcranOptions_eventSetNomJoueur(NOIR, "Noir");
+		EcranOptions_eventSetNomJoueur(BLANC, "Blanc");
+		etats->premiereBoucle = 0;
+		return;
+	}
 
+	do
+	{
+		scanf("%13s", event);
+
+		if(strcmp(event, "quitter") == 0)
+		{
+			EcranOptions_eventQuitter(1);
+			etats->derniereBoucle = 1;
+			break;
+		}
+		else if(strcmp(event, "commencer") == 0)
+		{
+			EcranOptions_eventCommencer();
+			break;
+		}
+		else if(strcmp(event, "komi") == 0)
+		{
+			scanf("%d", &nb);
+
+			if(nb >= 0 && nb < 400)
+			{
+				EcranOptions_eventSetKomi(nb);
+				break;
+			}
+			else
+			{
+				printf("Veuillez saisir une entrée valide : ");
+			}
+		}
+		else if(strcmp(event, "handicap") == 0)
+		{
+			scanf("%d", &nb);
+
+			if(nb >= 0 && nb < 400)
+			{
+				EcranOptions_eventSetHandicap(nb);
+				break;
+			}
+			else
+			{
+				printf("Veuillez saisir une entrée valide : ");
+			}
+		}
+		else if(strcmp(event, "typeJ1") == 0)
+		{
+			if((c = getc(stdin)) != '\n')
+			{
+				if((c = getc(stdin)) == 'H')
+				{
+					EcranOptions_eventSetTypeJoueur(NOIR, HUMAIN);
+					break;
+				}
+				else if (c == 'O')
+				{
+					EcranOptions_eventSetTypeJoueur(NOIR, ORDINATEUR);
+					break;
+				}
+				else
+					putc('\n', stdin);
+					printf("Veuillez saisir une entrée valide : ");
+			}
+			else
+			{
+				putc('\n', stdin);
+				printf("Veuillez saisir une entrée valide : ");
+			}
+		}
+		else if(strcmp(event, "typeJ2") == 0)
+		{
+			if((c = getc(stdin)) != '\n')
+			{
+				if((c = getc(stdin)) == 'H')
+				{
+					EcranOptions_eventSetTypeJoueur(BLANC, HUMAIN);
+					break;
+				}
+				else if (c == 'O')
+				{
+					EcranOptions_eventSetTypeJoueur(BLANC, ORDINATEUR);
+					break;
+				}
+				else
+				{
+					putc('\n', stdin);
+					printf("Veuillez saisir une entrée valide : ");
+				}
+			}
+			else
+			{
+				putc('\n', stdin);
+				printf("Veuillez saisir une entrée valide : ");
+			}
+		}
+		else if(strcmp(event, "handicapJ") == 0)
+		{
+			if((c = getc(stdin)) != '\n')
+			{
+				if((c = getc(stdin)) == 'N')
+				{
+					EcranOptions_eventSetJoueurHandicap(NOIR);
+					break;
+				}
+				else if (c  == 'B')
+				{
+					EcranOptions_eventSetJoueurHandicap(BLANC);
+					break;
+				}
+				else
+				{
+					putc('\n', stdin);
+					printf("Veuillez saisir une entrée valide : ");
+				}
+			}
+			else
+			{
+				putc('\n', stdin);
+				printf("Veuillez saisir une entrée valide : ");
+			}
+		}
+		else if(strcmp(event, "taille") == 0)
+		{
+			if((c = getc(stdin)) != '\n')
+			{
+				if((c = getc(stdin)) == '1')
+				{
+					EcranOptions_eventSetTaille(9);
+					break;
+				}
+				else if (c == '2')
+				{
+					EcranOptions_eventSetTaille(13);
+					break;
+				}
+				else if (c == '3')
+				{
+					EcranOptions_eventSetTaille(19);
+					break;
+				}
+				else
+				{
+					putc('\n', stdin);
+					printf("Veuillez saisir une entrée valide : ");
+				}
+			}
+			else
+			{
+				putc('\n', stdin);
+				printf("Veuillez saisir une entrée valide : ");
+			}
+		}
+		else if(strcmp(event, "pseudoJ1") == 0)
+		{
+			scanf("%16s", pseudo);
+
+			if(strlen(pseudo) > 0 && strlen(pseudo) < 17)
+			{
+				EcranOptions_eventSetNomJoueur(NOIR, pseudo);
+				break;
+			}
+			else
+			{
+				printf("Veuillez saisir une entrée valide : ");
+			}
+		}
+		else if(strcmp(event, "pseudoJ2") == 0)
+		{
+			scanf("%16s", pseudo);
+
+			if(strlen(pseudo) > 0 && strlen(pseudo) < 17)
+			{
+				EcranOptions_eventSetNomJoueur(BLANC, pseudo);
+				break;
+			}
+			else
+			{
+				printf("Veuillez saisir une entrée valide : ");
+			}
+		}
+		else
+		{
+			printf("Entrez un choix valide : ");
+		}
+
+		InterfaceConsole_viderBuffer();
+	}while(1);
+}
+
+void InterfaceConsole_sortieOptions(EtatsOptions* etats)
+{
+	if(etats->derniereBoucle)
+	{
+		etats->derniereBoucle = 0;
+		return;
+	}
+
+	printf("Choix des options de la partie. Par défaut, elles sont les suivantes :\n");
+	printf("NOIR : %s\tBLANC : %s\n", etats->nomJ1, etats->nomJ2);
+	printf("NOIR est un ");
+
+	if(etats->typeJ1 == HUMAIN)
+		printf("humain.");
+	else
+		printf("ordinateur.");
+
+	printf("\nBLANC est un ");
+
+	if(etats->typeJ2 == HUMAIN)
+			printf("humain.");
+		else
+			printf("ordinateur.");
+
+	printf("\nTaille du plateau : %d\tKomi : %d.5\n", etats->taille, etats->komi);
+	printf("L'handicap est de %d pour ", etats->handicap);
+
+	if(etats->joueurHandicap == NOIR)
+			printf("NOIR.");
+		else
+			printf("BLANC.");
+
+	printf("\nCommandes: typeJ1 <H|O> typeJ2 <H|O>, pseudoJ1 <nom> pseudoJ2 <nom>, commencer"
+			"\nkomi <nb>, handicap <nb>, handicapJ <N|B>, taille <1|2|3> 1= 9, 2= 13, 3= 19.\n");
+
+	printf("Saisissez votre choix : ");
 }
