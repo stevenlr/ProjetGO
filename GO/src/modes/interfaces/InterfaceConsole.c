@@ -452,6 +452,7 @@ void InterfaceConsole_entreeOptions(EtatsOptions* etats)
 		else if(strcmp(event, "commencer") == 0)
 		{
 			EcranOptions_eventCommencer();
+			etats->derniereBoucle = 1;
 			break;
 		}
 		else if(strcmp(event, "komi") == 0)
