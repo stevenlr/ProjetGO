@@ -184,12 +184,12 @@ void InterfaceConsole_sortieJeu(EtatsJeu* etats)
 
 	if(!Partie_estAuPremier(etats->partie))
 	{
-		printf(" ,precedent");
+		printf(", precedent");
 	}
 
 	if(!Partie_estAuDernier(etats->partie))
 	{
-		printf(" ,suivant");
+		printf(", suivant");
 	}
 
 	printf(".\nPour jouer : [LETTRE][NOMBRE]. Ex : A2, F13.\n");
@@ -218,7 +218,7 @@ void InterfaceConsole_sortieJeu(EtatsJeu* etats)
 		else
 			strcpy(str, "Blanc");
 
-		printf("Tour n %d : C'est a %s de jouer ! Votre choix est : ", Partie_getTour(etats->partie) + 1, str);
+		printf("Tour n %d : C'est à %s de jouer ! Votre choix est : ", Partie_getTour(etats->partie) + 1, str);
 
 		free(str);
 	}
@@ -407,7 +407,7 @@ void InterfaceConsole_sortieGuide(EtatsGuide* etats)
 		printf("%s\n", (char *) Liste_courant(chaines));
 	} while(Liste_suivant(chaines));
 
-	printf("( Commande : quitter");
+	printf("(Commande : quitter");
 
 	if(!Tutoriel_estPremier(etats->tutoriel))
 		printf(", precedent");
@@ -415,7 +415,7 @@ void InterfaceConsole_sortieGuide(EtatsGuide* etats)
 	if(!Tutoriel_estDernier(etats->tutoriel))
 		printf(", suivant");
 
-	printf(". ) Votre choix est : ");
+	printf(".) Votre choix est : ");
 
 	Position_detruire(pos);
 }
@@ -425,6 +425,7 @@ void InterfaceConsole_entreeOptions(EtatsOptions* etats)
 	char c;
 	char event[14], pseudo[17];
 	int nb;
+	float komi;
 
 	if(etats->premiereBoucle)
 	{
@@ -466,11 +467,11 @@ void InterfaceConsole_entreeOptions(EtatsOptions* etats)
 		}
 		else if(strcmp(event, "handicap") == 0)
 		{
-			scanf("%d", &nb);
+			scanf("%f", &komi);
 
-			if(nb >= 0 && nb < 400)
+			if(nb >= 0.5 && nb < 400)
 			{
-				EcranOptions_eventSetHandicap(nb);
+				EcranOptions_eventSetHandicap((int) (nb - 0.5));
 				break;
 			}
 			else
@@ -630,7 +631,7 @@ void InterfaceConsole_sortieOptions(EtatsOptions* etats)
 		return;
 	}
 
-	printf("Choix des options de la partie. Par défaut, elles sont les suivantes :\n");
+	printf("\nChoix des options de la partie. Par défaut, elles sont les suivantes :\n");
 	printf("NOIR : %s\tBLANC : %s\n", etats->nomJ1, etats->nomJ2);
 	printf("NOIR est un ");
 
@@ -647,7 +648,7 @@ void InterfaceConsole_sortieOptions(EtatsOptions* etats)
 		printf("ordinateur.");
 
 	printf("\nTaille du plateau : %d\tKomi : %d.5\n", etats->taille, etats->komi);
-	printf("L'handicap est de %d pour ", etats->handicap);
+	printf("Le handicap est de %d pour ", etats->handicap);
 
 	if(etats->joueurHandicap == NOIR)
 		printf("NOIR.");
