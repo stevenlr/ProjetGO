@@ -20,11 +20,11 @@
 
 static void InterfaceConsole_viderBuffer()
 {
-    int c = 0;
-    while (c != '\n' && c != EOF)
-    {
-        c = getchar();
-    }
+	int c = 0;
+	while(c != '\n' && c != EOF)
+	{
+		c = getchar();
+	}
 }
 
 void InterfaceConsole_entreeJeu(EtatsJeu* etats)
@@ -53,14 +53,14 @@ void InterfaceConsole_entreeJeu(EtatsJeu* etats)
 				cx = (int) (event[0] - 'A');
 
 				if(event[1] == '1' && strlen(event) == 3)
-					cy = 9 + (int)(event[2] - '0');
+					cy = 9 + (int) (event[2] - '0');
 				else
 					cy = (int) (event[1] - '1');
 
 				if(cx >= 0 && cx < taillePlateau && cy >= 0 && cy < taillePlateau)
-						{
-							EcranJeu_eventPlacerPion(cx, cy);
-						}
+				{
+					EcranJeu_eventPlacerPion(cx, cy);
+				}
 				break;
 			}
 		}
@@ -94,12 +94,12 @@ void InterfaceConsole_entreeJeu(EtatsJeu* etats)
 		{
 			printf("Entrez un choix valide : ");
 		}
-	}while(1);
+	} while(1);
 }
 
 static int InterfaceConsole_estHoshi(int i, int j, int taillePlateau)
 {
-	if((i == 3 || i == 9 || i ==15) && (j == 3 || j == 9 || j == 15) && taillePlateau == 19)
+	if((i == 3 || i == 9 || i == 15) && (j == 3 || j == 9 || j == 15) && taillePlateau == 19)
 	{
 		return 1;
 	}
@@ -135,13 +135,13 @@ void InterfaceConsole_sortieJeu(EtatsJeu* etats)
 
 	printf(" ");
 
-	for(i=1; i <= taillePlateau; i++)
-		{
-			if(i < 10)
-				printf(" %d ", i);
-			else
-				printf(" %d", i);
-		}
+	for(i = 1; i <= taillePlateau; i++)
+	{
+		if(i < 10)
+			printf(" %d ", i);
+		else
+			printf(" %d", i);
+	}
 
 	printf("\n");
 
@@ -172,7 +172,7 @@ void InterfaceConsole_sortieJeu(EtatsJeu* etats)
 
 	printf(" ");
 
-	for(i=1; i <= taillePlateau; i++)
+	for(i = 1; i <= taillePlateau; i++)
 	{
 		if(i < 10)
 			printf(" %d ", i);
@@ -183,14 +183,14 @@ void InterfaceConsole_sortieJeu(EtatsJeu* etats)
 	printf("\nCommandes : quitter, sauvegarder, passer");
 
 	if(!Partie_estAuPremier(etats->partie))
-		{
+	{
 		printf(" ,precedent");
-		}
+	}
 
 	if(!Partie_estAuDernier(etats->partie))
-		{
+	{
 		printf(" ,suivant");
-		}
+	}
 
 	printf(".\nPour jouer : [LETTRE][NOMBRE]. Ex : A2, F13.\n");
 
@@ -226,7 +226,6 @@ void InterfaceConsole_sortieJeu(EtatsJeu* etats)
 	Position_detruire(position);
 }
 
-
 void InterfaceConsole_entreeMenu(EtatsMenu* etats)
 {
 	int event;
@@ -244,22 +243,22 @@ void InterfaceConsole_entreeMenu(EtatsMenu* etats)
 
 		switch(event)
 		{
-		case 1:
-			EcranMenu_eventNouvellePartie();
-			break;
-		case 2:
-			EcranMenu_eventReprendre();
-			break;
-		case 3:
-			EcranMenu_eventGuide();
-			break;
-		case 4:
-			EcranMenu_eventQuitter();
-			break;
-		default:
-			printf("Entrez un choix valide : ");
+			case 1:
+				EcranMenu_eventNouvellePartie();
+				break;
+			case 2:
+				EcranMenu_eventReprendre();
+				break;
+			case 3:
+				EcranMenu_eventGuide();
+				break;
+			case 4:
+				EcranMenu_eventQuitter();
+				break;
+			default:
+				printf("Entrez un choix valide : ");
 		}
-	}while(event < 1 || event > 4);
+	} while(event < 1 || event > 4);
 
 	etats->derniereBoucle = 1;
 }
@@ -318,7 +317,7 @@ void InterfaceConsole_entreeGuide(EtatsGuide* etats)
 		{
 			printf("Entrez un choix valide : ");
 		}
-	}while(1);
+	} while(1);
 }
 
 void InterfaceConsole_sortieGuide(EtatsGuide* etats)
@@ -339,13 +338,13 @@ void InterfaceConsole_sortieGuide(EtatsGuide* etats)
 
 	Tutoriel_courant(etats->tutoriel, &plateau, &chaines);
 
-	for(i=1; i <= 9; i++)
-		{
-			if(i < 10)
-				printf(" %d ", i);
-			else
-				printf(" %d", i);
-		}
+	for(i = 1; i <= 9; i++)
+	{
+		if(i < 10)
+			printf(" %d ", i);
+		else
+			printf(" %d", i);
+	}
 
 	printf("\n");
 
@@ -370,11 +369,7 @@ void InterfaceConsole_sortieGuide(EtatsGuide* etats)
 			else if(couleur == AURAVIDE)
 			{
 				if(InterfaceConsole_estHoshi(i, j, 9))
-				{
-					//textcolor(4);
-					printf(" %c ",(char) 197);
-					//textcolor(15);
-				}
+					printf(" %c ", (char) 197);
 				else
 					printf("   ");
 			}
@@ -394,7 +389,7 @@ void InterfaceConsole_sortieGuide(EtatsGuide* etats)
 
 	printf(" ");
 
-	for(i=1; i <= 9; i++)
+	for(i = 1; i <= 9; i++)
 	{
 		if(i < 10)
 			printf(" %d ", i);
@@ -492,14 +487,14 @@ void InterfaceConsole_entreeOptions(EtatsOptions* etats)
 					EcranOptions_eventSetTypeJoueur(NOIR, HUMAIN);
 					break;
 				}
-				else if (c == 'O')
+				else if(c == 'O')
 				{
 					EcranOptions_eventSetTypeJoueur(NOIR, ORDINATEUR);
 					break;
 				}
 				else
 					putc('\n', stdin);
-					printf("Veuillez saisir une entrée valide : ");
+				printf("Veuillez saisir une entrée valide : ");
 			}
 			else
 			{
@@ -516,7 +511,7 @@ void InterfaceConsole_entreeOptions(EtatsOptions* etats)
 					EcranOptions_eventSetTypeJoueur(BLANC, HUMAIN);
 					break;
 				}
-				else if (c == 'O')
+				else if(c == 'O')
 				{
 					EcranOptions_eventSetTypeJoueur(BLANC, ORDINATEUR);
 					break;
@@ -542,7 +537,7 @@ void InterfaceConsole_entreeOptions(EtatsOptions* etats)
 					EcranOptions_eventSetJoueurHandicap(NOIR);
 					break;
 				}
-				else if (c  == 'B')
+				else if(c == 'B')
 				{
 					EcranOptions_eventSetJoueurHandicap(BLANC);
 					break;
@@ -568,12 +563,12 @@ void InterfaceConsole_entreeOptions(EtatsOptions* etats)
 					EcranOptions_eventSetTaille(9);
 					break;
 				}
-				else if (c == '2')
+				else if(c == '2')
 				{
 					EcranOptions_eventSetTaille(13);
 					break;
 				}
-				else if (c == '3')
+				else if(c == '3')
 				{
 					EcranOptions_eventSetTaille(19);
 					break;
@@ -624,7 +619,7 @@ void InterfaceConsole_entreeOptions(EtatsOptions* etats)
 		}
 
 		InterfaceConsole_viderBuffer();
-	}while(1);
+	} while(1);
 }
 
 void InterfaceConsole_sortieOptions(EtatsOptions* etats)
@@ -647,17 +642,17 @@ void InterfaceConsole_sortieOptions(EtatsOptions* etats)
 	printf("\nBLANC est un ");
 
 	if(etats->typeJ2 == HUMAIN)
-			printf("humain.");
-		else
-			printf("ordinateur.");
+		printf("humain.");
+	else
+		printf("ordinateur.");
 
 	printf("\nTaille du plateau : %d\tKomi : %d.5\n", etats->taille, etats->komi);
 	printf("L'handicap est de %d pour ", etats->handicap);
 
 	if(etats->joueurHandicap == NOIR)
-			printf("NOIR.");
-		else
-			printf("BLANC.");
+		printf("NOIR.");
+	else
+		printf("BLANC.");
 
 	printf("\nCommandes: typeJ1 <H|O> typeJ2 <H|O>, pseudoJ1 <nom> pseudoJ2 <nom>, commencer"
 			"\nkomi <nb>, handicap <nb>, handicapJ <N|B>, taille <1|2|3> 1= 9, 2= 13, 3= 19.\n");
