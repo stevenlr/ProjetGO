@@ -6,6 +6,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <assert.h>
+#include <string.h>
 
 #include "include/Tutoriel.h"
 
@@ -18,8 +19,14 @@
 int main(int argc, char* argv[])
 {
 	FonctionMainEcran fctMain;
+	TypeContexte contexte;
 
-	if(!Contexte_initialiser(CONSOLE))
+	if(argc == 2 && strcmp(argv[1], "-nogui") == 0)
+		contexte = CONSOLE;
+	else
+		contexte = GRAPHIQUE;
+
+	if(!Contexte_initialiser(contexte))
 	{
 		fprintf(stderr, "Erreur d'initialisation du contexte.\n");
 		return 1;
