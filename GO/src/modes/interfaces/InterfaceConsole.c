@@ -133,7 +133,7 @@ void InterfaceConsole_sortieJeu(EtatsJeu* etats)
 
 	position = Position_creer(0, 0);
 
-	printf(" ");
+	printf("\n   ");
 
 	for(i = 1; i <= taillePlateau; i++)
 	{
@@ -147,7 +147,7 @@ void InterfaceConsole_sortieJeu(EtatsJeu* etats)
 
 	for(i = 0; i < taillePlateau; i++)
 	{
-		printf("%c", 'A' + i);
+		printf("  %c", 'A' + i);
 
 		for(j = 0; j < taillePlateau; j++)
 		{
@@ -289,6 +289,10 @@ void InterfaceConsole_entreeGuide(EtatsGuide* etats)
 	if(etats->premiereBoucle)
 	{
 		etats->premiereBoucle = 0;
+
+		printf("\n*********\n"
+				"* Guide *\n"
+				"*********\n");
 		return;
 	}
 
@@ -338,6 +342,8 @@ void InterfaceConsole_sortieGuide(EtatsGuide* etats)
 
 	Tutoriel_courant(etats->tutoriel, &plateau, &chaines);
 
+	printf("\t\t ");
+
 	for(i = 1; i <= 9; i++)
 	{
 		if(i < 10)
@@ -350,7 +356,7 @@ void InterfaceConsole_sortieGuide(EtatsGuide* etats)
 
 	for(i = 0; i < 9; i++)
 	{
-		printf("%c", 'A' + i);
+		printf("\t\t%c", 'A' + i);
 
 		for(j = 0; j < 9; j++)
 		{
@@ -387,7 +393,7 @@ void InterfaceConsole_sortieGuide(EtatsGuide* etats)
 		printf("%c\n", 'A' + i);
 	}
 
-	printf(" ");
+	printf("\t\t ");
 
 	for(i = 1; i <= 9; i++)
 	{
@@ -397,7 +403,7 @@ void InterfaceConsole_sortieGuide(EtatsGuide* etats)
 			printf(" %d", i);
 	}
 
-	printf("\n");
+	printf("\n\n");
 
 	i = 0;
 	Liste_tete(chaines);
@@ -422,241 +428,82 @@ void InterfaceConsole_sortieGuide(EtatsGuide* etats)
 
 void InterfaceConsole_entreeOptions(EtatsOptions* etats)
 {
-	char c;
-	char event[14], pseudo[17];
-	int nb;
-	float komi;
+	char c, pseudo[17];
+	int nb = 19;
+	float komi = 7.5;
 
-	if(etats->premiereBoucle)
+	printf("\n*********************************************\n"
+			"* Veuillez choisir les options de la partie *\n"
+			"*********************************************\n");
+
+	printf("Pseudo du Joueur 1 : ");
+	scanf("%16s", pseudo);
+	if(strlen(pseudo) == 0)
+		strcpy(pseudo, "Noir");
+	EcranOptions_eventSetNomJoueur(NOIR, pseudo);
+	InterfaceConsole_viderBuffer();
+
+	do{
+	printf("Type du Joueur 1 (H pour Humain, O pour Ordinateur) : ");
+	scanf("%c", &c);
+	}while(c != 'H' && c != 'O');
+	if(c == 'H')
+		EcranOptions_eventSetTypeJoueur(NOIR, HUMAIN);
+	else
+		EcranOptions_eventSetTypeJoueur(NOIR, ORDINATEUR);
+	InterfaceConsole_viderBuffer();
+
+	printf("Pseudo du Joueur 2 : ");
+	scanf("%16s", pseudo);
+	if(strlen(pseudo) == 0)
+		strcpy(pseudo, "Blanc");
+	EcranOptions_eventSetNomJoueur(BLANC, pseudo);
+	InterfaceConsole_viderBuffer();
+
+	do{
+	printf("Type du Joueur 2 (H pour Humain, O pour Ordinateur) : ");
+	scanf("%c", &c);
+	}while(c != 'H' && c != 'O');
+	if(c == 'H')
+		EcranOptions_eventSetTypeJoueur(BLANC, HUMAIN);
+	else
+		EcranOptions_eventSetTypeJoueur(BLANC, ORDINATEUR);
+	InterfaceConsole_viderBuffer();
+
+	do{
+		printf("Taille du plateau (9, 13 ou 19) : ");
+		scanf("%d", &nb);
+	}while(nb != 9 && nb != 13 && nb != 19);	//Defaut???
+	EcranOptions_eventSetTaille(nb);
+	InterfaceConsole_viderBuffer();
+
+	printf("Komi de la partie : ");
+	scanf("%f", &komi);
+	EcranOptions_eventSetKomi(komi - 0.5);
+	InterfaceConsole_viderBuffer();
+
+	nb = 0;
+	printf("Valeur du handicap : ");
+	scanf("%d", &nb);
+	EcranOptions_eventSetHandicap(nb);
+	InterfaceConsole_viderBuffer();
+
+	if(nb != 0)
 	{
-		EcranOptions_eventSetNomJoueur(NOIR, "Noir");
-		EcranOptions_eventSetNomJoueur(BLANC, "Blanc");
-		etats->premiereBoucle = 0;
-		return;
-	}
-
-	do
-	{
-		scanf("%13s", event);
-
-		if(strcmp(event, "quitter") == 0)
-		{
-			EcranOptions_eventQuitter(1);
-			etats->derniereBoucle = 1;
-			break;
-		}
-		else if(strcmp(event, "commencer") == 0)
-		{
-			EcranOptions_eventCommencer();
-			etats->derniereBoucle = 1;
-			break;
-		}
-		else if(strcmp(event, "komi") == 0)
-		{
+		do{
+			printf("Joueur profitant du handicap (1 = Joueur1, 2 = Joueur2) : ");
 			scanf("%d", &nb);
+		}while(nb != 1 && nb != 2);
+	}
+	if(nb == 0 || nb == 1)
+		EcranOptions_eventSetJoueurHandicap(NOIR);
+	else
+		EcranOptions_eventSetJoueurHandicap(BLANC);
 
-			if(nb >= 0 && nb < 400)
-			{
-				EcranOptions_eventSetKomi(nb);
-				break;
-			}
-			else
-			{
-				printf("Veuillez saisir une entrée valide : ");
-			}
-		}
-		else if(strcmp(event, "handicap") == 0)
-		{
-			scanf("%f", &komi);
-
-			if(nb >= 0.5 && nb < 400)
-			{
-				EcranOptions_eventSetHandicap((int) (nb - 0.5));
-				break;
-			}
-			else
-			{
-				printf("Veuillez saisir une entrée valide : ");
-			}
-		}
-		else if(strcmp(event, "typeJ1") == 0)
-		{
-			if((c = getc(stdin)) != '\n')
-			{
-				if((c = getc(stdin)) == 'H')
-				{
-					EcranOptions_eventSetTypeJoueur(NOIR, HUMAIN);
-					break;
-				}
-				else if(c == 'O')
-				{
-					EcranOptions_eventSetTypeJoueur(NOIR, ORDINATEUR);
-					break;
-				}
-				else
-					putc('\n', stdin);
-				printf("Veuillez saisir une entrée valide : ");
-			}
-			else
-			{
-				putc('\n', stdin);
-				printf("Veuillez saisir une entrée valide : ");
-			}
-		}
-		else if(strcmp(event, "typeJ2") == 0)
-		{
-			if((c = getc(stdin)) != '\n')
-			{
-				if((c = getc(stdin)) == 'H')
-				{
-					EcranOptions_eventSetTypeJoueur(BLANC, HUMAIN);
-					break;
-				}
-				else if(c == 'O')
-				{
-					EcranOptions_eventSetTypeJoueur(BLANC, ORDINATEUR);
-					break;
-				}
-				else
-				{
-					putc('\n', stdin);
-					printf("Veuillez saisir une entrée valide : ");
-				}
-			}
-			else
-			{
-				putc('\n', stdin);
-				printf("Veuillez saisir une entrée valide : ");
-			}
-		}
-		else if(strcmp(event, "handicapJ") == 0)
-		{
-			if((c = getc(stdin)) != '\n')
-			{
-				if((c = getc(stdin)) == 'N')
-				{
-					EcranOptions_eventSetJoueurHandicap(NOIR);
-					break;
-				}
-				else if(c == 'B')
-				{
-					EcranOptions_eventSetJoueurHandicap(BLANC);
-					break;
-				}
-				else
-				{
-					putc('\n', stdin);
-					printf("Veuillez saisir une entrée valide : ");
-				}
-			}
-			else
-			{
-				putc('\n', stdin);
-				printf("Veuillez saisir une entrée valide : ");
-			}
-		}
-		else if(strcmp(event, "taille") == 0)
-		{
-			if((c = getc(stdin)) != '\n')
-			{
-				if((c = getc(stdin)) == '1')
-				{
-					EcranOptions_eventSetTaille(9);
-					break;
-				}
-				else if(c == '2')
-				{
-					EcranOptions_eventSetTaille(13);
-					break;
-				}
-				else if(c == '3')
-				{
-					EcranOptions_eventSetTaille(19);
-					break;
-				}
-				else
-				{
-					putc('\n', stdin);
-					printf("Veuillez saisir une entrée valide : ");
-				}
-			}
-			else
-			{
-				putc('\n', stdin);
-				printf("Veuillez saisir une entrée valide : ");
-			}
-		}
-		else if(strcmp(event, "pseudoJ1") == 0)
-		{
-			scanf("%16s", pseudo);
-
-			if(strlen(pseudo) > 0 && strlen(pseudo) < 17)
-			{
-				EcranOptions_eventSetNomJoueur(NOIR, pseudo);
-				break;
-			}
-			else
-			{
-				printf("Veuillez saisir une entrée valide : ");
-			}
-		}
-		else if(strcmp(event, "pseudoJ2") == 0)
-		{
-			scanf("%16s", pseudo);
-
-			if(strlen(pseudo) > 0 && strlen(pseudo) < 17)
-			{
-				EcranOptions_eventSetNomJoueur(BLANC, pseudo);
-				break;
-			}
-			else
-			{
-				printf("Veuillez saisir une entrée valide : ");
-			}
-		}
-		else
-		{
-			printf("Entrez un choix valide : ");
-		}
-
-		InterfaceConsole_viderBuffer();
-	} while(1);
+	EcranOptions_eventCommencer();
 }
 
 void InterfaceConsole_sortieOptions(EtatsOptions* etats)
 {
-	if(etats->derniereBoucle)
-	{
-		etats->derniereBoucle = 0;
-		return;
-	}
 
-	printf("\nChoix des options de la partie. Par défaut, elles sont les suivantes :\n");
-	printf("NOIR : %s\tBLANC : %s\n", etats->nomJ1, etats->nomJ2);
-	printf("NOIR est un ");
-
-	if(etats->typeJ1 == HUMAIN)
-		printf("humain.");
-	else
-		printf("ordinateur.");
-
-	printf("\nBLANC est un ");
-
-	if(etats->typeJ2 == HUMAIN)
-		printf("humain.");
-	else
-		printf("ordinateur.");
-
-	printf("\nTaille du plateau : %d\tKomi : %d.5\n", etats->taille, etats->komi);
-	printf("Le handicap est de %d pour ", etats->handicap);
-
-	if(etats->joueurHandicap == NOIR)
-		printf("NOIR.");
-	else
-		printf("BLANC.");
-
-	printf("\nCommandes: typeJ1 <H|O> typeJ2 <H|O>, pseudoJ1 <nom> pseudoJ2 <nom>, commencer"
-			"\nkomi <nb>, handicap <nb>, handicapJ <N|B>, taille <1|2|3> 1= 9, 2= 13, 3= 19.\n");
-
-	printf("Saisissez votre choix : ");
 }
