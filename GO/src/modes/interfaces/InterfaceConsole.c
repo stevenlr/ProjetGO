@@ -39,6 +39,12 @@ void InterfaceConsole_entreeJeu(EtatsJeu* etats)
 		return;
 	}
 
+	if((Partie_getTypeJoueur(etats->partie, Partie_getJoueurActuel(etats->partie)) == ORDINATEUR && !etats->estFini))
+	{
+		printf("\n");
+		return;
+	}
+
 	taillePlateau = Partie_getTaille(etats->partie);
 
 	do
@@ -196,18 +202,14 @@ void InterfaceConsole_sortieJeu(EtatsJeu* etats)
 
 	if(etats->estFini)
 	{
-		str = malloc(sizeof(char) * 6);
-
 		if(etats->scoreNoir > etats->scoreBlanc)
-			strcpy(str, "Noir");
+			couleur = NOIR;
 		else
-			strcpy(str, "Blanc");
+			couleur = BLANC;
 
-		printf("Partie terminee au tour %d !\n", Partie_getTour(etats->partie) + 1);
+		printf("Partie terminée au tour %d !\n", Partie_getTour(etats->partie) + 1);
 		printf("Score Noir : %.1f\t Score Blanc : %.1f\n", etats->scoreNoir, etats->scoreBlanc);
-		printf("%s a gagne !\nQue souhaitez vous faire : ", str);
-
-		free(str);
+		printf("%s a gagné !\nQue souhaitez vous faire : ", Partie_getJoueur(etats->partie, couleur));
 	}
 	else
 	{
@@ -271,7 +273,7 @@ void InterfaceConsole_sortieMenu(EtatsMenu* etats)
 		return;
 	}
 
-	printf("*************************\n*\tJeu de GO\t*\n*************************\n");
+	printf("\n*************************\n*\tJeu de GO\t*\n*************************\n");
 
 	printf("Menu :\n");
 	printf("\t1. Nouvelle Partie\n");

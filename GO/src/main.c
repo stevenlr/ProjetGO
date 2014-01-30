@@ -25,7 +25,7 @@ int main(int argc, char* argv[])
 		contexte = CONSOLE;
 	else
 		contexte = GRAPHIQUE;
-	contexte = CONSOLE;
+
 	if(!Contexte_initialiser(contexte))
 	{
 		fprintf(stderr, "Erreur d'initialisation du contexte.\n");
