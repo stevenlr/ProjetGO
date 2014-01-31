@@ -6,6 +6,7 @@
 #include <stdlib.h>
 #include <assert.h>
 
+#include "include/RamasseMiettes.h"
 #include "include/Couleur.h"
 #include "include/Position.h"
 
@@ -21,54 +22,17 @@ struct Position{
 /**
  * Ramasse miettes, car des positions sont sans arrêt allouées et désallouées.
  */
-static Position gc[100];
-static int gcIndex = 0;
+static RamasseMiettes ramasseMiettes;
 
 void Position_initGC()
 {
-	int i;
-
-	for(i = 0; i < 100; i++)
-		gc[i] = NULL;
+	ramasseMiettes = RamasseMiettes_creer(100, sizeof(struct Position));
 }
 
-void Position_nettoyerGC()
+void Position_detruireGC()
 {
-	int i = 0;
-
-	for(i = gcIndex - 1; i >= 0; i--)
-	{
-		free(gc[i]);
-		gc[i] = NULL;
-	}
-
-	gcIndex = 0;
-}
-
-static Position Position_gcAllouer()
-{
-	Position position;
-
-	if(gcIndex == 0)
-	{
-		return (Position) malloc(sizeof(struct Position));
-	}
-
-	position = gc[--gcIndex];
-	gc[gcIndex] = NULL;
-
-	return position;
-}
-
-static void Position_gcDesallouer(Position position)
-{
-	if(gcIndex == 100)
-	{
-		free(position);
-		return;
-	}
-
-	gc[gcIndex++] = position;
+	RamasseMiettes_vider(ramasseMiettes);
+	RamasseMiettes_detruire(ramasseMiettes);
 }
 
 // Fin du ramasse miettes.
@@ -77,7 +41,7 @@ Position Position_creer(int x, int y)
 {
 	Position position;
 
-	position = Position_gcAllouer();
+	position = RamasseMiettes_allouer(ramasseMiettes);
 
 	if(position == NULL)
 		return NULL;
@@ -99,7 +63,7 @@ void Position_detruire(Position position)
 {
 	assert(position);
 
-	Position_gcDesallouer(position);
+	RamasseMiettes_desallouer(ramasseMiettes, position);
 }
 
 int Position_getX(Position position)

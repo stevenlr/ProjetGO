@@ -14,9 +14,9 @@ typedef struct Liste* Liste;
 void Liste_initGC();
 
 /**
- * Nettoie le contenu restant dans le ramasse miettes.
+ * Nettoie le contenu restant dans le ramasse miettes et le détruit.
  */
-void Liste_nettoyerGC();
+void Liste_detruireGC();
 
 /**
  * Crée une liste vide.

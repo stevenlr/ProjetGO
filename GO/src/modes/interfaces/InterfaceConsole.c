@@ -440,42 +440,54 @@ void InterfaceConsole_entreeOptions(EtatsOptions* etats)
 
 	printf("Pseudo du Joueur 1 : ");
 	scanf("%16s", pseudo);
+
 	if(strlen(pseudo) == 0)
 		strcpy(pseudo, "Noir");
+
 	EcranOptions_eventSetNomJoueur(NOIR, pseudo);
 	InterfaceConsole_viderBuffer();
 
-	do{
-	printf("Type du Joueur 1 (H pour Humain, O pour Ordinateur) : ");
-	scanf("%c", &c);
-	}while(c != 'H' && c != 'O');
+	do
+	{
+		printf("Type du Joueur 1 (H pour Humain, O pour Ordinateur) : ");
+		scanf("%c", &c);
+	} while(c != 'H' && c != 'O');
+
 	if(c == 'H')
 		EcranOptions_eventSetTypeJoueur(NOIR, HUMAIN);
 	else
 		EcranOptions_eventSetTypeJoueur(NOIR, ORDINATEUR);
+
 	InterfaceConsole_viderBuffer();
 
 	printf("Pseudo du Joueur 2 : ");
 	scanf("%16s", pseudo);
+
 	if(strlen(pseudo) == 0)
 		strcpy(pseudo, "Blanc");
+
 	EcranOptions_eventSetNomJoueur(BLANC, pseudo);
 	InterfaceConsole_viderBuffer();
 
-	do{
-	printf("Type du Joueur 2 (H pour Humain, O pour Ordinateur) : ");
-	scanf("%c", &c);
-	}while(c != 'H' && c != 'O');
+	do
+	{
+		printf("Type du Joueur 2 (H pour Humain, O pour Ordinateur) : ");
+		scanf("%c", &c);
+	} while(c != 'H' && c != 'O');
+
 	if(c == 'H')
 		EcranOptions_eventSetTypeJoueur(BLANC, HUMAIN);
 	else
 		EcranOptions_eventSetTypeJoueur(BLANC, ORDINATEUR);
+
 	InterfaceConsole_viderBuffer();
 
-	do{
+	do
+	{
 		printf("Taille du plateau (9, 13 ou 19) : ");
 		scanf("%d", &nb);
-	}while(nb != 9 && nb != 13 && nb != 19);	//Defaut???
+	} while(nb != 9 && nb != 13 && nb != 19);	//Defaut???
+
 	EcranOptions_eventSetTaille(nb);
 	InterfaceConsole_viderBuffer();
 
@@ -492,11 +504,13 @@ void InterfaceConsole_entreeOptions(EtatsOptions* etats)
 
 	if(nb != 0)
 	{
-		do{
+		do
+		{
 			printf("Joueur profitant du handicap (1 = Joueur1, 2 = Joueur2) : ");
 			scanf("%d", &nb);
-		}while(nb != 1 && nb != 2);
+		} while(nb != 1 && nb != 2);
 	}
+
 	if(nb == 0 || nb == 1)
 		EcranOptions_eventSetJoueurHandicap(NOIR);
 	else

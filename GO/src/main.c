@@ -50,8 +50,8 @@ int main(int argc, char* argv[])
 
 	Contexte_detruire();
 
-	Position_nettoyerGC();
-	Liste_nettoyerGC();
+	Position_detruireGC();
+	Liste_detruireGC();
 
 	return 0;
 }
