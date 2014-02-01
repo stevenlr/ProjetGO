@@ -1,0 +1,3 @@
+BIN=libmatrice.so
+
+include Makefile.inc

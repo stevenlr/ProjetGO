@@ -1,0 +1,3 @@
+BIN=libmatrice.dll
+
+include Makefile.inc
