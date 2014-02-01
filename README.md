@@ -1,26 +1,4 @@
-libmatrice
-=====================
-
-* src/ Fichiers .c  
-	* include/ Fichiers .h
-
-GO
-==================
-
-* src/ Fichiers.c
-	* include/ Fichier.h
-* lib/ Librairies nécessaires (SDL, SDL_image, SDL_ttf, matrice)
-* include/ Headers des librairies
-* assets/ Ressources (images, sons, polices)
-
-Conventions
-====================
-
-* En français (Pas super mais étant donné les prototypes donnés...)
-* CamelCase
-* `Type_nomDeLaFonction(...);` (ex `Matrice_creer(...);`)
-
-Compilation
+Instructions de compilation
 =====================
 
 Windows
@@ -64,3 +42,28 @@ Prérequis :
 * SDL 1.2 (version de développement)
 * SDL_image 1.2 (version de développement)
 * SDL_ttf 1.2 (version de développement)
+
+Développement
+=========================
+
+libmatrice
+------------------------------
+
+* src/ Fichiers .c  
+	* include/ Fichiers .h
+
+GO
+------------------------------
+
+* src/ Fichiers.c
+	* include/ Fichier.h
+* lib/ Librairies nécessaires (SDL, SDL_image, SDL_ttf, matrice)
+* include/ Headers des librairies
+* assets/ Ressources (images, sons, polices)
+
+Conventions
+------------------------------
+
+* En français (Pas super mais étant donné les prototypes donnés...)
+* CamelCase
+* `Type_nomDeLaFonction(...);` (ex `Matrice_creer(...);`)
