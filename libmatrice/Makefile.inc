@@ -1,5 +1,5 @@
 CC=gcc
-CFLAGS=-Wall -O3
+CFLAGS=-O3
 LDFLAGS=-shared -fPIC
 
 .PHONY: all
@@ -13,6 +13,9 @@ $(BIN): src/matrice.c
 clean:
 
 install:
+	mkdir -p ../GO/lib
+	mkdir -p ../GO/bin
 	cp bin/$(BIN) ../GO/lib
 	cp bin/$(BIN) ../GO/bin
+	mkdir -p ../GO/include
 	cp src/include/matrice.h ../GO/include/
