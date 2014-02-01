@@ -1,0 +1,8 @@
+BIN=Go
+LIBS=
+
+include Makefile.inc
+
+installplatformdependent:
+	chmod +x $(BINDIR)/$(BIN)
+	cp $(BASEDIR)/lib/libmatrice.so $(BINDIR)

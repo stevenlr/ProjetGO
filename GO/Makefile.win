@@ -1,0 +1,8 @@
+BIN=Go.exe
+LIBS=-lmingw32 -lgdi32
+
+include Makefile.inc
+
+installplatformdependent:
+	cp $(BASEDIR)/lib/*.dll $(BINDIR)
+	cp $(BASEDIR)/installlibs/windows/*.dll $(BINDIR)
