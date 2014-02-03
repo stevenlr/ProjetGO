@@ -1,4 +1,4 @@
-.PHONY: all install clean
+.PHONY: all install clean rapport
 
 all:
 	$(MAKE) -C libmatrice -f Makefile.$(MAKESUFFIX)
@@ -11,4 +11,7 @@ install:
 clean:
 	$(MAKE) -C libmatrice -f Makefile.$(MAKESUFFIX) clean
 	$(MAKE) -C GO -f Makefile.$(MAKESUFFIX) clean
+
+rapport:
+	$(MAKE) -C rapport
 	
