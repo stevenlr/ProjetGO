@@ -1,6 +1,6 @@
 /**
  * @file Libertes.h
- * @brief 
+ * @brief Liste de libertés.
  */
 
 #ifndef LIBERTES_H_

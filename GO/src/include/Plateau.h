@@ -1,3 +1,8 @@
+/**
+ * @file Plateau.h
+ * @brief Plateau de jeu de Go.
+ */
+
 #ifndef PLATEAU_H_
 #define PLATEAU_H_
 

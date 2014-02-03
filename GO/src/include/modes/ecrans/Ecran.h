@@ -24,16 +24,31 @@
  * Ecran{Type}_evenement{NomDeLEvenement}(...);
  */
 
+/**
+ * Fonction d'un écran gérant les entrées.
+ */
 typedef void (*FonctionEntreeEcran)(void*);
+
+/**
+ * Fonctions d'un écran gérant la logique.
+ */
 typedef void (*FonctionMainEcran)(void);
+
+/**
+ * Fonctions d'un écran gérant les sorties.
+ * @param
+ */
 typedef void (*FonctionSortieEcran)(void*);
 
+/**
+ * Les différents écrans du jeu.
+ */
 typedef enum {
-	NONE,
-	MENU,
-	OPTIONS,
-	JEU,
-	GUIDE
+	NONE,   //!< NONE
+	MENU,   //!< MENU
+	OPTIONS,//!< OPTIONS
+	JEU,    //!< JEU
+	GUIDE   //!< GUIDE
 } TypeEcran;
 
 /**

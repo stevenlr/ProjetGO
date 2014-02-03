@@ -12,10 +12,13 @@
 #include "include/Liste.h"
 #include "include/Partie.h"
 
+/**
+ * Tutoriel.
+ */
 struct Tutoriel
 {
-	Liste plateaux;
-	Liste chaines;
+	Liste plateaux;	//!< Liste des plateaux de démonstration.
+	Liste chaines;	//!< Liste des chaînes décrivant les plateaux.
 };
 
 int Tutoriel_convertirTexteVersBinaire()

@@ -1,6 +1,6 @@
 /**
  * @file Position.h
- * @brief 
+ * @brief Position sur un plateau.
  */
 
 #ifndef POSITION_H_

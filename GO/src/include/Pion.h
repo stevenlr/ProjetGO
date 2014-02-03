@@ -1,6 +1,6 @@
 /**
  * @file Pion.h
- * @brief 
+ * @brief Pions de jeu de Go.
  */
 
 #ifndef PION_H_

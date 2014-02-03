@@ -67,6 +67,7 @@ ContexteGraphique ContexteGraphique_creer()
 		return NULL;
 	}
 
+	// Chargement des fontes.
 	if(!Texte_chargerFontes())
 	{
 		Texte_libererFontes();
@@ -75,6 +76,7 @@ ContexteGraphique ContexteGraphique_creer()
 		return NULL;
 	}
 
+	// Chargement des textures.
 	if(!Texture_chargerRegistre())
 	{
 		Texte_libererFontes();
@@ -87,6 +89,7 @@ ContexteGraphique ContexteGraphique_creer()
 	SDL_EnableUNICODE(SDL_ENABLE);
 	SDL_EnableKeyRepeat(SDL_DEFAULT_REPEAT_DELAY, SDL_DEFAULT_REPEAT_INTERVAL);
 
+	// Création des boutons.
 	boutons[JEU_PASSER] = Bouton_creer("Passer", bordGauche, bordDroit, 265, 305, 0x606060, 0xeeeeee);
 	boutons[JEU_SAUVEGARDER] = Bouton_creer("Sauvegarder", bordGauche, milieu - 7, tailleY - 55, tailleY - 15, 0x606060, 0xeeeeee);
 	boutons[JEU_QUITTER] = Bouton_creer("Quitter", milieu + 7, bordDroit, tailleY - 55, tailleY - 15, 0x803030, 0xeeeeee);
@@ -121,6 +124,7 @@ ContexteGraphique ContexteGraphique_creer()
 		}
 	}
 
+	// Création des boutons à choix multiple.
 	choixMultiples[OPTIONS_TYPEJ1] = ChoixMultiple_creer(600, 120, 130, 0x303030, 0x606060, 0xeeeeee);
 	choixMultiples[OPTIONS_TYPEJ2] = ChoixMultiple_creer(600, 195, 130, 0x303030, 0x606060, 0xeeeeee);
 	choixMultiples[OPTIONS_HANDICAP] = ChoixMultiple_creer(530, 420, 120, 0x303030, 0x606060, 0xeeeeee);
@@ -149,6 +153,7 @@ ContexteGraphique ContexteGraphique_creer()
 	ChoixMultiple_ajouterChoix(choixMultiples[OPTIONS_TAILLE], "13");
 	ChoixMultiple_ajouterChoix(choixMultiples[OPTIONS_TAILLE], "19");
 
+	// Création des champ de texte.
 	entreesTexte[OPTIONS_NOMJ1] = EntreeTexte_creer(300, 120, 250, 0x606060, 0xeeeeee, 16);
 	entreesTexte[OPTIONS_NOMJ2] = EntreeTexte_creer(300, 195, 250, 0x606060, 0xeeeeee, 16);
 

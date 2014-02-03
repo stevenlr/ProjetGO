@@ -1,6 +1,6 @@
 /**
  * @file Territoire.h
- * @brief 
+ * @brief Territoire (ensemble de positions).
  */
 
 #ifndef TERRITOIRE_H_

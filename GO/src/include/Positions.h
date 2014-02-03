@@ -1,6 +1,6 @@
 /**
  * @file Positions.h
- * @brief
+ * @brief Ensemble de positions.
  */
 
 #ifndef POSITIONS_H_

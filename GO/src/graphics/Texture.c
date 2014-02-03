@@ -20,6 +20,9 @@ struct Texture {
 	SDL_Surface* image;	/**< Image. */
 };
 
+/**
+ * Contient toutes les textures chargées.
+ */
 static Texture registreTextures[NB_TEXTURES];
 
 // Fonctions privées ==========================================================

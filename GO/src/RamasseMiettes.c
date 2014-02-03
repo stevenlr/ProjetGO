@@ -8,17 +8,21 @@
 
 #include "include/RamasseMiettes.h"
 
+/**
+ * Ramasse miettes.
+ * Stocke un maximum de nbElementsmax pointeurs de structures de taille tailleelement.
+ * Lors de l'allocation, il va essayer d'en recyler un.
+ */
 struct RamasseMiettes {
-	int nbElementsMax;
-	int nbElements;
-	int tailleElement;
-	void** elements;
+	int nbElementsMax;	//!< Nombre max d'éléments recylables.
+	int nbElements;		//!< Nombre d'éléments actuellement dans le ramasse miettes.
+	int tailleElement;	//!< Taille d'un élément.
+	void** elements;	//!< Tableau de pointeurs vers les éléments stockés à recycler.
 };
 
 RamasseMiettes RamasseMiettes_creer(int nbElements, int tailleElement)
 {
 	RamasseMiettes gc;
-	int i;
 
 	gc = malloc(sizeof(struct RamasseMiettes));
 

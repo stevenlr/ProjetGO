@@ -26,10 +26,10 @@ Tutoriel Tutoriel_charger(int nbCharParPhrase);
  * Inserer la chaine et le plateau dans le tutoriel en fonction du nombre de char par phrase.
  *
  * @param tutoriel
- * @param plateau
- * @param chaine
- * @param tailleChaine
- * @param nbCharParPhrase
+ * @param plateau Plateau décrivant la page.
+ * @param chaine Chaîne décrivant la page.
+ * @param tailleChaine Taille de la chaîne de la page à insérer.
+ * @param nbCharParPhrase Sert au découpage des phrases lors de l'affichage.
  */
 void Tutoriel_inserer(Tutoriel tutoriel, Plateau plateau, char* chaine, int tailleChaine, int nbCharParPhrase);
 

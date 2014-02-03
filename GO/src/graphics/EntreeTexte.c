@@ -12,12 +12,19 @@
 #include "include/graphics/Texte.h"
 #include "include/graphics/EntreeTexte.h"
 
+/**
+ * Champ de texte.
+ */
 struct EntreeTexte {
-	int x, y, largeur;
-	int couleurFond, couleurTexte;
-	int tailleMax, taille;
-	int focus;
-	char* str;
+	int x;				/**< Abscisse du champ. */
+	int y;				/**< Ordonnée du champ. */
+	int largeur;		/**< Largeur du champ. */
+	int couleurFond;	/**< Couleur de fond du champ. */
+	int couleurTexte;	/**< Couleur du texte dans le champ. */
+	int tailleMax;		/**< Taille maximale d'une chaîne dans le champ. */
+	int taille;			/**< Taille actuelle du texte dans le champ. */
+	int focus;			/**< 1 si le champ a le focus, 0 sinon. */
+	char* str;			/**< Texte contenu dans le champ. */
 };
 
 EntreeTexte EntreeTexte_creer(int x, int y, int largeur, int couleurFond, int couleurTexte, int tailleMax)

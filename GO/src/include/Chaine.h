@@ -1,6 +1,6 @@
 /**
 * @file Chaine.h
-* @brief
+* @brief Gestion des chaines.
 */
 
 #ifndef CHAINE_H_

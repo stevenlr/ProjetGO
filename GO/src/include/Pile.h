@@ -1,5 +1,6 @@
 /**
  * @file Pile.h
+ * @brief Implémentation d'une pile.
  */
 
 #ifndef PILE_H_

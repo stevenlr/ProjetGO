@@ -1,6 +1,6 @@
 /**
  * @file Texte.h
- * @brief 
+ * @brief Utilitaire d'affichage de texte à l'écran.
  */
 
 #ifndef TEXTE_H_
@@ -29,13 +29,13 @@ typedef enum {
 /**
  * Affiche du texte à l'écran.
  *
- * @param surface
+ * @param surface Surface sur laquelle afficher la chaine.
  * @param x
  * @param y
  * @param chaine
- * @param style
+ * @param style Défini par StyleTexte.
  * @param couleur Exemple : 0xffffff pour blanc.
- * @param alignement
+ * @param alignement Défini par AlignementTexte.
  */
 void Texte_afficherChaine(SDL_Surface* surface, int x, int y, char* chaine, StyleTexte style, int couleur, AlignementTexte alignement);
 

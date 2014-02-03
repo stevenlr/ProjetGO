@@ -1,6 +1,6 @@
 /**
  * @file Chaines.h
- * @brief 
+ * @brief Ensemble de chaînes.
  */
 
 #ifndef CHAINES_H_

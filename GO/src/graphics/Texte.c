@@ -13,6 +13,9 @@
 #define TAILLE_NORMAL 21
 #define TAILLE_GRAND 42
 
+/**
+ * Contient toutes les variantes de style et de taille de la fonte.
+ */
 static TTF_Font* registreFontes[8];
 
 int Texte_chargerFontes()

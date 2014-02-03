@@ -1,6 +1,6 @@
 /**
  * @file RamasseMiettes.h
- * @brief 
+ * @brief Un simple ramasse miettes.
  */
 
 #ifndef RAMASSEMIETTES_H_

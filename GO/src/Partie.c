@@ -12,20 +12,23 @@
 #include "include/Liste.h"
 #include "include/Territoire.h"
 
+/**
+ * Partie de jeu de Go.
+ */
 struct Partie
 {
-	Liste plateaux;
-	Couleur joueurActuel;
-	float komi;
-	int taille;
-	int handicap;		//< +X = Noir a X coup au départ. -X = Blanc a X coup au départ. 0 = sans handicap. (A voir si on gère ça là ou pas)
-	int tour;
-	int passe;
-	char* joueurNoir;
-	char* joueurBlanc;
-	TypeJoueur typeJoueurNoir;
-	TypeJoueur typeJoueurBlanc;
-	int plateauCourant;
+	Liste plateaux;				//!< Historique des plateaux.
+	Couleur joueurActuel;		//!< Joueur dont c'est le tour de jouer.
+	float komi;					//!< valeur du komi.
+	int taille;					//!< Taille du plateau.
+	int handicap;				//!< +X = Noir a X coup au départ. -X = Blanc a X coup au départ. 0 = sans handicap. (A voir si on gère ça là ou pas)
+	int tour;					//!< Numéro de tour.
+	int passe;					//!< Nom de tours passés d'affilé.
+	char* joueurNoir;			//!< Nom du joueur noir.
+	char* joueurBlanc;			//!< Nom du joueur blanc.
+	TypeJoueur typeJoueurNoir;	//!< Type du joueur noir.
+	TypeJoueur typeJoueurBlanc;	//!< Type du joueur blanc.
+	int plateauCourant;			//!< Numéro de plateau actuel.
 };
 
 Partie Partie_creer(char* joueurNoir, char* joueurBlanc, TypeJoueur typeNoir, TypeJoueur typeBlanc, float komi, int handicap, int taille)

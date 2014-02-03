@@ -11,8 +11,6 @@
 #include "include/graphics/Texte.h"
 #include "include/graphics/ChoixMultiple.h"
 
-#define MAXCHOIX 3
-
 struct ChoixMultiple {
 	int nchoix;
 	int choisi;

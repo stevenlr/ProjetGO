@@ -1,6 +1,6 @@
 /**
  * @file Partie.h
- * @brief 
+ * @brief En-tête des fonctions relatives à une partie de jeu de Go.
  */
 
 #ifndef PARTIE_H_

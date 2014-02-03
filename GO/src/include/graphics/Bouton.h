@@ -1,6 +1,6 @@
 /**
  * @file Bouton.h
- * @brief 
+ * @brief Bouton cliquable en SDL.
  */
 
 #ifndef BOUTON_H_

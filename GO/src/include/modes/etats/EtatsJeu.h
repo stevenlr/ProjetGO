@@ -8,13 +8,17 @@
 
 #include "include/Partie.h"
 
+/**
+ * Etats de l'écran de jeu.
+ */
 typedef struct {
-	int continuer;
-	int estFini;	// 0 tant que la partie n'est pas finie et qu'on a pas encore calculé les scores.
-	float scoreNoir, scoreBlanc;
-	int premiereBoucle;
-	int derniereBoucle;
-	Partie partie;
+	int continuer;			//!< 1 tant qu'on doit continuer sur cet écran.
+	int estFini;			//!< 0 tant que la partie n'est pas finie et qu'on a pas encore calculé les scores.
+	float scoreNoir;		//!< Score du joueur noir.
+	float scoreBlanc;		//!< Score du joueur blanc.
+	int premiereBoucle;		//!< 1 si c'est la première boucle de la logique du jeu.
+	int derniereBoucle;		//!< 1 si c'est la dernière boucle avant fermeture de l'écran.
+	Partie partie;			//!< Partie actuelle.
 } EtatsJeu;
 
 #endif

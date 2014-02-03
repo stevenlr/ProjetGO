@@ -11,11 +11,14 @@
 #include "include/graphics/Texte.h"
 #include "include/graphics/Bouton.h"
 
+/**
+ * Un bouton en SDL.
+ */
 struct Bouton {
-	char* texte;
-	SDL_Rect rect;
-	int couleurBouton;
-	int couleurTexte;
+	char* texte;		/**< Texte du bouton. */
+	SDL_Rect rect;		/**< Rectangle définissant le bouton. */
+	int couleurBouton;	/**< Couleur de fond du bouton. */
+	int couleurTexte;	/**< Couleur du texte du bouton. */
 };
 
 Bouton Bouton_creer(char* texte, int x1, int x2, int y1, int y2, int couleurBouton, int couleurTexte)
