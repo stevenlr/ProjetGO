@@ -27,7 +27,7 @@ static RamasseMiettes ramasseMiettes;
 
 void Liste_initGC()
 {
-	ramasseMiettes = RamasseMiettes_creer(100, sizeof(ElementListe));
+	ramasseMiettes = RamasseMiettes_creer(256, sizeof(ElementListe));
 }
 
 void Liste_detruireGC()

@@ -109,8 +109,7 @@ void Libertes_vider(Libertes libertes)
 	do
 	{
 		pos = Liste_courant(libertes);
-		assert(pos);
-		free(pos);
+		Position_detruire(pos);
 
 		Liste_supprimerCourant(libertes);
 	} while(!Liste_estVide(libertes));

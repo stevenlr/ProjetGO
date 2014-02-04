@@ -26,7 +26,7 @@ static RamasseMiettes ramasseMiettes;
 
 void Position_initGC()
 {
-	ramasseMiettes = RamasseMiettes_creer(100, sizeof(struct Position));
+	ramasseMiettes = RamasseMiettes_creer(256, sizeof(struct Position));
 }
 
 void Position_detruireGC()

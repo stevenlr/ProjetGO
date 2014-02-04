@@ -291,6 +291,9 @@ static void Plateau_estCapturable(Plateau plateau, Position position, Chaines ch
 	Chaine chaine;
 	Libertes libertes;
 
+	if(Chaines_positionAppartient(chaines, position))
+		return;
+
 	chaine = Plateau_determinerChaine(plateau, position);
 	libertes = Libertes_determinerLibertes(plateau, chaine);
 

@@ -14,6 +14,7 @@
 #include "include/Liste.h"
 #include "include/Chaine.h"
 #include "include/Chaines.h"
+#include "include/IntelligenceArtificielle.h"
 
 #include "include/modes/ecrans/Ecran.h"
 #include "include/modes/ecrans/EcranJeu.h"
@@ -127,12 +128,9 @@ void EcranJeu_detruire()
 
 void EcranJeu_main()
 {
+	Couleur couleur;
 	FonctionEntreeEcran entreeFct = EcranJeu_getEntreeFct();
 	FonctionSortieEcran sortieFct = EcranJeu_getSortieFct();
-	Couleur couleur;
-	Liste positions;
-	int passeTour, valide, id;
-	Position pos;
 
 	srand(time(NULL));
 
@@ -148,53 +146,8 @@ void EcranJeu_main()
 
 		couleur = Partie_getJoueurActuel(etats.partie);
 
-		// Super IA de la mort !
 		if(!etats.estFini && Partie_getTypeJoueur(etats.partie, couleur) == ORDINATEUR)
-		{
-			passeTour = 0;
-			valide = 0;
-
-			if(Partie_getToursPasses(etats.partie) == 1) // Si un joueur a passé un tour, l'autre a une chance sur 4 de passer aussi.
-			{
-				if(rand() % 4 == 0)
-				{
-					passeTour = 1;
-					EcranJeu_eventPasserTour();
-				}
-			}
-
-			if(!passeTour)
-			{
-				positions = Partie_getPositionsLibres(etats.partie);
-
-				while(!Liste_estVide(positions) && !valide)
-				{
-					id = rand() % Liste_getNbElements(positions);
-					Liste_setCourant(positions, id);
-					pos = Liste_courant(positions);
-					valide = EcranJeu_eventPlacerPion(Position_getX(pos), Position_getY(pos));
-
-					if(!valide)
-					{
-						Position_detruire(pos);
-						Liste_supprimerCourant(positions);
-					}
-				}
-
-				if(!valide)
-					EcranJeu_eventPasserTour();
-
-				Liste_tete(positions);
-
-				while(!Liste_estVide(positions))
-				{
-					Position_detruire(Liste_courant(positions));
-					Liste_supprimerCourant(positions);
-				}
-
-				Liste_detruire(positions);
-			}
-		}
+			IA_tourOrdinateur(&etats);
 
 		sortieFct(&etats);
 	}
