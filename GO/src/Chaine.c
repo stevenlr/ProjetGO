@@ -134,3 +134,8 @@ Couleur Chaine_getCouleur(Chaine chaine)
 
 	return chaine->couleur;
 }
+
+int Chaine_getNbElement(Chaine chaine)
+{
+	return Liste_getNbElements(chaine->liste);
+}
