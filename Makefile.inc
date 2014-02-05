@@ -17,6 +17,7 @@ rapport:
 
 archive: clean rapport
 	mkdir ProjetGo-dist
+	rm -f ProjetGo.tar.gz
 
 	cp Makefile.* ProjetGo-dist/
 	cp README.md ProjetGo-dist/
