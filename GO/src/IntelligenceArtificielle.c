@@ -233,13 +233,13 @@ void IA_tourOrdinateur(EtatsJeu *etats)
 		}
 	}
 
-	if(IA_defendre(etats))
+	if(IA_defendre(etats)) // Les problèmes arrivent vers 650 coups
 		return;
 
-	if(IA_attaque(etats))
+	if(IA_attaque(etats)) // Les problèmes arrivent vers 1000 coups
 		return;
 
-	if(IA_jouerHasard(etats))
+	if(IA_jouerHasard(etats)) // Aucun problèmes
 		return;
 
 	EcranJeu_eventPasserTour();

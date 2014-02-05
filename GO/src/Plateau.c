@@ -15,13 +15,18 @@
 #include "include/Libertes.h"
 #include "include/Territoire.h"
 
+struct Plateau {
+	Matrice m;
+	int nbPions[6];
+};
+
 // Fonctions privées ==========================================================
 
 static int Plateau_determinerSiEstOeil(Plateau plateau, Position position, Chaine chaine)
 {
 	int x, y, taille;
 
-	Matrice_getTaille(plateau, NULL, &taille);
+	Matrice_getTaille(plateau->m, NULL, &taille);
 
 	x = Position_getX(position);
 	y = Position_getY(position);
@@ -62,21 +67,42 @@ static int Plateau_determinerSiEstOeil(Plateau plateau, Position position, Chain
 
 Plateau Plateau_creer(int taille)
 {
-	return Matrice_creer(taille, taille, VIDE);
+	Plateau plateau = malloc(sizeof(struct Plateau));
+
+	if(plateau == NULL)
+		return NULL;
+
+	plateau->m = Matrice_creer(taille, taille, VIDE);
+
+	if(plateau->m == NULL)
+	{
+		free(plateau);
+		return NULL;
+	}
+
+	plateau->nbPions[VIDE] = taille * taille;
+	plateau->nbPions[NOIR] = 0;
+	plateau->nbPions[BLANC] = 0;
+	plateau->nbPions[AURANOIR] = 0;
+	plateau->nbPions[AURABLANC] = 0;
+	plateau->nbPions[AURAVIDE] = 0;
+
+	return plateau;
 }
 
 void Plateau_detruire(Plateau plateau)
 {
 	assert(plateau);
 
-	Matrice_detruire(plateau);
+	Matrice_detruire(plateau->m);
+	free(plateau);
 }
 
 Couleur Plateau_get(Plateau plateau, Position pos)
 {
 	assert(plateau);
 
-	return Matrice_get(plateau, Position_getY(pos), Position_getX(pos));
+	return Matrice_get(plateau->m, Position_getY(pos), Position_getX(pos));
 }
 
 int Plateau_getTaille(Plateau plateau)
@@ -85,16 +111,22 @@ int Plateau_getTaille(Plateau plateau)
 
 	assert(plateau);
 
-	Matrice_getTaille(plateau, &taille, NULL);
+	Matrice_getTaille(plateau->m, &taille, NULL);
 
 	return taille;
 }
 
 void Plateau_set(Plateau plateau, Position pos, Couleur couleur)
 {
+	Couleur ancien;
+
 	assert(plateau);
 
-	Matrice_set(plateau, Position_getY(pos), Position_getX(pos), couleur);
+	ancien = Matrice_get(plateau->m, Position_getY(pos), Position_getX(pos));
+	Matrice_set(plateau->m, Position_getY(pos), Position_getX(pos), couleur);
+
+	plateau->nbPions[ancien]--;
+	plateau->nbPions[couleur]++;
 }
 
 int Plateau_estIdentique(Plateau plateau, Plateau ancienPlateau)
@@ -103,15 +135,21 @@ int Plateau_estIdentique(Plateau plateau, Plateau ancienPlateau)
 
 	assert(plateau && ancienPlateau);
 
-	Matrice_getTaille(plateau, &taille, NULL);
-	Matrice_getTaille(ancienPlateau, &ancienneTaille, NULL);
+	Matrice_getTaille(plateau->m, &taille, NULL);
+	Matrice_getTaille(ancienPlateau->m, &ancienneTaille, NULL);
 
 	if(taille != ancienneTaille)
 		return 0;
 
+	for(i = 0; i < 6; i++)
+	{
+		if(plateau->nbPions[i] != ancienPlateau->nbPions[i])
+			return 0;
+	}
+
 	for(i = 0; i < taille; i++)
 		for(j = 0; j < taille; j++)
-			if(Matrice_get(plateau, i, j) != Matrice_get(ancienPlateau, i, j))
+			if(Matrice_get(plateau->m, i, j) != Matrice_get(ancienPlateau->m, i, j))
 				return 0;
 
 	return 1;
@@ -121,10 +159,11 @@ Plateau Plateau_copier(Plateau from)
 {
 	int i, j, taille;
 	Plateau to;
+	Couleur c;
 
 	assert(from);
 
-	Matrice_getTaille(from, &taille, NULL);
+	Matrice_getTaille(from->m, &taille, NULL);
 
 	to = Plateau_creer(taille);
 
@@ -133,7 +172,12 @@ Plateau Plateau_copier(Plateau from)
 
 	for(i = 0; i < taille; i++)
 		for(j = 0; j < taille; j++)
-			Matrice_set(to, i, j, Matrice_get(from, i, j));
+		{
+			c = Matrice_get(from->m, i, j),
+			Matrice_set(to->m, i, j, c);
+			to->nbPions[VIDE]--;
+			to->nbPions[c]++;
+		}
 
 	return to;
 }
@@ -145,14 +189,14 @@ void Plateau_sauvegarder(Plateau plateau, FILE* fichier)
 
 	assert(plateau);
 
-	Matrice_getTaille(plateau, &taille, NULL);
+	Matrice_getTaille(plateau->m, &taille, NULL);
 
 	fwrite(&taille, sizeof(int), 1, fichier);
 
 	for(i = 0; i < taille; i++)
 		for(j = 0; j < taille; j++)
 		{
-			c = Matrice_get(plateau, i, j);
+			c = Matrice_get(plateau->m, i, j);
 			putc(c, fichier);
 		}
 }
@@ -174,7 +218,9 @@ Plateau Plateau_charger(FILE* fichier)
 		for(j = 0; j < taille; j++)
 		{
 			c = getc(fichier);
-			Matrice_set(plateau, i, j, c);
+			Matrice_set(plateau->m, i, j, c);
+			plateau->nbPions[VIDE]--;
+			plateau->nbPions[c]++;
 		}
 
 	return plateau;
@@ -195,7 +241,7 @@ Chaine Plateau_determinerChaine(Plateau plateau, Position origine)
 		return NULL;
 
 	couleur = Plateau_get(plateau, origine);
-	Matrice_getTaille(plateau, NULL, &taille);
+	Matrice_getTaille(plateau->m, NULL, &taille);
 
 	if(couleur == VIDE)
 		return NULL;

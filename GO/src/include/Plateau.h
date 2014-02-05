@@ -14,7 +14,7 @@
 #include "Chaine.h"
 #include "Chaines.h"
 
-typedef Matrice Plateau;
+typedef struct Plateau* Plateau;
 
 /**
  * Crée un Plateau.
