@@ -1,3 +1,10 @@
+Utilisation
+=======================
+
+Pour lancer en mode console :
+
+    GO.exe -nogui
+
 Instructions de compilation
 =====================
 
