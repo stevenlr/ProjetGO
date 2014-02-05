@@ -2,11 +2,11 @@
 Intelligence Artificielle
 -----------------------------
 
-Une intelligence artificielle relativement simple (mais non naïve) a été implémentée. Son exécution se déroule en plusieurs phase : la phase de passage de tour, de défense, d'attaque et de jeu naïf.
+Une intelligence artificielle relativement simple (mais non naïve) a été implémentée. Son exécution se déroule en plusieurs phases : la phase de passage de tour, de défense, d'attaque et de jeu naïf.
 
 ### Passage de tour
 
-Si l'adversaire vient de passer son tour, alors l'ordinateur a une chance sur quatre de faire de même. Celà permet, lorsqu'un humain joue contre l'ordinateur, de terminer le jeu dans des temps raisonnables si le joueur décide qu'il ne peut plus rien faire qui pourrait l'avantager. En effet, cette IA ne réfléchira pas directement à la possibilité de passer son tour si elle n'a plus l'avantage nul part sur le plateau.
+Si l'adversaire vient de passer son tour, alors l'ordinateur a une chance sur quatre de faire de même. Cela permet, lorsqu'un humain joue contre l'ordinateur, de terminer le jeu dans des temps raisonnables si le joueur décide qu'il ne peut plus rien faire qui pourrait l'avantager. En effet, cette IA ne réfléchira pas directement à la possibilité de passer son tour si elle n'a plus l'avantage nulle part sur le plateau.
 
 Si l'ordinateur n'a pas décidé de passer, alors la phase de défense commence.
 

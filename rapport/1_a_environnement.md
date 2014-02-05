@@ -8,9 +8,9 @@ Le programme a été réalisé principalement sous Windows, avec l'IDE Eclipse e
 
 Chaque sous-projet était organisé comme ceci : un dossier `assets` contenant les images, les fontes et autres ressources, un dossier `lib` contenant les librairies nécessaires à la compilation, un dossier `include` contenant les fichiers d'en-tête des librairies et un dossier `src` contenant le code source et un dossier `include` contenant les en-têtes.
 
-Des conventions d'écriture ont été adoptées : nous avons utilisé le CamelCase, le code était écrit le plus possible en français (à l'exception des mots `get` et `set`) et les prototypes de fonctions suivaient le style `Type_nomFonction` où `Type` est le type sur lequel opèrait la fonction.
+Des conventions d'écriture ont été adoptées : nous avons utilisé le CamelCase, le code était écrit le plus possible en français (à l'exception des mots `get` et `set`) et les prototypes de fonctions suivaient le style `Type_nomFonction` où `Type` est le type sur lequel opérait la fonction.
 
-Les fichiers sources étant organisés en sous-dossiers, un fichier `Makefile` a été placé dans chaque dossier en appelant un autre commun à tous ceux-ci contenant les instructions de compilation pour chaque sous dossiers, ainsi que les autres makefiles des sous-dossiers. Tous les fichiers objets générés étaient alors placés dans un même dossier `obj` d'où ils étaient assemblés en l'exécutable final. **Les instructions de compilation sont spécifiées dans le fichier README.md.**
+Les fichiers sources étant organisés en sous-dossiers, un fichier `Makefile` a été placé dans chaque dossier en appelant un autre commun à tous ceux-ci contenant les instructions de compilation pour chaque sous-dossier, ainsi que les autres makefiles des sous-dossiers. Tous les fichiers objets générés étaient alors placés dans un même dossier `obj` d'où ils étaient assemblés en l'exécutable final. **Les instructions de compilation sont spécifiées dans le fichier README.md.**
 
 Ce rapport a été écrit en Markdown puis compilé en PDF grâce à l'utilitaire Pandoc.
 
