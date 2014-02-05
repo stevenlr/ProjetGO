@@ -229,6 +229,12 @@ int Territoire_estUnSeki(Territoire territoire, Plateau plateau)
 	Position position;
 	int status = 1; // Histoire d'avoir le temps de libérer la mémoire.
 
+	if(Chaine_getCouleur(territoire) !=  VIDE)
+		return 0;
+
+	if(Chaine_getNbElements(territoire) != 2)
+		return 0;
+
 	chaines = Territoire_determinerChainesAutour(territoire, plateau);
 
 	do

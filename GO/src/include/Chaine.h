@@ -94,4 +94,12 @@ void Chaine_setCouleur(Chaine chaine, Couleur couleur);
  */
 Couleur Chaine_getCouleur(Chaine chaine);
 
+/**
+ * Renvoie le nombre d'élément de la chaine.
+ *
+ * @param chaine
+ * @return le nombre d'élément
+ */
+int Chaine_getNbElement(Chaine chaine);
+
 #endif
