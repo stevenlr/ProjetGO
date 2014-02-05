@@ -27,7 +27,8 @@ struct Plateau {
 
 static int Plateau_determinerSiEstOeil(Plateau plateau, Position position, Chaine chaine)
 {
-	int x, y, taille;
+	int x, y, taille, nbChaine = 1;
+	Chaine chaine2 =  NULL;
 
 	Matrice_getTaille(plateau->m, NULL, &taille);
 
@@ -37,29 +38,105 @@ static int Plateau_determinerSiEstOeil(Plateau plateau, Position position, Chain
 	// Haut
 	Position_setY(position, --y);
 	if(y >= 0)
-		if(Chaine_appartient(chaine, position))
+	{
+		if(!Chaine_appartient(chaine, position))
 			return 0;
+		else
+			if(Plateau_get(plateau, position) == Chaine_getCouleur(chaine) && nbChaine != 2)
+			{
+				chaine2 = Plateau_determinerChaine(plateau, position);
+				nbChaine++;
+			}
+			else
+				return 0;	//!< La case est de couleur vide ou blanche
+	}
 
 	// Gauche
 	Position_setY(position, ++y);
 	Position_setX(position, --x);
 	if(x >= 0)
-		if(Chaine_appartient(chaine, position))
-			return 0;
+		if(!Chaine_appartient(chaine, position))
+		{
+			if(nbChaine == 2 && !Chaine_appartient(chaine2, position))
+			{
+				Chaine_vider(chaine2);
+				Chaine_detruire(chaine2);
+				return 0;
+			}
+			else
+				if(nbChaine != 2 && Plateau_get(plateau, position) == Chaine_getCouleur(chaine))
+				{
+					chaine2 = Plateau_determinerChaine(plateau, position);
+					nbChaine++;
+				}
+				else
+				{
+					if(nbChaine == 2)
+					{
+						Chaine_vider(chaine2);
+						Chaine_detruire(chaine2);
+					}
+					return 0;
+				}
+		}
 
 	// Bas
 	Position_setY(position, ++y);
 	Position_setX(position, ++x);
 	if(y < taille)
-		if(Chaine_appartient(chaine, position))
-			return 0;
+		if(!Chaine_appartient(chaine, position))
+		{
+			if(nbChaine == 2 && !Chaine_appartient(chaine2, position))
+			{
+				Chaine_vider(chaine2);
+				Chaine_detruire(chaine2);
+				return 0;
+			}
+			else
+				if(nbChaine != 2 && Plateau_get(plateau, position) == Chaine_getCouleur(chaine))
+				{
+					chaine2 = Plateau_determinerChaine(plateau, position);
+					nbChaine++;
+				}
+				else
+				{
+					if(nbChaine == 2)
+					{
+						Chaine_vider(chaine2);
+						Chaine_detruire(chaine2);
+					}
+					return 0;
+				}
+		}
 
 	// Droite
 	Position_setY(position, --y);
 	Position_setX(position, ++x);
 	if(x < taille)
-		if(Chaine_appartient(chaine, position))
-			return 0;
+		if(!Chaine_appartient(chaine, position))
+		{
+			if(nbChaine == 2 && !Chaine_appartient(chaine2, position))
+			{
+				Chaine_vider(chaine2);
+				Chaine_detruire(chaine2);
+				return 0;
+			}
+			else
+				if(nbChaine != 2 && Plateau_get(plateau, position) == Chaine_getCouleur(chaine))
+				{
+					chaine2 = Plateau_determinerChaine(plateau, position);
+					nbChaine++;
+				}
+				else
+				{
+					if(nbChaine == 2)
+					{
+						Chaine_vider(chaine2);
+						Chaine_detruire(chaine2);
+					}
+					return 0;
+				}
+		}
 
 	Position_setX(position, --x);
 

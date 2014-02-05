@@ -100,6 +100,6 @@ Couleur Chaine_getCouleur(Chaine chaine);
  * @param chaine
  * @return le nombre d'élément
  */
-int Chaine_getNbElement(Chaine chaine);
+int Chaine_getNbElements(Chaine chaine);
 
 #endif
