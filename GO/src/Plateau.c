@@ -15,9 +15,12 @@
 #include "include/Libertes.h"
 #include "include/Territoire.h"
 
+/**
+ * Un goban
+ */
 struct Plateau {
-	Matrice m;
-	int nbPions[6];
+	Matrice m;		//!< La matrice représentant le plateau.
+	int nbPions[6]; //!< Nombre pions de chaque couleur. (Pour comparaison rapide des plateaux)
 };
 
 // Fonctions privées ==========================================================
