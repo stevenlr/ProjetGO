@@ -97,8 +97,6 @@ int Libertes_appartient(Libertes libertes, Position position)
 
 void Libertes_vider(Libertes libertes)
 {
-	Position pos;
-
 	assert(libertes);
 
 	if(Liste_estVide(libertes))
@@ -108,9 +106,7 @@ void Libertes_vider(Libertes libertes)
 
 	do
 	{
-		pos = Liste_courant(libertes);
-		Position_detruire(pos);
-
+		Position_detruire(Liste_courant(libertes));
 		Liste_supprimerCourant(libertes);
 	} while(!Liste_estVide(libertes));
 }

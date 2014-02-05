@@ -49,8 +49,6 @@ void Chaine_detruire(Chaine chaine)
 
 void Chaine_vider(Chaine chaine)
 {
-	Position pos;
-
 	assert(chaine);
 
 	if(Chaine_estVide(chaine))
@@ -60,10 +58,7 @@ void Chaine_vider(Chaine chaine)
 
 	do
 	{
-		pos = Chaine_courant(chaine);
-		assert(pos);
-		free(pos);
-
+		Position_detruire(Chaine_courant(chaine));
 		Liste_supprimerCourant(chaine->liste);
 	} while(!Chaine_estVide(chaine));
 }

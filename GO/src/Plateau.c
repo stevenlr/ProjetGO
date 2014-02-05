@@ -305,6 +305,7 @@ Chaine Plateau_determinerChaine(Plateau plateau, Position origine)
 	}
 
 	Chaine_setCouleur(chaine, couleur);
+	Pile_detruire(pile);
 
 	return chaine;
 }
@@ -425,15 +426,12 @@ Chaines Plateau_capturerChaines(Plateau plateau, Pion pion, int* valide)
 		libertes = Libertes_determinerLibertes(plateau, chaine);
 
 		if(Liste_estVide(libertes))
-		{
 			*valide = 0;
-		}
 		else
-		{
-			Chaine_vider(chaine);
-			Chaine_detruire(chaine);
 			*valide = 1;
-		}
+
+		Chaine_vider(chaine);
+		Chaine_detruire(chaine);
 
 		Libertes_vider(libertes);
 		Liste_detruire(libertes);

@@ -101,12 +101,10 @@ int IA_defendre(EtatsJeu* etats)
 			Position_setX(origine, x);
 
 			if(Matrice_get(casesTraitees, y, x)) continue;
+			Matrice_set(casesTraitees, y, x, 1);
 
 			if(Plateau_get(plateau, origine) != couleur)
-			{
-				Matrice_set(casesTraitees, y, x, 1);
 				continue;
-			}
 
 			chaine = Plateau_determinerChaine(plateau, origine);
 			libertes = Libertes_determinerLibertes(plateau, chaine);
@@ -233,13 +231,13 @@ void IA_tourOrdinateur(EtatsJeu *etats)
 		}
 	}
 
-	if(IA_defendre(etats)) // Les problèmes arrivent vers 650 coups
+	if(IA_defendre(etats))
 		return;
 
-	if(IA_attaque(etats)) // Les problèmes arrivent vers 1000 coups
+	if(IA_attaque(etats))
 		return;
 
-	if(IA_jouerHasard(etats)) // Aucun problèmes
+	if(IA_jouerHasard(etats))
 		return;
 
 	EcranJeu_eventPasserTour();

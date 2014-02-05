@@ -274,6 +274,8 @@ void Liste_supprimerCourant(Liste liste)
 	else
 		liste->courant = element->precedent;
 
+	ElementListe_detruire(element);
+
 	liste->nbElements--;
 }
 
