@@ -1,7 +1,7 @@
 Architecture du programme
 ==============================
 
-Les écrans et leurs états
+Les Ã©crans et leurs Ã©tats
 --------------------------------
 
 Les contextes
@@ -10,7 +10,5 @@ Les contextes
 Les interfaces
 --------------------------------
 
-Les événements
+Les Ã©vÃ©nements
 --------------------------------
-
-

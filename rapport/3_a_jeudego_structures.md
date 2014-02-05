@@ -1,7 +1,7 @@
 Le jeu de Go
 ==============================
 
-Structures de données
+Structures de donnÃ©es
 ---------------------------------
 
 ###  Liste
@@ -14,7 +14,7 @@ Structures de données
 
 ###  Pion
 
-###  Chaîne
+###  ChaÃ®ne
 
 ###  Territoire
 
@@ -23,5 +23,3 @@ Structures de données
 ###  Partie
 
 ###  Tutoriel
-
-

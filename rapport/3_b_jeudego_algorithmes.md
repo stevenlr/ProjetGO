@@ -1,21 +1,20 @@
 Algorithmes
 -------------------------
 
-###  Déterminer les libertés
+###  DÃ©terminer les libertÃ©s
 
-###  Déterminer territoire
+###  DÃ©terminer territoire
 
-###  Déterminer séki
+###  DÃ©terminer sÃ©ki
 
-###  Déterminer les yeux d'une chaîne
+###  DÃ©terminer les yeux d'une chaÃ®ne
 
-###  Déterminer une chaîne
+###  DÃ©terminer une chaÃ®ne
 
-###  Réaliser une capture
+###  RÃ©aliser une capture
 
-###  Déterminer les chaînes entourant un territoire
+###  DÃ©terminer les chaÃ®nes entourant un territoire
 
-###  Déterminer les chaînes capturées
+###  DÃ©terminer les chaÃ®nes capturÃ©es
 
 ###  Calcul du score
-

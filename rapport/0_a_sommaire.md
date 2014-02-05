@@ -1,8 +1,6 @@
 % Projet semestre 1
   Jeu de Go
-% BOËDA Gautier
+% BOÃ‹DA Gautier
   LE ROUZIC Steven
-% ENSICAEN 2013-2014, 1A Info, Groupe TP 2  
+% ENSICAEN 2013-2014, 1A Info, Groupe TP 2
 
-
-    
