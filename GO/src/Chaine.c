@@ -135,7 +135,7 @@ Couleur Chaine_getCouleur(Chaine chaine)
 	return chaine->couleur;
 }
 
-int Chaine_getNbElement(Chaine chaine)
+int Chaine_getNbElements(Chaine chaine)
 {
 	return Liste_getNbElements(chaine->liste);
 }
