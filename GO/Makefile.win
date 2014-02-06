@@ -3,6 +3,8 @@ LIBS=-lmingw32 -lgdi32
 
 include Makefile.inc
 
+preallplatformdependent:
+
 installplatformdependent:
 	cp $(BASEDIR)/lib/*.dll $(BINDIR)
 	cp $(BASEDIR)/installlibs/windows/*.dll $(BINDIR)
