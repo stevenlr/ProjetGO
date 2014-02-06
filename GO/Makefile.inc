@@ -5,9 +5,9 @@ OBJDIR=$(BASEDIR)/obj
 CC=gcc
 LDFLAGS=-L$(BASEDIR)/lib $(LIBS) -lSDLmain -lSDL -lSDL_image -lSDL_ttf -lmatrice
 
-.PHONY: all clean install installgeneric installplatformdependent
+.PHONY: all clean install installgeneric installplatformdependent preallplatformdependent
 
-all:
+all: preallplatformdependent
 	$(MAKE) -C src
 	$(CC) $(OBJDIR)/*.o -o $(BINDIR)/$(BIN) $(LDFLAGS)
 
