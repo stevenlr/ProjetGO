@@ -3,6 +3,10 @@ LIBS=
 
 include Makefile.inc
 
+preallplatformdependent:
+	rm -f lib/SDL* lib/libSDL*
+	rm -rf include/SDL
+
 installplatformdependent:
 	chmod +x $(BINDIR)/$(BIN)
 	cp $(BASEDIR)/lib/libmatrice.so $(BINDIR)
