@@ -26,7 +26,7 @@ struct Plateau {
 // Fonctions privées ==========================================================
 
 /**
- * Détermine si un oeil en est un et si c'est un vrau.
+ * Détermine si un oeil en est un et si c'est un vrai.
  *
  * @param plateau Plateau.
  * @param origine Position du supposé oeil.
