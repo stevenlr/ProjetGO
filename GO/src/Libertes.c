@@ -17,7 +17,8 @@ Libertes Libertes_determinerLibertes(Plateau plateau, Chaine chaine)
 {
 	Libertes libertes;
 	Position position;
-	int taille, x, y;
+	int taille, x, y, i, ox, oy;
+	int decalages[4][2] = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
 
 	if((libertes = Liste_creer()) == NULL)
 		return NULL;
@@ -25,49 +26,31 @@ Libertes Libertes_determinerLibertes(Plateau plateau, Chaine chaine)
 	taille = Plateau_getTaille(plateau);
 	Chaine_tete(chaine);
 
+	position = Position_creer(0, 0);
+
 	do
 	{
-		position = Position_copier(Chaine_courant(chaine));
-		x = Position_getX(position);
-		y = Position_getY(position);
+		ox = Position_getX(Chaine_courant(chaine));
+		oy = Position_getY(Chaine_courant(chaine));
 
-		// Haut
-		Position_setY(position, --y);
-		if(y >= 0)
+		for(i = 0; i < 4; i++)
 		{
+			x = ox + decalages[i][0];
+			y = oy + decalages[i][1];
+
+			Position_setX(position, x);
+			Position_setY(position, y);
+
+			if(x < 0 || y < 0 || x >= taille || y >= taille)
+				continue;
+
 			if(Plateau_get(plateau, position) == VIDE && !(Libertes_appartient(libertes, position)))
 				Liste_insererQueue(libertes, Position_copier(position));
 		}
 
-		// Gauche
-		Position_setY(position, ++y);
-		Position_setX(position, --x);
-		if(x >= 0)
-		{
-			if(Plateau_get(plateau, position) == VIDE && !(Libertes_appartient(libertes, position)))
-				Liste_insererQueue(libertes, Position_copier(position));
-		}
-
-		// Bas
-		Position_setY(position, ++y);
-		Position_setX(position, ++x);
-		if(y < taille)
-		{
-			if(Plateau_get(plateau, position) == VIDE && !(Libertes_appartient(libertes, position)))
-				Liste_insererQueue(libertes, Position_copier(position));
-		}
-
-		// Droite
-		Position_setY(position, --y);
-		Position_setX(position, ++x);
-		if(x < taille)
-		{
-			if(Plateau_get(plateau, position) == VIDE && !(Libertes_appartient(libertes, position)))
-				Liste_insererQueue(libertes, Position_copier(position));
-		}
-
-		Position_detruire(position);
 	} while(Chaine_suivant(chaine));
+
+	Position_detruire(position);
 
 	return libertes;
 }

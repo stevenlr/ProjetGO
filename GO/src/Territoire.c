@@ -37,8 +37,9 @@ Territoire Territoire_determinerTerritoire(Plateau plateau, Position origine)
 {
 	Territoire territoire;
 	Pile pile;
-	Position position, positionNouvelle;
-	int taille, x, y, estNeutre = 0;
+	Position position;
+	int taille, x, y, estNeutre = 0, i, ox, oy;
+	int decalages[4][2] = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
 	Couleur couleur;
 
 	if((pile = Pile_creer()) == NULL)
@@ -68,80 +69,27 @@ Territoire Territoire_determinerTerritoire(Plateau plateau, Position origine)
 
 	while((position = Pile_depiler(pile)) != NULL)
 	{
-		x = Position_getX(position);
-		y = Position_getY(position);
+		ox = Position_getX(position);
+		oy = Position_getY(position);
 
-		// Cas 1, en haut
-		y--;
-		if(y >= 0)
+		for(i = 0; i < 4; i++)
 		{
-			positionNouvelle = Position_creer(x, y);
-			couleur = Plateau_get(plateau, positionNouvelle);
+			x = ox + decalages[i][0];
+			y = oy + decalages[i][1];
 
-			if(couleur == VIDE && !Chaine_appartient(territoire, positionNouvelle))
+			if(x < 0 || y < 0 || x >= taille || y >= taille)
+				continue;
+
+			Position_setX(position, x);
+			Position_setY(position, y);
+
+			couleur = Plateau_get(plateau, position);
+
+			if(couleur == VIDE && !Chaine_appartient(territoire, position))
 			{
-				Chaine_inserer(territoire, Position_copier(positionNouvelle));
-				Pile_empiler(pile, positionNouvelle);
+				Chaine_inserer(territoire, Position_copier(position));
+				Pile_empiler(pile, Position_copier(position));
 			}
-			else
-				Position_detruire(positionNouvelle);
-
-			Territoire_determinerCouleur(couleur, territoire, &estNeutre);
-		}
-
-		// Cas 2, à droite
-		y++;
-		x++;
-		if(x < taille)
-		{
-			positionNouvelle = Position_creer(x, y);
-			couleur = Plateau_get(plateau, positionNouvelle);
-
-			if(couleur == VIDE && !Chaine_appartient(territoire, positionNouvelle))
-			{
-				Chaine_inserer(territoire, Position_copier(positionNouvelle));
-				Pile_empiler(pile, positionNouvelle);
-			}
-			else
-				Position_detruire(positionNouvelle);
-
-			Territoire_determinerCouleur(couleur, territoire, &estNeutre);
-		}
-
-		// Cas 3, en bas
-		y++;
-		x--;
-		if(y < taille)
-		{
-			positionNouvelle = Position_creer(x, y);
-			couleur = Plateau_get(plateau, positionNouvelle);
-
-			if(couleur == VIDE && !Chaine_appartient(territoire, positionNouvelle))
-			{
-				Chaine_inserer(territoire, Position_copier(positionNouvelle));
-				Pile_empiler(pile, positionNouvelle);
-			}
-			else
-				Position_detruire(positionNouvelle);
-
-			Territoire_determinerCouleur(couleur, territoire, &estNeutre);
-		}
-
-		// Cas 4, à gauche
-		y--;
-		x--;
-		if(x >= 0)
-		{
-			positionNouvelle = Position_creer(x, y);
-			couleur = Plateau_get(plateau, positionNouvelle);
-
-			if(couleur == VIDE && !Chaine_appartient(territoire, positionNouvelle))
-			{
-				Chaine_inserer(territoire, Position_copier(positionNouvelle));
-				Pile_empiler(pile, positionNouvelle);
-			}
-			else
-				Position_detruire(positionNouvelle);
 
 			Territoire_determinerCouleur(couleur, territoire, &estNeutre);
 		}
@@ -158,65 +106,47 @@ Chaines Territoire_determinerChainesAutour(Territoire territoire, Plateau platea
 {
 	Chaines chaines;
 	Chaine chaine;
-	Position position;
-	int x, y, taille;
+	Position origine, position;
+	int x, y, taille, i, ox, oy;
+	int decalages[4][2] = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
 
 	if(Chaine_estVide(territoire))
 		return NULL;
 
 	chaines = Liste_creer();
 	taille = Plateau_getTaille(plateau);
+	position = Position_creer(0, 0);
+
 	Chaine_tete(territoire);
 
 	do
 	{
-		position = Chaine_courant(territoire);
-		x = Position_getX(position);
-		y = Position_getY(position);
+		origine = Chaine_courant(territoire);
+		ox = Position_getX(origine);
+		oy = Position_getY(origine);
 
-		// Haut
-		Position_setY(position, --y);
-		if(y >= 0)
-			if(Plateau_get(plateau, position) != VIDE)
-				if(!Chaines_positionAppartient(chaines, position))
-				{
-					chaine = Plateau_determinerChaine(plateau, position);
-					Liste_insererCourant(chaines, chaine);
-				}
+		for(i = 0; i < 4; i++)
+		{
+			x = ox + decalages[i][0];
+			y = oy + decalages[i][1];
 
-		// Gauche
-		Position_setY(position, ++y);
-		Position_setX(position, --x);
-		if(x >= 0)
-			if(Plateau_get(plateau, position) != VIDE)
-				if(!Chaines_positionAppartient(chaines, position))
-				{
-					chaine = Plateau_determinerChaine(plateau, position);
-					Liste_insererCourant(chaines, chaine);
-				}
+			if(x < 0 || y < 0 || y >= taille || x >= taille)
+				continue;
 
-		// Bas
-		Position_setY(position, ++y);
-		Position_setX(position, ++x);
-		if(y < taille)
+			Position_setX(position, x);
+			Position_setY(position, y);
+
 			if(Plateau_get(plateau, position) != VIDE)
 				if(!Chaines_positionAppartient(chaines, position))
 				{
 					chaine = Plateau_determinerChaine(plateau, position);
 					Liste_insererCourant(chaines, chaine);
 				}
-		// Droite
-		Position_setY(position, --y);
-		Position_setX(position, ++x);
-		if(x < taille)
-			if(Plateau_get(plateau, position) != VIDE)
-				if(!Chaines_positionAppartient(chaines, position))
-				{
-					chaine = Plateau_determinerChaine(plateau, position);
-					Liste_insererCourant(chaines, chaine);
-				}
+		}
 
 	} while(Chaine_suivant(territoire));
+
+	Position_detruire(position);
 
 	return chaines;
 }

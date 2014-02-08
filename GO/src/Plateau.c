@@ -25,15 +25,16 @@ struct Plateau {
 
 // Fonctions privées ==========================================================
 
-static int Plateau_determinerSiEstOeil(Plateau plateau, Position position, Chaine chaine)
+static int Plateau_determinerSiEstOeil(Plateau plateau, Position origine, Chaine chaine)
 {
 	int x, y, taille, nbChaine = 1;
 	Chaine chaine2 =  NULL;
+	Position position = Position_creer(0, 0);
 
 	Matrice_getTaille(plateau->m, NULL, &taille);
 
-	x = Position_getX(position);
-	y = Position_getY(position);
+	x = Position_getX(origine);
+	y = Position_getY(origine);
 
 	// Haut
 	Position_setY(position, --y);
@@ -48,7 +49,7 @@ static int Plateau_determinerSiEstOeil(Plateau plateau, Position position, Chain
 				nbChaine++;
 			}
 			else
-				return 0;	//!< La case est de couleur vide ou blanche
+				return 0;	// La case est de couleur vide ou blanche
 	}
 
 	// Gauche
@@ -139,6 +140,8 @@ static int Plateau_determinerSiEstOeil(Plateau plateau, Position position, Chain
 		}
 
 	Position_setX(position, --x);
+
+	Position_detruire(position);
 
 	return 1;
 }
@@ -312,7 +315,8 @@ Chaine Plateau_determinerChaine(Plateau plateau, Position origine)
 	Pile pile;
 	Position position;
 	Couleur couleur;
-	int taille, x, y;
+	int taille, x, y, i, ox, oy;
+	int decalages[4][2] = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
 
 	if((pile = Pile_creer()) == NULL)
 		return NULL;
@@ -331,49 +335,20 @@ Chaine Plateau_determinerChaine(Plateau plateau, Position origine)
 
 	while((position = Pile_depiler(pile)) != NULL)
 	{
-		x = Position_getX(position);
-		y = Position_getY(position);
+		ox = Position_getX(position);
+		oy = Position_getY(position);
 
-		// Cas 1, en haut
-		Position_setY(position, --y);
-		if(y >= 0)
+		for(i = 0; i < 4; i++)
 		{
-			if(Plateau_get(plateau, position) == couleur && !(Chaine_appartient(chaine, position)))
-			{
-				Chaine_inserer(chaine, Position_copier(position));
-				Pile_empiler(pile, Position_copier(position));
-			}
-		}
+			x = ox + decalages[i][0];
+			y = oy + decalages[i][1];
 
-		// Cas 2, à droite
-		Position_setX(position, ++x);
-		Position_setY(position, ++y);
-		if(x < taille)
-		{
-			if(Plateau_get(plateau, position) == couleur && !(Chaine_appartient(chaine, position)))
-			{
-				Chaine_inserer(chaine, Position_copier(position));
-				Pile_empiler(pile, Position_copier(position));
-			}
-		}
+			if(x < 0 || y < 0 || x >= taille || y >= taille)
+				continue;
 
-		// Cas 3, en bas
-		Position_setX(position, --x);
-		Position_setY(position, ++y);
-		if(y < taille)
-		{
-			if(Plateau_get(plateau, position) == couleur && !(Chaine_appartient(chaine, position)))
-			{
-				Chaine_inserer(chaine, Position_copier(position));
-				Pile_empiler(pile, Position_copier(position));
-			}
-		}
+			Position_setX(position, x);
+			Position_setY(position, y);
 
-		// Cas 4, à gauche
-		Position_setX(position, --x);
-		Position_setY(position, --y);
-		if(x >= 0)
-		{
 			if(Plateau_get(plateau, position) == couleur && !(Chaine_appartient(chaine, position)))
 			{
 				Chaine_inserer(chaine, Position_copier(position));
@@ -445,7 +420,8 @@ Chaines Plateau_capturerChaines(Plateau plateau, Pion pion, int* valide)
 	Chaines chaines;
 	Position position, debutChaine;
 	Couleur couleur, aCapturer;
-	int x, y, taille;
+	int x, y, taille, i, ox, oy;
+	int decalages[4][2] = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
 
 	assert(plateau && pion);
 
@@ -461,10 +437,10 @@ Chaines Plateau_capturerChaines(Plateau plateau, Pion pion, int* valide)
 		return NULL;
 	}
 
-	x = Position_getX(position);
-	y = Position_getY(position);
+	ox = Position_getX(position);
+	oy = Position_getY(position);
 
-	debutChaine = Position_creer(x, y);
+	debutChaine = Position_creer(0, 0);
 
 	aCapturer = (couleur == NOIR) ? BLANC : NOIR;
 
@@ -473,32 +449,20 @@ Chaines Plateau_capturerChaines(Plateau plateau, Pion pion, int* valide)
 	if(chaines == NULL)
 		return NULL;
 
-	// Haut
-	Position_setY(debutChaine, --y);
-	if(y >= 0)
-		if(Plateau_get(plateau, debutChaine) == aCapturer)
-			Plateau_estCapturable(plateau, debutChaine, chaines);
+	for(i = 0; i < 4; i++)
+	{
+		x = ox + decalages[i][0];
+		y = oy + decalages[i][1];
 
-	// Gauche
-	Position_setY(debutChaine, ++y);
-	Position_setX(debutChaine, --x);
-	if(x >= 0)
-		if(Plateau_get(plateau, debutChaine) == aCapturer)
-			Plateau_estCapturable(plateau, debutChaine, chaines);
+		if(x < 0 || y < 0 || x >= taille || y >= taille)
+			continue;
 
-	// Bas
-	Position_setY(debutChaine, ++y);
-	Position_setX(debutChaine, ++x);
-	if(y < taille)
-		if(Plateau_get(plateau, debutChaine) == aCapturer)
-			Plateau_estCapturable(plateau, debutChaine, chaines);
+		Position_setX(debutChaine, x);
+		Position_setY(debutChaine, y);
 
-	// Droite
-	Position_setY(debutChaine, --y);
-	Position_setX(debutChaine, ++x);
-	if(x < taille)
 		if(Plateau_get(plateau, debutChaine) == aCapturer)
 			Plateau_estCapturable(plateau, debutChaine, chaines);
+	}
 
 	if(Liste_estVide(chaines))
 	{
