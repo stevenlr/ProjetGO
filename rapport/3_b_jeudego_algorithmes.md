@@ -1,4 +1,4 @@
-﻿Algorithmes
+Algorithmes
 -------------------------
 
 ###  Déterminer les libertés
