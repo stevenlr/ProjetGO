@@ -25,125 +25,82 @@ struct Plateau {
 
 // Fonctions privées ==========================================================
 
-static int Plateau_determinerSiEstOeil(Plateau plateau, Position origine, Chaine chaine)
+/**
+ * Détermine si un oeil en est un et si c'est un vrau.
+ *
+ * @param plateau Plateau.
+ * @param origine Position du supposé oeil.
+ * @param couleur Couleur pour laquelle vérifier l'oeil.
+ * @return 1 si c'est un vrai oeil, 0 sinon.
+ */
+static int Plateau_determinerSiEstVraiOeil(Plateau plateau, Position origine, Couleur couleur)
 {
-	int x, y, taille, nbChaine = 1;
-	Chaine chaine2 =  NULL;
+	int x, y, taille, i, ox, oy, status = 1;
 	Position position = Position_creer(0, 0);
+	int decalages[4][2] = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
+	Couleur couleurEnnemi = (couleur == BLANC) ? NOIR : BLANC;
+	Chaine chaine;
+	Libertes libertes;
+
+	ox = Position_getX(origine);
+	oy = Position_getY(origine);
 
 	Matrice_getTaille(plateau->m, NULL, &taille);
 
-	x = Position_getX(origine);
-	y = Position_getY(origine);
-
-	// Haut
-	Position_setY(position, --y);
-	if(y >= 0)
+	for(i = 0; i < 4; i++)
 	{
-		if(!Chaine_appartient(chaine, position))
-			return 0;
-		else
-			if(Plateau_get(plateau, position) == Chaine_getCouleur(chaine) && nbChaine != 2)
-			{
-				chaine2 = Plateau_determinerChaine(plateau, position);
-				nbChaine++;
-			}
-			else
-				return 0;	// La case est de couleur vide ou blanche
+		x = ox + decalages[i][0];
+		y = oy + decalages[i][1];
+
+		if(x < 0 || y < 0 || x >= taille || y >= taille)
+			continue;
+
+		Position_setX(position, x);
+		Position_setY(position, y);
+
+		if(Plateau_get(plateau, position) == couleurEnnemi)
+		{
+			status = 0;
+			break;
+		}
 	}
 
-	// Gauche
-	Position_setY(position, ++y);
-	Position_setX(position, --x);
-	if(x >= 0)
-		if(!Chaine_appartient(chaine, position))
-		{
-			if(nbChaine == 2 && !Chaine_appartient(chaine2, position))
-			{
-				Chaine_vider(chaine2);
-				Chaine_detruire(chaine2);
-				return 0;
-			}
-			else
-				if(nbChaine != 2 && Plateau_get(plateau, position) == Chaine_getCouleur(chaine))
-				{
-					chaine2 = Plateau_determinerChaine(plateau, position);
-					nbChaine++;
-				}
-				else
-				{
-					if(nbChaine == 2)
-					{
-						Chaine_vider(chaine2);
-						Chaine_detruire(chaine2);
-					}
-					return 0;
-				}
-		}
+	if(!status)
+	{
+		Position_detruire(position);
+		return 0;
+	}
 
-	// Bas
-	Position_setY(position, ++y);
-	Position_setX(position, ++x);
-	if(y < taille)
-		if(!Chaine_appartient(chaine, position))
-		{
-			if(nbChaine == 2 && !Chaine_appartient(chaine2, position))
-			{
-				Chaine_vider(chaine2);
-				Chaine_detruire(chaine2);
-				return 0;
-			}
-			else
-				if(nbChaine != 2 && Plateau_get(plateau, position) == Chaine_getCouleur(chaine))
-				{
-					chaine2 = Plateau_determinerChaine(plateau, position);
-					nbChaine++;
-				}
-				else
-				{
-					if(nbChaine == 2)
-					{
-						Chaine_vider(chaine2);
-						Chaine_detruire(chaine2);
-					}
-					return 0;
-				}
-		}
+	for(i = 0; i < 4; i++)
+	{
+		x = ox + decalages[i][0];
+		y = oy + decalages[i][1];
 
-	// Droite
-	Position_setY(position, --y);
-	Position_setX(position, ++x);
-	if(x < taille)
-		if(!Chaine_appartient(chaine, position))
-		{
-			if(nbChaine == 2 && !Chaine_appartient(chaine2, position))
-			{
-				Chaine_vider(chaine2);
-				Chaine_detruire(chaine2);
-				return 0;
-			}
-			else
-				if(nbChaine != 2 && Plateau_get(plateau, position) == Chaine_getCouleur(chaine))
-				{
-					chaine2 = Plateau_determinerChaine(plateau, position);
-					nbChaine++;
-				}
-				else
-				{
-					if(nbChaine == 2)
-					{
-						Chaine_vider(chaine2);
-						Chaine_detruire(chaine2);
-					}
-					return 0;
-				}
-		}
+		if(x < 0 || y < 0 || x >= taille || y >= taille)
+			continue;
 
-	Position_setX(position, --x);
+		Position_setX(position, x);
+		Position_setY(position, y);
+
+		chaine = Plateau_determinerChaine(plateau, position);
+		libertes = Libertes_determinerLibertes(plateau, chaine);
+
+		if(Liste_getNbElements(libertes) < 2)
+			status = 0;
+
+		Chaine_vider(chaine);
+		Chaine_detruire(chaine);
+
+		Libertes_vider(libertes);
+		Liste_detruire(libertes);
+
+		if(!status)
+			break;
+	}
 
 	Position_detruire(position);
 
-	return 1;
+	return status;
 }
 
 // Fonctions publiques ========================================================
@@ -493,6 +450,7 @@ Positions Plateau_determinerYeux(Plateau plateau, Chaine chaine)
 	Positions positions;
 	Libertes libertes;
 	Position position;
+	Couleur couleur = Chaine_getCouleur(chaine);
 
 	libertes = Libertes_determinerLibertes(plateau, chaine);
 	positions = Liste_creer();
@@ -506,7 +464,7 @@ Positions Plateau_determinerYeux(Plateau plateau, Chaine chaine)
 	{
 		position = Liste_courant(libertes);
 
-		if(Plateau_determinerSiEstOeil(plateau, position, chaine))
+		if(Plateau_determinerSiEstVraiOeil(plateau, position, couleur))
 			Liste_insererCourant(positions, Position_copier(position));
 
 		Liste_supprimerCourant(libertes);

@@ -1,4 +1,4 @@
-Algorithmes
+﻿Algorithmes
 -------------------------
 
 ###  Déterminer les libertés
@@ -36,11 +36,11 @@ L'objectif est, à partir d'un territoire passé en paramètre, de savoir si ce 
 
 ###  Déterminer les yeux d'une chaîne
 
-L'objectif est, à partir d'une chaîne passée en paramètre, on détermine les libertés qui sont des yeux de cette chaîne. Pour ceci, l'algorithme consiste à déterminer les libertés de la chaîne et, pour chaque liberté, faire l'exécution suivante :
+L'objectif est, à partir d'une chaîne passée en paramètre, de déterminer les libertés qui sont des vrais yeux de cette chaîne. Pour ceci, l'algorithme consiste à déterminer les libertés de la chaîne et, pour chaque liberté, faire l'exécution suivante :
  - On vérifie si les chaînes qui entourent la liberté sont de la même couleur.
  - On vérifie que les chaînes qui entourent la liberté ne sont pas en atari.
 
-Une fois le parcourt terminé, on obtient ainsi les yeux de la chaîne.
+Une fois le parcours terminé, on obtient ainsi les yeux de la chaîne.
 
 ###  Déterminer une chaîne
 
