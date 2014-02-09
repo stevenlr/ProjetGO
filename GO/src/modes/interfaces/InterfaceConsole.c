@@ -253,6 +253,12 @@ void InterfaceConsole_entreeMenu(EtatsMenu* etats)
 				break;
 			case 2:
 				EcranMenu_eventReprendre();
+
+				if(etats->continuer)
+				{
+					printf("Il n'y a pas de partie sauvegardée.\nEntrez un choix valide : ");
+					event = 0;
+				}
 				break;
 			case 3:
 				EcranMenu_eventGuide();
