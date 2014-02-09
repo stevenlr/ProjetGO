@@ -5,7 +5,7 @@ Autres éléments du programme
 Eléments d'interface graphique
 ---------------------------------
 
-Afin de faciliter les entrées utilisateurs, des structures ont été créées pour faciliter l'affichage et la gestion des éléments d'interface graphique. Chaque élément est instancié lors de la création du contexte graphique et stocké dans une variable globale afin de pouvoir être utilisé plus tard.
+Afin de faciliter les entrées utilisateurs, des structures ont été créées pour faciliter l'affichage et la gestion des éléments d'interface graphique. Chaque élément est instancié lors de la création du contexte graphique et stocké dans la structure de contexte graphique afin de pouvoir être utilisé plus tard.
 
 ### Les boutons
 

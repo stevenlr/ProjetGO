@@ -42,11 +42,6 @@ typedef enum {
 	OPTIONS_KOMI_PLUS      //!< OPTIONS_KOMI_PLUS
 } Boutons;
 
-/**
- * Contient l'ensemble des boutons du jeu.
- */
-Bouton boutons[NBOUTONS];
-
 #define NCHOIXMULTIPLES 4
 
 /**
@@ -59,11 +54,6 @@ typedef enum {
 	OPTIONS_TAILLE   //!< OPTIONS_TAILLE
 } ChoixMultiples;
 
-/**
- * Contient l'ensemble des boutons à choix multiple du jeu.
- */
-ChoixMultiple choixMultiples[NCHOIXMULTIPLES];
-
 #define NENTREETEXTE 2
 
 /**
@@ -73,11 +63,6 @@ typedef enum {
 	OPTIONS_NOMJ1,//!< OPTIONS_NOMJ1
 	OPTIONS_NOMJ2 //!< OPTIONS_NOMJ2
 } EntreesTexte;
-
-/**
- * Contient l'ensemble des champ de texte du jeu.
- */
-EntreeTexte entreesTexte[NENTREETEXTE];
 
 typedef struct ContexteGraphique* ContexteGraphique;
 
@@ -114,5 +99,29 @@ int ContexteGraphique_getTailleX();
  * @return hauteur de la fenêtre.
  */
 int ContexteGraphique_getTailleY();
+
+/**
+ * Récupère un bouton.
+ *
+ * @param idBouton ID du bouton.
+ * @return Le bouton.
+ */
+Bouton ContexteGraphique_getBouton(Boutons idBouton);
+
+/**
+ * Récupère un bouton à choix multiple.
+ *
+ * @param idChoix ID Du bouton à choix multiple.
+ * @return Le bouton à choix multiple.
+ */
+ChoixMultiple ContexteGraphique_getChoixMultiple(ChoixMultiples idChoix);
+
+/**
+ * Récupèreun champ de texte.
+ *
+ * @param idTexte ID du champ de texte.
+ * @return Le champ de texte.
+ */
+EntreeTexte ContexteGraphique_getEntreeTexte(EntreesTexte idTexte);
 
 #endif
