@@ -19,19 +19,19 @@
 
 #define BASE_BOUTONS_MENU 200
 
+/**
+ * Contexte graphique.
+ */
 struct ContexteGraphique
 {
-	SDL_Surface* window;
-	SDL_Surface* icon;
-	int tailleX, tailleY;
-	Bouton boutons[NBOUTONS];
-	ChoixMultiple choixMultiples[NCHOIXMULTIPLES];
-	EntreeTexte entreesTexte[NENTREETEXTE];
+	SDL_Surface* window; //!< Fenêtre SDL.
+	SDL_Surface* icon; //!< Icone de la fenêtre.
+	int tailleX; //!< Largeur de la fenêtre.
+	int tailleY; //!< Hauteur de la fenêtre.
+	Bouton boutons[NBOUTONS]; //!< Registre des boutons.
+	ChoixMultiple choixMultiples[NCHOIXMULTIPLES]; //!< Registre des boutons à choix multiple.
+	EntreeTexte entreesTexte[NENTREETEXTE]; //!< Registre des champs de texte.
 };
-
-Bouton boutons[NBOUTONS];
-ChoixMultiple choixMultiples[NCHOIXMULTIPLES];
-EntreeTexte entreesTexte[NENTREETEXTE];
 
 ContexteGraphique ContexteGraphique_creer()
 {
