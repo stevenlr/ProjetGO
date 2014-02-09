@@ -170,13 +170,13 @@ int Territoire_estUnSeki(Territoire territoire, Plateau plateau)
 	do
 	{
 		chaine = Liste_courant(chaines);
-		libertes = Libertes_determinerLibertes(plateau, chaine); //Forcément, il y a des libertés vu que ce sont les chaines qui entourent un territoire vide.
+		libertes = Libertes_determinerLibertes(plateau, chaine); // Forcément, il y a des libertés ce sont les chaînes qui entourent un territoire vide.
 
 		do
 		{
 			position = Liste_courant(libertes);
 
-			if(!Chaine_appartient(territoire, position)) //Si une liberté n'est pas dans le territoire dit Seki, il n'y a pas Seki.
+			if(!Chaine_appartient(territoire, position)) // Si une liberté n'est pas dans le territoire dit Séki, il n'y a pas Séki.
 				status = 0;
 
 		} while(Liste_suivant(libertes) && !status);

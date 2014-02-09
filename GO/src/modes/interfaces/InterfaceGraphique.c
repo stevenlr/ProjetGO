@@ -212,7 +212,7 @@ void InterfaceGraphique_sortieJeu(EtatsJeu* etats)
 
 	Position_detruire(position);
 	SDL_Flip(window);
-	SDL_Delay(25); // Doucement le matin, pas trop vite l'après-midi.
+	SDL_Delay(25);
 }
 
 void InterfaceGraphique_entreeMenu(EtatsMenu* etats)

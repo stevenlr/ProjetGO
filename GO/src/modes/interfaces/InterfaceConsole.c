@@ -225,6 +225,9 @@ void InterfaceConsole_sortieJeu(EtatsJeu* etats)
 		free(str);
 	}
 
+	Position_setX(position, 0);
+	Position_setY(position, 0);
+
 	Position_detruire(position);
 }
 
@@ -486,7 +489,7 @@ void InterfaceConsole_entreeOptions(EtatsOptions* etats)
 	{
 		printf("Taille du plateau (9, 13 ou 19) : ");
 		scanf("%d", &nb);
-	} while(nb != 9 && nb != 13 && nb != 19);	//Defaut???
+	} while(nb != 9 && nb != 13 && nb != 19);
 
 	EcranOptions_eventSetTaille(nb);
 	InterfaceConsole_viderBuffer();
