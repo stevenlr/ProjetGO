@@ -24,6 +24,7 @@ static EtatsGuide etats;
 
 int EcranGuide_init()
 {
+	int maxCaracteres;
 	TypeContexte contexte = Contexte_getID();
 
 	etats.continuer = 1;
@@ -31,15 +32,8 @@ int EcranGuide_init()
 	etats.premiereBoucle = 1;
 	etats.derniereBoucle = 0;
 
-	switch(contexte)
-	{
-		case GRAPHIQUE:
-			etats.tutoriel = Tutoriel_charger(100);
-			break;
-		case CONSOLE:
-			etats.tutoriel = Tutoriel_charger(78);
-			break;
-	}
+	maxCaracteres = (contexte == GRAPHIQUE) ? 100 : 78;
+	etats.tutoriel = Tutoriel_charger(maxCaracteres);
 
 	if(etats.tutoriel == NULL)
 		return 0;
