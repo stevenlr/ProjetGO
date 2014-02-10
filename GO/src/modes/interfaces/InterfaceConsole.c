@@ -520,7 +520,7 @@ void InterfaceConsole_entreeOptions(EtatsOptions* etats)
 		} while(nb != 1 && nb != 2);
 	}
 
-	if(nb == 0 || nb == 1)
+	if(nb == 0 || nb == 2)
 		EcranOptions_eventSetJoueurHandicap(NOIR);
 	else
 		EcranOptions_eventSetJoueurHandicap(BLANC);
