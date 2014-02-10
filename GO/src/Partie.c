@@ -385,7 +385,7 @@ Partie Partie_charger(FILE* fichier)
 		return NULL;
 	}
 
-	partie = Partie_creer(joueurNoir, joueurBlanc, typeBlanc, typeNoir, komi, handicap, taille);
+	partie = Partie_creer(joueurNoir, joueurBlanc, typeNoir, typeBlanc, komi, handicap, taille);
 
 	if(partie == NULL)
 		return NULL;
