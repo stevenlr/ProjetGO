@@ -502,7 +502,7 @@ void InterfaceConsole_entreeOptions(EtatsOptions* etats)
 
 	printf("Komi de la partie : ");
 	scanf("%f", &komi);
-	EcranOptions_eventSetKomi(komi - 0.5);
+	EcranOptions_eventSetKomi((int) komi);
 	InterfaceConsole_viderBuffer();
 
 	nb = 0;
